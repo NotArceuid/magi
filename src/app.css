@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+ --color-bg: #fff;
+ --color-font: #000;
+ --color-border: #000;
+ --color-active: #fff;
+ --color-inactive: #505366;
+ --color-hover: #505366;
+}
+
+@layer theme {
+  :root, :host {
+    @variant dark {
+      --color-bg: #1d2021;
+      --color-border: #767876;
+      --color-active: #000;
+      --color-inactive: #ccc;
+      --color-font: #cccccc;
+      --color-hover: #ccc;
+    }
+  }
+}
+
+button {
+  padding: .3rem 1rem .3rem;
+}
+
+button:hover {
+  background-color: color-mix(in oklab, var(--color-hover) 10%, transparent);
+  cursor: pointer;
+}
+
+select:hover {
+  cursor:pointer;
+}

@@ -1,0 +1,33 @@
+{
+  "stats": {
+    "money": "Money", 
+    "health": "Health",
+    "mana": "Mana"
+  },
+  "leveling": {
+    "offense": {
+      "title": "Offense",
+      "upgrades": [
+        { "name": "Punch", "description": "Randomly fling your arms around, hoping that it lands.. which it prob won't."},
+        { "name": "Kick", "description": "Sign up for taekwondo classes, Unlocking two extra limbs for combat :)"},
+        { "name": "Serious Punch", "description": "Now you're getting serious, instead of flinging your arms around, you're actually hitting things now. Just don't accidentally split the skies in half."},
+        { "name": "Palm Blast", "description": "Did you just created a sonic boom just by punching the air???!"},
+        { "name": "Quake", "description": "Slam the ground, causing the earth to shake. "},
+        { "name": "Crumble", "description": "Level buildings with your physical strength, just remember to pay the repair fees for every buildings that you've destroyed."},
+        { "name": "Dad's Belt", "description": "The ultimate weapon, inflused with dad strength, you now conquer the galaxy with this weapon."}
+      ] 
+    },
+    "defence": {
+      "title": "Defence",
+      "upgrades": [
+        { "name": "Brace", "description": "Hold your hands up and brace for the impact from the enemy's punches. "},
+        { "name": "Side Step", "description": "You now learn how to dodge partially out of any attacks, but you still are afraid of actually commiting to the roll."},
+        { "name": "Dodge Roll", "description": "Don't you dare go hollow. "},
+        { "name": "Iron Skin", "description": "Learn to harden your skin through willpower. Making it as though as iron."},
+        { "name": "Parry", "description": "Parry.. and riposte!!"},
+        { "name": "Barrier", "description": "Summon a barrier, protecting against any attacks."},
+        { "name": "Recharge", "description": "Repeat the previous action, this will be very useful."}
+      ]
+    }
+  }
+}

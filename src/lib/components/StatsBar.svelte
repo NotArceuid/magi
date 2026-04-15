@@ -1,0 +1,41 @@
+<script>
+	import { Game } from "$lib/engine/stores.svelte";
+	import { _ } from "svelte-i18n";
+	import ProgressBar from "./common/ProgressBar.svelte";
+</script>
+
+<div class="space-y-3">
+	<div>
+		<div class="flex justify-between items-center">
+			<h1 class="font-semibold">{$_("stats.health")}:</h1>
+			<span class="text-sm font-mono">
+				{Game.Player.Health.Value}/{Game.Player.Health.Max}
+			</span>
+		</div>
+		<ProgressBar
+			min={Game.Player.Health.Min}
+			max={Game.Player.Health.Max}
+			value={Game.Player.Health.Value}
+			fillClass="bg-red-400 h-full rounded-full"
+			containerClass="h-2 w-full rounded-full"
+		/>
+	</div>
+
+	<div>
+		<div class="flex justify-between items-center">
+			<h1 class="font-semibold">{$_("stats.mana")}:</h1>
+			<span class="text-sm font-mono">
+				{Game.Player.Mana.Value}/{Game.Player.Mana.Max}
+			</span>
+		</div>
+		<ProgressBar
+			min={Game.Player.Mana.Min}
+			max={Game.Player.Mana.Max}
+			value={Game.Player.Mana.Value}
+			fillClass="bg-blue-400 h-full rounded-full"
+			containerClass="h-2 w-full rounded-full"
+		/>
+	</div>
+
+	<div class="border-gray-300 mt-2 border-b-4"></div>
+</div>
