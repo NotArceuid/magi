@@ -1,109 +1,110 @@
 <script lang="ts">
-	import { OfflineProps } from "$lib/engine/Game.svelte";
-	import { SaveSystem } from "$lib/engine/Saves";
-	import {
-		formatter,
-		formatTime,
-		Notation,
-	} from "$lib/engine/utils/BreakInfinity/Formatter.svelte";
-	import { onMount } from "svelte";
-	import { asset } from "$app/paths";
-	import { Player } from "$lib/engine/Player.svelte.ts";
-	import { NotificationPopUp } from "$lib/components/Notification.svelte";
-	import {
-		Settings,
-		ColorTheme,
-		SetTheme,
-	} from "$lib/components/settings/Settings.svelte.ts";
-	import SaveSlot from "$lib/components/settings/SaveSlot.svelte";
-
-	async function saveToClipboard() {
-		const saveString = await SaveSystem.exportToString();
-		await navigator.clipboard.writeText(saveString);
-
-		NotificationPopUp.invoke({ name: "Saves", description: "Game Saved!" });
-	}
-
-	async function saveToFile() {
-		try {
-			const saveString = await SaveSystem.exportToString();
-			const blob = new Blob([saveString], { type: "text/plain" });
-			const a = document.createElement("a");
-			document.body.append(a);
-			a.download = "ssg_save.txt";
-			a.href = URL.createObjectURL(blob);
-			a.click();
-			a.remove();
-			NotificationPopUp.invoke({ name: "Saves", description: "Game Saved!" });
-		} catch {}
-	}
-
-	//@ts-ignore
-	let name = PKG_NAME;
-	// @ts-ignore
-	let version = PKG_VERSION;
-
-	function RotateTheme() {
-		let oldTheme = Settings.Theme;
-		let entries = Object.values(ColorTheme)
-			.filter((x) => typeof x === "number")
-			.map((x) => x as ColorTheme);
-		let idx = entries.findIndex((e) => e == Settings.Theme);
-		if (idx == -1 || idx >= entries.length - 1) idx = 0;
-		else idx = idx + 1;
-
-		Settings.Theme = entries[idx];
-		SetTheme(oldTheme);
-	}
-
-	function RotateNotation() {
-		let entries = Object.values(Notation)
-			.filter((x) => typeof x === "number")
-			.map((x) => x as Notation);
-		let idx = entries.findIndex((e) => e == Settings.Format);
-		if (idx == -1 || idx >= entries.length - 1) idx = 0;
-		else idx = idx + 1;
-
-		Settings.Format = entries[idx];
-
-		formatter.Notation = Settings.Format;
-	}
-
-	let saveBeforeUnload = $state(true);
-	onMount(() => {
-		window.addEventListener("beforeunload", async () => {
-			if (saveBeforeUnload)
-				localStorage.setItem(
-					OfflineProps.saveId.toString(),
-					await SaveSystem.exportToString(),
-				);
-		});
-	});
-
-	onMount(() => {
-		saveBeforeUnload = true;
-		let save = localStorage.getItem(OfflineProps.saveId.toString());
-		if (save) SaveSystem.importFromString(save);
-
-		document.querySelectorAll("button").forEach((button) => {
-			button.addEventListener("click", () => {
-				const audio = new Audio(asset(`/click.wav`));
-				if (Settings.Sounds) audio.play();
-			});
-		});
-	});
-
-	onMount(() => {
-		setInterval(async () => {
-			localStorage.setItem(
-				OfflineProps.saveId.toString(),
-				await SaveSystem.exportToString(),
-			);
-			NotificationPopUp.invoke({ name: "Saves", description: "Game Saved!" });
-		}, 300000);
-	});
+	//	import { OfflineProps } from "$lib/engine/Game.svelte";
+	//	import { SaveSystem } from "$lib/engine/Saves";
+	//	import {
+	//		formatter,
+	//		formatTime,
+	//		Notation,
+	//	} from "$lib/engine/utils/BreakInfinity/Formatter.svelte";
+	//	import { onMount } from "svelte";
+	//	import { asset } from "$app/paths";
+	//	import { Player } from "$lib/engine/Player.svelte.ts";
+	//	import { NotificationPopUp } from "$lib/components/Notification.svelte";
+	//	import {
+	//		Settings,
+	//		ColorTheme,
+	//		SetTheme,
+	//	} from "$lib/components/settings/Settings.svelte.ts";
+	//	import SaveSlot from "$lib/components/settings/SaveSlot.svelte";
+	//
+	//	async function saveToClipboard() {
+	//		const saveString = await SaveSystem.exportToString();
+	//		await navigator.clipboard.writeText(saveString);
+	//
+	//		NotificationPopUp.invoke({ name: "Saves", description: "Game Saved!" });
+	//	}
+	//
+	//	async function saveToFile() {
+	//		try {
+	//			const saveString = await SaveSystem.exportToString();
+	//			const blob = new Blob([saveString], { type: "text/plain" });
+	//			const a = document.createElement("a");
+	//			document.body.append(a);
+	//			a.download = "ssg_save.txt";
+	//			a.href = URL.createObjectURL(blob);
+	//			a.click();
+	//			a.remove();
+	//			NotificationPopUp.invoke({ name: "Saves", description: "Game Saved!" });
+	//		} catch {}
+	//	}
+	//
+	//	//@ts-ignore
+	//	let name = PKG_NAME;
+	//	// @ts-ignore
+	//	let version = PKG_VERSION;
+	//
+	//	function RotateTheme() {
+	//		let oldTheme = Settings.Theme;
+	//		let entries = Object.values(ColorTheme)
+	//			.filter((x) => typeof x === "number")
+	//			.map((x) => x as ColorTheme);
+	//		let idx = entries.findIndex((e) => e == Settings.Theme);
+	//		if (idx == -1 || idx >= entries.length - 1) idx = 0;
+	//		else idx = idx + 1;
+	//
+	//		Settings.Theme = entries[idx];
+	//		SetTheme(oldTheme);
+	//	}
+	//
+	//	function RotateNotation() {
+	//		let entries = Object.values(Notation)
+	//			.filter((x) => typeof x === "number")
+	//			.map((x) => x as Notation);
+	//		let idx = entries.findIndex((e) => e == Settings.Format);
+	//		if (idx == -1 || idx >= entries.length - 1) idx = 0;
+	//		else idx = idx + 1;
+	//
+	//		Settings.Format = entries[idx];
+	//
+	//		formatter.Notation = Settings.Format;
+	//	}
+	//
+	//	let saveBeforeUnload = $state(true);
+	//	onMount(() => {
+	//		window.addEventListener("beforeunload", async () => {
+	//			if (saveBeforeUnload)
+	//				localStorage.setItem(
+	//					OfflineProps.saveId.toString(),
+	//					await SaveSystem.exportToString(),
+	//				);
+	//		});
+	//	});
+	//
+	//	onMount(() => {
+	//		saveBeforeUnload = true;
+	//		let save = localStorage.getItem(OfflineProps.saveId.toString());
+	//		if (save) SaveSystem.importFromString(save);
+	//
+	//		document.querySelectorAll("button").forEach((button) => {
+	//			button.addEventListener("click", () => {
+	//				const audio = new Audio(asset(`/click.wav`));
+	//				if (Settings.Sounds) audio.play();
+	//			});
+	//		});
+	//	});
+	//
+	//	onMount(() => {
+	//		setInterval(async () => {
+	//			localStorage.setItem(
+	//				OfflineProps.saveId.toString(),
+	//				await SaveSystem.exportToString(),
+	//			);
+	//			NotificationPopUp.invoke({ name: "Saves", description: "Game Saved!" });
+	//		}, 300000);
+	//	});
 </script>
 
+<!--
 <div class="w-full p-2 absolute h-full">
 	<div
 		class="w-full flex flex-wrap flex-row space-x-8 text-center pb-4 justify-center"
@@ -146,4 +147,4 @@
 			>
 		</div>
 	</div>
-</div>
+</div> -->

@@ -1,11 +1,9 @@
 <script lang="ts">
-	import {
-		AchievementKey,
-		AchievementsData,
-	} from "$lib/engine/Achievements.svelte";
+	import { AchievementKey } from "$lib/engine/Achievements.svelte";
+	import { Game } from "$lib/engine/stores.svelte";
 
 	let { idx }: { idx: number } = $props();
-	let achievement = $derived(AchievementsData[idx as AchievementKey]);
+	let achievement = $derived(Game.Achievement.Data[idx as AchievementKey]);
 	let unlocked = $derived(achievement.unlocked ? "bg-green-200/20" : "");
 </script>
 

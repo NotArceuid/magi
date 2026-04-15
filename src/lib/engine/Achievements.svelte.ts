@@ -14,14 +14,14 @@ export class Achievement {
   constructor(save: Saves) {
     save.SaveCallback<boolean[]>(this.SAVEKEY, () => {
       let arr: boolean[] = []
-      Object.values(this.AchievementData).forEach((e) => {
+      Object.values(this.Data).forEach((e) => {
         arr.push(e.unlocked ?? false);
       })
       return arr;
     })
 
     save.LoadCallback<boolean[]>(this.SAVEKEY, (data) => {
-      let arr = Object.values(this.AchievementData);
+      let arr = Object.values(this.Data);
       for (let i = 0; i < arr.length; i++) {
         arr[i].unlocked = data[i];
       }
@@ -29,25 +29,25 @@ export class Achievement {
   }
 
   UnlockAchievement(key: AchievementKey) {
-    if (this.AchievementData[key].unlocked)
+    if (this.Data[key].unlocked)
       return;
 
-    this.AchievementData[key].unlocked = true;
-    NotificationPopUp.invoke(this.AchievementData[key]);
+    this.Data[key].unlocked = true;
+    NotificationPopUp.invoke(this.Data[key]);
   }
 
   UnlockedAchievementCount(): number {
-    return Object.values(this.AchievementData)
+    return Object.values(this.Data)
       .filter(data => data.unlocked)
       .length;
   }
 
-  public AchievementData: Record<AchievementKey, IAchievement> = $state({
+  public Data: Record<AchievementKey, IAchievement> = $state({
 
   });
 }
 
-enum AchievementKey {
+export enum AchievementKey {
 
 }
 
