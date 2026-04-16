@@ -29,6 +29,7 @@
 		NotificationPopUp.add((notification: INotification) => {
 			notificationList.push(notification);
 		});
+		Game.Engine.start();
 	});
 </script>
 

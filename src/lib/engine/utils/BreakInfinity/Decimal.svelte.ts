@@ -196,8 +196,8 @@ export class Decimal {
 
   //#endregion
 
-  public format(): string {
-    return formatter.format(this);
+  public format(decimals = 2): string {
+    return formatter.format(this, decimals);
   }
 
   //#region clone

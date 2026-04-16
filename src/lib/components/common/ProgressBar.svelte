@@ -18,7 +18,7 @@
 		value,
 		text,
 		containerClass = "w-full h-4 bg-gray-200 rounded-full overflow-hidden",
-		fillClass = "h-full bg-blue-600 transition-all duration-300 ease-out",
+		fillClass = "h-full bg-blue-600/70 transition-all ease-out",
 		textClass = "text-sm font-medium text-gray-700 mt-1",
 	}: Props = $props();
 
@@ -37,12 +37,15 @@
 	<div class={containerClass}>
 		<div
 			class={fillClass}
-			style="width: {percentage}%;"
+			style="width: {percentage}%; height: 100%;"
 			role="progressbar"
 			aria-valuenow={percentage}
 			aria-valuemin="0"
 			aria-valuemax="100"
-		></div>
+		>
+			<!-- workaround -->
+			<br />
+		</div>
 	</div>
 
 	{#if text}

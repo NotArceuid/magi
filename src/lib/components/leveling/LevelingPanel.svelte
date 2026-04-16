@@ -2,6 +2,7 @@
 	import { AllocatableProgress } from "$lib/engine/Levelling/LevelingRepo.svelte";
 	import { _ } from "svelte-i18n";
 	import ProgressBar from "../common/ProgressBar.svelte";
+	import { Game } from "$lib/engine/stores.svelte";
 
 	let { data }: { data: AllocatableProgress } = $props();
 </script>
@@ -27,11 +28,13 @@
 		<div class="flex shrink-0 justify-end gap-1">
 			<button
 				class="border w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-gray-100 cursor-pointer select-none"
+				onclick={() => data.Allocate(Game.Player.Energy)}
 			>
 				+
 			</button>
 			<button
 				class="border w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-gray-100 cursor-pointer select-none"
+				onclick={() => data.Deallocate(Game.Player.Energy)}
 			>
 				-
 			</button>
@@ -41,7 +44,7 @@
 	<div class="flex justify-between items-center text-sm font-medium">
 		<span
 			>{$_(data.Name)}
-			{data.Count} x
+			{data.Count}x
 		</span>
 		<span>{data.AllocatedAmount} </span>
 	</div>

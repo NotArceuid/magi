@@ -33,7 +33,7 @@ export interface InventoryItem {
 }
 
 export class Inventory {
-  private readonly MAX_SLOTS = 200;
+  private readonly MAX_SLOTS = 12;
   private Inventory: Array<InventoryItem | null> = $state([]);
 
   private get SAVEKEY() {

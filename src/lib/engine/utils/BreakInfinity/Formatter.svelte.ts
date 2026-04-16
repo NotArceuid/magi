@@ -130,7 +130,7 @@ export class NumberFormatter {
     this.Notation = $state(Notation);
   }
 
-  format(number: Decimal): string {
+  format(number: Decimal, decimal_points = 2): string {
     const absLog10 = Decimal.abs(number.mantissa).gt(0)
       ? number.exponent + Decimal.log10(Decimal.abs(number.mantissa))
       : -Infinity;
@@ -143,11 +143,11 @@ export class NumberFormatter {
 
     switch (this.Notation) {
       case Notation.Scientific:
-        return this.formatScientific(value);
+        return this.formatScientific(value, decimal_points);
 
       case Notation.Standard:
       default:
-        return this.formatStandard(value);
+        return this.formatStandard(value, decimal_points);
     }
   }
 
@@ -159,10 +159,10 @@ export class NumberFormatter {
     return this.options.decimals;
   }
 
-  private formatScientific(value: Decimal): string {
+  private formatScientific(value: Decimal, decimal_points = 2): string {
     if (value.eq(Decimal.ZERO)) return '0';
     if (value.lt(1000)) {
-      return value.toFixed(2).toString();
+      return value.toFixed(decimal_points).toString();
     }
     const exponent = Decimal.floor(Decimal.log10(Decimal.abs(value)));
     const mantissa = value.div(Decimal.pow(10, exponent));
@@ -170,7 +170,7 @@ export class NumberFormatter {
     return `${mantissa.toFixed(this.options.decimals)}e${exponent}`;
   }
 
-  private formatStandard(value: Decimal): string {
+  private formatStandard(value: Decimal, decimal_points = 2): string {
     const absValue = Decimal.abs(value);
 
     if (absValue.lt(0.1)) {
@@ -184,14 +184,14 @@ export class NumberFormatter {
       }
     }
 
-    return this.formatSmallNumber(value);
+    return this.formatSmallNumber(value, decimal_points);
   }
 
-  private formatSmallNumber(value: Decimal): string {
+  private formatSmallNumber(value: Decimal, decimal_points = 2): string {
     if (Decimal.abs(value).lt(0.01) && value.notEquals(0)) {
       return this.formatScientific(value);
     }
-    return value.toNumber().toFixed(2);
+    return value.toNumber().toFixed(decimal_points);
   }
 }
 export const formatter = new NumberFormatter(Notation.Standard, {

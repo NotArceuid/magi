@@ -29,8 +29,8 @@ export class Battle {
   constructor(engine: Engine, player: Player, saves: Saves) {
     this._player = player;
 
-    engine.Tick.add(this.DamagePlayer);
-    engine.Tick.add(this.DamageEnemy);
+    //    engine.Tick.add(this.DamagePlayer);
+    //    engine.Tick.add(this.DamageEnemy);
 
     saves.SaveCallback<ICombatSaves>(this.SAVEKEY, () => {
       return {

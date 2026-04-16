@@ -1,4 +1,5 @@
-import type { IProgressGain } from "$lib/components/common/IProgress";
+import type { IProgress, IProgressGain } from "$lib/components/common/IProgress";
+import { Player } from "../Player.svelte";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 
 export abstract class AllocatableProgress {
@@ -15,6 +16,45 @@ export abstract class AllocatableProgress {
   public abstract NextTick: () => void;
   public abstract Unlocked: boolean;
   public abstract Amount: number;
+
+  protected _player: Player;
+  constructor(player: Player) {
+    this._player = player;
+  }
+
+  public Deallocate(progress: IProgress) {
+    let allocatedAmount = this._player.AllocationAmount;
+    if (this.AllocatedAmount.lte(allocatedAmount)) {
+      let clone = this.AllocatedAmount.clone();
+      progress.Value = clone.plus(progress.Value);
+      this.AllocatedAmount = Decimal.ZERO;
+      return;
+    }
+
+    let diff = this.AllocatedAmount.minus(allocatedAmount);
+    progress.Value = progress.Value.plus(allocatedAmount);
+    this.AllocatedAmount = diff;
+  }
+
+  public Allocate(progress: IProgress) {
+    let amount = this._player.AllocationAmount;
+    if (progress.Value.lte(amount)) {
+      this.AllocatedAmount = this.AllocatedAmount.plus(progress.Value);
+      progress.Value = Decimal.ZERO;
+      return;
+    }
+
+    if (progress.Value.minus(amount).lte(0)) {
+      let clone = progress.Value.clone();
+      progress.Value = Decimal.ZERO;
+      this.AllocatedAmount = clone;
+      return;
+    }
+
+    let diff = Decimal.max(0, progress.Value.minus(amount));
+    progress.Value = diff;
+    this.AllocatedAmount = this.AllocatedAmount.plus(amount);
+  }
 
   public get AllocationRatio(): Decimal {
     if (this.Cap.lte(Decimal.ZERO)) return new Decimal(1);
@@ -44,8 +84,8 @@ export class Punch extends AllocatableProgress {
   public Requirement: () => boolean = () => true;
   public AllocatedAmount: Decimal = $state(Decimal.ZERO);
   public AllocatedPower: Decimal = $state(Decimal.ZERO);
-  public Cap: Decimal = $state(new Decimal(1000));
-  public BaseGain: Decimal = $state(new Decimal(1));
+  public Cap: Decimal = $state(new Decimal(10000));
+  public BaseGain: Decimal = $state(Decimal.ZERO);
   public Count: Decimal = $state(Decimal.ZERO);
   public Unlocked: boolean = true;
   public Amount: number = $derived(1);

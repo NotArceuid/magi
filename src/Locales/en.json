@@ -2,8 +2,10 @@
   "stats": {
     "money": "Money", 
     "health": "Health",
-    "mana": "Mana"
+    "mana": "Mana",
+    "energy": "Energy"
   },
+
   "leveling": {
     "offense": {
       "title": "Offense",

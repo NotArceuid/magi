@@ -19,9 +19,16 @@ export class Player {
       Value: new Decimal(100),
       Gain: new Decimal(0.01),
     },
+    Energy: {
+      Max: new Decimal(100),
+      Min: new Decimal(0),
+      Value: new Decimal(100),
+      Gain: new Decimal(0.01),
+    },
     Playtime: 0,
     SaveTime: 0,
     Money: new Decimal(0),
+    AllocationAmount: Decimal.ONE
   });
 
   get Name() { return this._player.Name; }
@@ -30,6 +37,9 @@ export class Player {
   set Money(value) { this._player.Money = value; }
   get Health(): IProgressGain { return this._player.Health; }
   get Mana(): IProgressGain { return this._player.Mana; }
+  get Energy(): IProgressGain { return this._player.Energy; }
+  get AllocationAmount(): Decimal { return this._player.AllocationAmount; }
+  set AllocationAmount(val) { this._player.AllocationAmount = val }
   public get Icon() { return ""; }
 
   private get SAVEKEY(): string { return "player" };
@@ -46,7 +56,9 @@ export class Player {
         name: this.Name,
         money: this.Money,
         mana: this.Mana,
-        health: this.Health
+        energy: this.Energy,
+        health: this.Health,
+        allocationAmount: this.AllocationAmount,
       }
     });
 
@@ -61,6 +73,7 @@ export class Player {
       this._player.Playtime = data.playtime;
       this._player.Health = data.health;
       this._player.Mana = data.mana;
+      this._player.AllocationAmount = data.allocationAmount;
     });
   }
 
@@ -110,6 +123,8 @@ interface IPlayerSaves {
   money: Decimal,
   mana: IProgressGain;
   health: IProgressGain;
+  energy: IProgressGain;
+  allocationAmount: Decimal;
 }
 
 interface IPlayer {
@@ -119,4 +134,6 @@ interface IPlayer {
   Money: Decimal;
   Health: IProgressGain;
   Mana: IProgressGain;
+  AllocationAmount: Decimal;
+  Energy: IProgressGain;
 }
