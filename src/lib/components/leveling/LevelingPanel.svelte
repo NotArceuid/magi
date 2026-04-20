@@ -3,8 +3,11 @@
 	import { _ } from "svelte-i18n";
 	import ProgressBar from "../common/ProgressBar.svelte";
 	import { Game } from "$lib/engine/stores.svelte";
+	import CollapsibleCard from "../common/CollapsibleCard.svelte";
+	import { slide } from "svelte/transition";
 
 	let { data }: { data: AllocatableProgress } = $props();
+	let open = $state(false);
 </script>
 
 <div class="w-full h-full flex flex-col border p-2 gap-2">
@@ -16,13 +19,6 @@
 				max={data.Progress.Max}
 				value={data.Progress.Value}
 			/>
-
-			<h6
-				class="absolute inset-0 flex items-center justify-center text-sm z-10 pointer-events-none text-gray-800"
-			>
-				{data.Progress.Value.format()} /
-				{data.Progress.Max.format()}
-			</h6>
 		</div>
 
 		<div class="flex shrink-0 justify-end gap-1">
@@ -45,7 +41,30 @@
 		<span
 			>{$_(data.Name)}
 			{data.Count}x
+			{#if data.AllocatedAmount.gte(data.MaxAllocated)}
+				(Max)
+			{/if}
 		</span>
 		<span>{data.AllocatedAmount} </span>
 	</div>
+
+	<CollapsibleCard transition={{ transition: slide }} bind:isOpen={open}>
+		{#snippet header()}
+			<div class="flex items-center gap-2 cursor-pointer border-t pt-2">
+				<span class="text-sm">
+					Max: {data.MaxAllocated}
+				</span>
+				<span style="margin-left: auto; " class="text-xs">
+					{open ? "-" : "+"}
+				</span>
+			</div>
+		{/snippet}
+		{#snippet body()}
+			<div class="flex flex-col items-start content-start">
+				<span class="text-sm text-left">
+					{$_(data.Description)}
+				</span>
+			</div>
+		{/snippet}
+	</CollapsibleCard>
 </div>

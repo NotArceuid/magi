@@ -5,7 +5,7 @@
 		transition,
 		transitionIn = transition,
 		transitionOut = transition,
-		isOpen,
+		isOpen = $bindable(),
 		header,
 		body,
 	}: {

@@ -14,16 +14,20 @@ interface DevHacks {
   InfiniteResources: boolean;
 }
 
-const DEFAULT_HACKS: DevHacks = {
+const DEFAULT_HACKS: DevHacks = $state({
   SpeedHack: 10,
   GodMode: false,
   InstantKill: false,
   FreeUpgrades: false,
   SkipLevelUnlock: false,
   InfiniteResources: false,
-};
+});
 
 type EngineState = 'STOPPED' | 'RUNNING' | 'PAUSED';
+interface TickParams {
+  delta: number;
+  total_ticks: number;
+}
 
 export class Engine {
   private options: Required<GameLoopOptions>;
@@ -32,8 +36,8 @@ export class Engine {
   private lastTime: number = 0;
   private accumulator: number = 0;
 
-  public Tick: InvokeableEvent<number> = new InvokeableEvent();
-  public Render: InvokeableEvent<number> = new InvokeableEvent();
+  public Tick: InvokeableEvent<TickParams> = new InvokeableEvent();
+  public Render: InvokeableEvent<TickParams> = new InvokeableEvent();
   public timeScale: number = 1.0;
   public Hacks: DevHacks = { ...DEFAULT_HACKS };
   public fps: number = 0;
@@ -146,11 +150,18 @@ export class Engine {
     this.animationFrameId = requestAnimationFrame(this.loop.bind(this));
   }
 
+  private total_tick = 0;
   private nextTick(delta: number): void {
-    this.Tick.invoke(delta);
+    this.Tick.invoke({
+      delta: delta,
+      total_ticks: this.total_tick++
+    });
   }
 
   private render(interpolation: number): void {
-    this.Render.invoke(interpolation);
+    this.Render.invoke({
+      delta: interpolation,
+      total_ticks: this.total_tick++
+    });
   }
 }

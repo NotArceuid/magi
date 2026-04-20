@@ -60,7 +60,7 @@
 						</div>
 					</div>
 
-					<div class="border-t p-6 mt-auto max-h-4/12">
+					<div class="border-t mt-auto max-h-4/12">
 						<Inventory />
 					</div>
 					<div class="absolute bottom-5 right-5">
@@ -87,34 +87,31 @@
 										max="100"
 										step="1"
 										class="border w-16 px-1"
-										bind:value={Game.Engine.Hacks.SpeedHack}
+										value={Game.Engine.Hacks.SpeedHack}
 									/>
 								</label>
 								<label class="flex items-center gap-2">
-									<input
-										type="checkbox"
-										bind:checked={Game.Engine.Hacks.GodMode}
-									/>
+									<input type="checkbox" checked={Game.Engine.Hacks.GodMode} />
 									God Mode
 								</label>
 								<label class="flex items-center gap-2">
 									<input
 										type="checkbox"
-										bind:checked={Game.Engine.Hacks.InstantKill}
+										checked={Game.Engine.Hacks.InstantKill}
 									/>
 									Instant Kill
 								</label>
 								<label class="flex items-center gap-2">
 									<input
 										type="checkbox"
-										bind:checked={Game.Engine.Hacks.FreeUpgrades}
+										checked={Game.Engine.Hacks.FreeUpgrades}
 									/>
 									Free Upgrades
 								</label>
 								<label class="flex items-center gap-2">
 									<input
 										type="checkbox"
-										bind:checked={Game.Engine.Hacks.SkipLevelUnlock}
+										checked={Game.Engine.Hacks.SkipLevelUnlock}
 									/>
 									Skip Level Unlock
 								</label>
@@ -122,7 +119,7 @@
 								<label class="flex items-center gap-2">
 									<input
 										type="checkbox"
-										bind:checked={Game.Engine.Hacks.InfiniteResources}
+										checked={Game.Engine.Hacks.InfiniteResources}
 									/>
 									Infinite Resources
 								</label>

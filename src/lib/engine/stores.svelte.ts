@@ -18,7 +18,7 @@ export const Game: IGame = $state({
   Settings: new Settings(saves),
   Inventory: new Inventory(saves),
   Battle: new Battle(engine, player, saves),
-  Leveling: new Levelilng(engine, player),
+  Leveling: new Levelilng(engine, player, saves),
 });
 
 interface IGame {

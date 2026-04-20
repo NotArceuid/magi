@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
+	import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
 	import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
 
 	interface Props {
@@ -18,32 +18,27 @@
 		value,
 		text,
 		containerClass = "w-full h-4 bg-gray-200 rounded-full overflow-hidden",
-		fillClass = "h-full bg-blue-600/70 transition-all ease-out",
+		fillClass = "h-full bg-blue-600/70",
 		textClass = "text-sm font-medium text-gray-700 mt-1",
 	}: Props = $props();
 
 	let percentage = $derived.by(() => {
-		const range = max.sub(min);
-		if (range.eq(0)) return 0;
+		if (max.eq(0)) return 0;
 
-		const current = value.sub(min);
-		const pct = current.div(range).toNumber() * 100;
-
-		return Math.min(Math.max(pct, 0), 100);
+		const pct = value.div(max).toNumber() * 100;
+		const overcap = min.div(max).toNumber() * 100;
+		return Math.min(overcap + pct, 100);
 	});
 </script>
 
 <div class="flex flex-col gap-1 w-full relative">
-	<div class={containerClass}>
+	<div class={containerClass} style="position: relative;">
 		<div
 			class={fillClass}
-			style="width: {percentage}%; height: 100%;"
+			style="position: absolute; 
+      width: {Math.min(percentage, 100)}%; height: 100%;"
 			role="progressbar"
-			aria-valuenow={percentage}
-			aria-valuemin="0"
-			aria-valuemax="100"
 		>
-			<!-- workaround -->
 			<br />
 		</div>
 	</div>

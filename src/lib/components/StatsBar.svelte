@@ -77,7 +77,8 @@
 				class="w-full border rounded px-2 py-1 text-sm"
 				bind:value={inputValue}
 				oninput={handleInput}
-				onblur={() => (inputValue = Game.Player.AllocationAmount.format(0))}
+				onblur={() =>
+					(inputValue = Game.Player.AllocationAmount.floor().toString())}
 				placeholder={"Enter amount"}
 			/>
 		</div>

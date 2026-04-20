@@ -1,3 +1,4 @@
+import { dev } from "$app/environment";
 import type { IProgressGain } from "$lib/components/common/IProgress.ts";
 import type { AbilityBase } from "./Battle/Abilities.svelte.ts";
 import type { Engine } from "./Engine.svelte.ts";
@@ -20,15 +21,18 @@ export class Player {
       Gain: new Decimal(0.01),
     },
     Energy: {
-      Max: new Decimal(100),
+      Max: new Decimal(10000),
       Min: new Decimal(0),
-      Value: new Decimal(100),
+      Value: new Decimal(dev ? 10000 : 0),
       Gain: new Decimal(0.01),
     },
+    RebirthCount: 0,
+    RebirthFactor: Decimal.ZERO,
     Playtime: 0,
     SaveTime: 0,
     Money: new Decimal(0),
-    AllocationAmount: Decimal.ONE
+    AllocationAmount: Decimal.ONE,
+    cultivationamount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   });
 
   get Name() { return this._player.Name; }
@@ -41,6 +45,11 @@ export class Player {
   get AllocationAmount(): Decimal { return this._player.AllocationAmount; }
   set AllocationAmount(val) { this._player.AllocationAmount = val }
   public get Icon() { return ""; }
+  get RebirthCount() { return this._player.RebirthCount; }
+  set RebirthCount(val) { this._player.RebirthCount = val; }
+  get RebirthFactor() { return this._player.RebirthFactor; }
+  set RebirthFactor(val) { this._player.RebirthFactor = val; }
+  get CultivationAmount() { return this._player.cultivationamount; }
 
   private get SAVEKEY(): string { return "player" };
   private _engine: Engine;
@@ -59,6 +68,9 @@ export class Player {
         energy: this.Energy,
         health: this.Health,
         allocationAmount: this.AllocationAmount,
+        rebirthcount: this.RebirthCount,
+        rebirthfactor: this.RebirthFactor,
+        cultivationamount: this.CultivationAmount
       }
     });
 
@@ -74,6 +86,8 @@ export class Player {
       this._player.Health = data.health;
       this._player.Mana = data.mana;
       this._player.AllocationAmount = data.allocationAmount;
+      this._player.RebirthCount = data.rebirthcount;
+      this._player.RebirthFactor = data.rebirthfactor;
     });
   }
 
@@ -125,6 +139,9 @@ interface IPlayerSaves {
   health: IProgressGain;
   energy: IProgressGain;
   allocationAmount: Decimal;
+  rebirthcount: number;
+  cultivationamount: number[];
+  rebirthfactor: Decimal;
 }
 
 interface IPlayer {
@@ -136,4 +153,7 @@ interface IPlayer {
   Mana: IProgressGain;
   AllocationAmount: Decimal;
   Energy: IProgressGain;
+  RebirthCount: number,
+  RebirthFactor: Decimal,
+  cultivationamount: number[],
 }
