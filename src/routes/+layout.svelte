@@ -74,57 +74,6 @@
 								}}
 							/>
 						{/each}
-
-						{#if dev}
-							<div class="flex flex-col gap-1 border p-2 text-xs bg-white z-50">
-								<span class="font-semibold">Hacks (Bad boy..)</span>
-
-								<label class="flex items-center gap-2">
-									<span>Speed Hack</span>
-									<input
-										type="number"
-										min="1"
-										max="100"
-										step="1"
-										class="border w-16 px-1"
-										value={Game.Engine.Hacks.SpeedHack}
-									/>
-								</label>
-								<label class="flex items-center gap-2">
-									<input type="checkbox" checked={Game.Engine.Hacks.GodMode} />
-									God Mode
-								</label>
-								<label class="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={Game.Engine.Hacks.InstantKill}
-									/>
-									Instant Kill
-								</label>
-								<label class="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={Game.Engine.Hacks.FreeUpgrades}
-									/>
-									Free Upgrades
-								</label>
-								<label class="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={Game.Engine.Hacks.SkipLevelUnlock}
-									/>
-									Skip Level Unlock
-								</label>
-
-								<label class="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={Game.Engine.Hacks.InfiniteResources}
-									/>
-									Infinite Resources
-								</label>
-							</div>
-						{/if}
 					</div>
 				</div>
 

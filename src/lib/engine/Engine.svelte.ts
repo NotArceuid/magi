@@ -1,3 +1,5 @@
+import { dev } from "$app/environment";
+import type { ConsoleCommandManager } from "./Command";
 import { InvokeableEvent } from "./utils/Events";
 
 export interface GameLoopOptions {
@@ -14,15 +16,6 @@ interface DevHacks {
   InfiniteResources: boolean;
 }
 
-const DEFAULT_HACKS: DevHacks = $state({
-  SpeedHack: 10,
-  GodMode: false,
-  InstantKill: false,
-  FreeUpgrades: false,
-  SkipLevelUnlock: false,
-  InfiniteResources: false,
-});
-
 type EngineState = 'STOPPED' | 'RUNNING' | 'PAUSED';
 interface TickParams {
   delta: number;
@@ -38,8 +31,7 @@ export class Engine {
 
   public Tick: InvokeableEvent<TickParams> = new InvokeableEvent();
   public Render: InvokeableEvent<TickParams> = new InvokeableEvent();
-  public timeScale: number = 1.0;
-  public Hacks: DevHacks = { ...DEFAULT_HACKS };
+  public timeScale: { speed: number } = { speed: dev ? 100 : 1.0 };
   public fps: number = 0;
   public tps: number = 0;
 
@@ -47,7 +39,7 @@ export class Engine {
   private fpsFrameCount: number = 0;
   private tpsTickCount: number = 0;
 
-  constructor(options: GameLoopOptions = {}) {
+  constructor(options: GameLoopOptions = {}, _console: ConsoleCommandManager) {
     this.options = {
       TickSpeed: 60,
       MaxUpdates: 5,
@@ -55,6 +47,19 @@ export class Engine {
     };
 
     document.addEventListener('visibilitychange', this.onVisibilityChange.bind(this));
+
+    this.register_commands(_console, this.timeScale);
+  }
+
+  private register_commands(_console: ConsoleCommandManager, timeScale: { speed: number }) {
+    _console.registerCommand({
+      name: "set-timescale",
+      description: "sets the timescale",
+      execute: function(args: string[]): void {
+        let speed = Number(args[0]);
+        timeScale.speed = speed;
+      }
+    })
   }
 
   private get step(): number {
@@ -120,8 +125,8 @@ export class Engine {
     const frameTime = Math.min(currentTime - this.lastTime, 1000);
     this.lastTime = currentTime;
 
-    const effectiveScale = this.timeScale * this.Hacks.SpeedHack;
-    this.accumulator += frameTime * effectiveScale;
+    const effectiveScale = this.timeScale;
+    this.accumulator += frameTime * effectiveScale.speed;
 
     this.fpsAccumulator += frameTime;
     this.fpsFrameCount++;

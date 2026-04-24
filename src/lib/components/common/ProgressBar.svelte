@@ -41,9 +41,8 @@
 		>
 			<br />
 		</div>
+		{#if text}
+			<span class={textClass}>{text.toString()}</span>
+		{/if}
 	</div>
-
-	{#if text}
-		<span class={textClass}>{text.toString()}</span>
-	{/if}
 </div>

@@ -28,6 +28,7 @@
         { "name": "Footwork", "description": "Become more stable, and be less susceptible to enemy attacks."},
         { "name": "Lock", "description": "Lock your enemies, making them unable to move or counter attack. Jiu jitsu style."}
       ]
-    }
+    }, 
+    "requirement": "{amount} {prev} Needed"
   }
 }

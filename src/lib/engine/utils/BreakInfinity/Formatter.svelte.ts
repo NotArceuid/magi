@@ -10,7 +10,6 @@ interface LargeNumberDefinition {
 }
 
 const LARGE_NUMBER_NAMES: LargeNumberDefinition[] = [
-  { threshold: 1e3, symbol: 'k' },
   { threshold: 1e6, symbol: 'M' },
   { threshold: 1e9, symbol: 'B' },
   { threshold: 1e12, symbol: 'T' },
