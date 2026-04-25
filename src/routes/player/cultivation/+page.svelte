@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { dev } from "$app/environment";
 	import CollapsibleCard from "$lib/components/common/CollapsibleCard.svelte";
 	import LevelingPanel from "$lib/components/leveling/LevelingPanel.svelte";
 	import { Game } from "$lib/engine/stores.svelte";

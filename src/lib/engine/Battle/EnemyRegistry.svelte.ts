@@ -1,7 +1,7 @@
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 
 export enum Enemy {
-  OldMan,
+  YoungMan,
   // Zone 1 (Forest Enemies)
   //  Leaf, SmallRock, Stick, Bush, Tree, WeepingWillow,
   // Zone 2 (Home)
@@ -17,7 +17,7 @@ export enum Enemy {
 }
 
 export const EnemyRegistry: Record<Enemy, IEnemyConfig> = {
-  [Enemy.OldMan]: {
+  [Enemy.YoungMan]: {
     Name: "Old Man",
     Description: "A frail old man.",
     Icon: "",

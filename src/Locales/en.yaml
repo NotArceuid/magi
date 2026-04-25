@@ -1,0 +1,133 @@
+stats:
+  money: Money
+  health: Health
+  mana: Mana
+  energy: Energy
+
+leveling:
+  offense:
+    title: Offense
+    upgrades:
+      - name: Punch
+        description: Randomly fling your arms around, hoping that it lands.. which it prob won't.
+      - name: Kick
+        description: Sign up for taekwondo classes, Unlocking two extra limbs for combat :)
+      - name: Strike
+        description: Strike your enemies!!
+      - name: Elbow
+        description: Learn how to use your elbows, allowing for even closer attacks.
+      - name: Sweep
+        description: Use your legs to make your enemies lose balance and fall.
+      - name: Parry
+        description: Parry your enemies' attack, allowing for a chance to reposte.
+  defence:
+    title: Defence
+    upgrades:
+      - name: Dodge
+        description: Don't you dare go hollow.
+      - name: Flexibility
+        description: All those conditioning must've made your muscle go stiff. This fixes it!!
+      - name: Block
+        description: Block your next attack, thus reducing damage.
+      - name: Conditioning
+        description: Harden your skin and bones, Making it as though as iron.
+      - name: Footwork
+        description: Become more stable, and be less susceptible to enemy attacks.
+      - name: Lock
+        description: Lock your enemies, making them unable to move or counter attack. Jiu jitsu style.
+  requirement: "{amount} {prev} Needed"
+
+combat:
+  enemies:
+    - name: Young Man
+      lore: |
+        I was just walking down the street one day, lost in thought, when a shadow swallowed the sun. 
+        Before I could even look up, a young man wearing a strange outfit plummeted from the clear blue sky and crashed onto the stone pavement right in front of me. 
+
+        I stared at his lifeless body, His hands stretched towards me as if he was trying to give me something. 
+        I saw within his hand was a strange glowing silver pendant. It's middle inset with a green gemstone. 
+        With curiosity overriding my shock, I pried the pendant from his hand and the instant my fingers touched the cold metal. 
+        I felt as if i became... stronger
+    - name: Shadow Clone
+      lore: |
+        I then placed the pocket into my front pocket hoping that it'll possibly bring good fortune to me. 
+
+        Looking around, i noticed the passerby are oblivious to what just happened and they seem to ignore us. 
+        With one man even straight up strolled right through us!!
+        Without a flinch, i waved my hands at other peopole, but it seems as though other people can't seem to see us too. As if we are just ghosts in some invisible pocket between worlds. 
+
+        But then, just as i was about to wave my hands again,
+        i saw a figure in the crowd, wearing a wide-brimmed hat, with two faint red dots as eyes approaching me.
+        Just before i could react, the hat man peeled itself from his shadow and created a copy of himself. And it started sprinting towards me.
+
+        I left the young man's body where it lays lifeless and ran.
+        A branch caught my foot and i hit the dirt. 
+        With the clone right behind me, I have no choice but to fight.
+    - name: Shadow Hound 
+      lore: |
+        With the shadow clone defeated, The hat man barely showed any signs of stopping. 
+        With the snap of his fingers, something worse took shape. 
+        A hound created from his own shadow. 
+
+        "Why won't he stop?" My chest heaved "Was i in the wrong to come here?"
+
+        The hound then lowered its head, it's growl wasn't sound but it was pressure deep inside my bones
+        No time for self questioning.. I need to defend myself first
+    - name: Shadow Beast 
+      lore: | 
+        After defeating the hound, I saw the hat man slowly approached the young man's body and absorbed it. 
+        It seems as though it was trying to buy time for himself to absorb whatever the young man had. 
+        But why is he acting as though he was trying to kill me. 
+        Could it perhaps be he wanted to absorb whatever's inside of me too??
+
+        Just before i could ask ask another question it is then when i look at my sides and saw a shadow beast appeared out of nowhere. 
+        It lunged. 
+
+        "This man never stops attacking me does he??"
+    - name: Hat man 
+      lore: |
+        The beast felled, I ran. Slammed by back against a wall and suck air into my burning lungs.
+        I felt a tap on my shoulders Twice.
+        I spun around. He was there, close enough to end me now. 
+        He spoke to me with a dry and coarse voice and spoke to me "You are not welcome here. Go home."
+
+        No time to answer. A spear of shadow solidified and he trusted it into my left chest. 
+
+        I closed my eyes. And heard the sound of a spear hitting metal. 
+
+        The pendant from earlier miraculously absorbed the impact of the spear and saved my life. 
+        I then was forced into close quarter combat with him.
+        Fist to fist, breath to breath.
+
+    - name: Burning Street Lamp
+      lore: |
+        After successfully handing blows unto him, His body started turning to ashes and i heard a faint whisper coming from within me. "Don't trust her.." The voice whispered.
+        As his body slowly started to wither away, the ashes of his body drifted to towards northeast in a directed manner. As if it's directing me towards that particular direction.
+      
+        "That voice was telling me to not trust her, but the hat man was clearly a man. "
+        "What motives did he had and why did he try to stop me from coming here?"
+
+        Before i was able to recollect my own thoughts, the street lamp above me suddenly gained sentience and started attack me. 
+        I guess i have no choice but to defend myself then.
+
+    - name: Talking Fish?
+      lore: |
+        Anyways, i guess i'm left with no choice and the direction of the ashes is where i should be going.
+    - name: Gnome
+      lore: |
+    - name: Gnomee
+      lore: |
+    - name: Gnomeee
+      lore: |
+    - name: Gnomer
+      lore: |
+
+    - name: Rock golem
+      lore: |
+        
+
+areas:
+  - name: Nileou City
+    description: |
+      A city situated in southeast asia, just north of Malaysian-Thailand border. 
+      It is a developing city where lush green tropical forest blends with skylines that reach towards the heavens.

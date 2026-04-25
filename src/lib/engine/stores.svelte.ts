@@ -1,6 +1,7 @@
 import { Settings } from "$lib/components/settings/Settings.svelte.ts";
 import { Achievement } from "./Achievements.svelte";
-import { Battle } from "./Battle/Combat.svelte";
+import { Adventure } from "./Battle/Adventure.svelte";
+import { Dungeon } from "./Battle/Dungeon.svelte";
 import { ConsoleCommandManager } from "./Command";
 import { Engine } from "./Engine.svelte";
 import { Inventory } from "./Inventory/Inventory.svelte";
@@ -20,8 +21,9 @@ export const Game: IGame = $state({
   Achievement: new Achievement(saves),
   Settings: new Settings(saves),
   Inventory: new Inventory(saves),
-  Battle: new Battle(engine, player, saves),
+  Dungeon: new Dungeon(),
   Leveling: new Levelilng(engine, player, saves, console_command),
+  Adventure: new Adventure(engine, player, saves),
 });
 
 interface IGame {
@@ -31,6 +33,7 @@ interface IGame {
   Player: Player,
   Settings: Settings,
   Inventory: Inventory,
-  Battle: Battle,
+  Adventure: Adventure,
+  Dungeon: Dungeon,
   Leveling: Levelilng,
 }

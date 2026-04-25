@@ -2,26 +2,26 @@ import type { Engine } from "../Engine.svelte";
 import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
+import { NileouCity } from "./AreasRegistry.svelte";
 import type { EnemyBase } from "./Enemies.svelte";
 
-// will have to seperate this later but eff fck it
-export class Battle {
+export class Adventure {
   public Fighting: boolean = $state(false);
   public InBattle: boolean = $state(false);
-  public Areas: Area[] = []
+  public Areas: IAdventureArea[] = [new NileouCity()]
   public AreaIndex: number = $state(0);
   public WaveIndex: number = $state(0);
 
-  public get CurrentArea(): Area | undefined {
+  public get CurrentArea(): IAdventureArea | undefined {
     return this.Areas[this.AreaIndex];
   }
 
-  public get CurrentWave(): IWaves | undefined {
-    return this.CurrentArea?.Waves[this.WaveIndex];
+  public get CurrentWaves(): EnemyBase[] | undefined {
+    return this.CurrentArea?.Waves;
   }
 
-  public get CurrentEnemies(): EnemyBase[] | undefined {
-    return this.CurrentWave?.Enemies;
+  public get CurrentEnemy(): EnemyBase | undefined {
+    return this.CurrentWaves?.[this.WaveIndex];
   }
 
   private _player: Player;
@@ -29,10 +29,10 @@ export class Battle {
   constructor(engine: Engine, player: Player, saves: Saves) {
     this._player = player;
 
-    //    engine.Tick.add(this.DamagePlayer);
-    //    engine.Tick.add(this.DamageEnemy);
+    engine.Tick.add(this.DamagePlayer);
+    engine.Tick.add(this.DamageEnemy);
 
-    saves.SaveCallback<ICombatSaves>(this.SAVEKEY, () => {
+    saves.SaveCallback<IAdventureSaves>(this.SAVEKEY, () => {
       return {
         HighestArea: this.HighestArea,
         HighestWave: this.HighestWave,
@@ -41,7 +41,7 @@ export class Battle {
       }
     });
 
-    saves.LoadCallback<ICombatSaves>(this.SAVEKEY, (data) => {
+    saves.LoadCallback<IAdventureSaves>(this.SAVEKEY, (data) => {
       this.HighestWave = data.HighestWave;
       this.HighestArea = data.HighestArea;
       this.AreaIndex = data.Area;
@@ -50,39 +50,40 @@ export class Battle {
   }
 
   private DamagePlayer() {
-    let enemies = this.CurrentEnemies;
-    if (!enemies)
+    if (!this.Fighting)
+      return;
+
+    let enemy = this.CurrentEnemy;
+    if (!enemy)
       return;
 
     let total_damage = Decimal.ZERO;
-    enemies.forEach((enemy) => {
-      if (enemy.Tick())
-        return;
 
+    if (!enemy.Tick()) {
       total_damage = total_damage.add(enemy.DealDamage());
-    })
+    }
 
     this._player.TakeDamage(total_damage);
   }
 
   private DamageEnemy(): void {
-    if (!this._player.Tick() || !this.CurrentEnemies) return;
+    if (!this.Fighting)
+      return;
+
+    if (!this._player.Tick() || !this.CurrentEnemy) return;
     let remaining = this._player.DealDamage();
+    let enemy = this.CurrentEnemy;
 
+    if (remaining.lte(0))
+      return;
 
-    for (const enemy of this.CurrentEnemies) {
-      if (remaining.lte(0)) break;
-      const healthBefore = enemy.Health.Value;
-      enemy.TakeDamage(remaining);
-      remaining = remaining.minus(healthBefore.minus(enemy.Health.Value));
-    }
+    const healthBefore = enemy.Health.Value;
+    enemy.TakeDamage(remaining);
+    remaining = remaining.minus(healthBefore.minus(enemy.Health.Value));
   }
 
   public HighestArea: number = $state(0);
   public HighestWave: number = $state(0);
-  public get AllEnemiesDead(): boolean | undefined {
-    return this.CurrentEnemies?.every(e => e.Health.Value.lte(0));
-  }
 
   public EnterCombat(): void {
     this.InBattle = true;
@@ -160,34 +161,30 @@ export class Battle {
   }
 
   public get CanAdvanceArea(): boolean {
-    if (!this.AllEnemiesDead)
-      return false;
+    let can = false;
+    for (let i = 0; i < this.AreaIndex; i++) {
+      let current_wave = this.Areas[this.AreaIndex].Waves[i];
+      can = current_wave.Health.Value.lte(0);
 
-    return this.AreaIndex < this.Areas.length - 1 && this.AllEnemiesDead;
+      if (!can)
+        return false;
+    }
+
+    return true;
   }
 
   public get CanAdvanceWave(): boolean {
-    if (!this.AllEnemiesDead || !this.CurrentArea)
-      return false;
-
-    const hasNextWave = this.WaveIndex < this.CurrentArea.Waves.length - 1;
-    return hasNextWave && this.AllEnemiesDead;
+    return this.Areas[this.AreaIndex].Waves[this.WaveIndex].Health.Value.lte(0);
   }
 }
 
-export interface Area {
+export interface IAdventureArea {
   Name: string;
   Description: string;
-  Waves: IWaves[];
+  Waves: EnemyBase[];
 }
 
-export interface IWaves {
-  Enemies: EnemyBase[];
-  Name: string,
-  Description: string,
-}
-
-interface ICombatSaves {
+interface IAdventureSaves {
   Area: number;
   Wave: number;
   HighestArea: number;

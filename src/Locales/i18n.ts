@@ -1,7 +1,9 @@
 import { init, register } from "svelte-i18n";
 
 export function RegisterLocales() {
-  register("en", () => import("./en.json"));
+  // dumb ahh error
+  // @ts-ignore
+  register("en", () => import("./en.yaml"));
   init({
     initialLocale: "en",
     fallbackLocale: "en",

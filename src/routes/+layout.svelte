@@ -9,11 +9,9 @@
 		type INotification,
 	} from "$lib/components/Notification.svelte";
 	import NavBar from "$lib/components/NavBar.svelte";
-	import { dev } from "$app/environment";
 	import Footer from "$lib/components/index/Footer.svelte";
 	import { Game } from "$lib/engine/stores.svelte";
 	import StatsBar from "$lib/components/StatsBar.svelte";
-	import Inventory from "$lib/components/Inventory.svelte";
 	import { page } from "$app/stores";
 	let { children } = $props();
 
@@ -52,7 +50,8 @@
 						{#if $page.route.id === "/" || $page.route.id === "/battle"}
 							<div class="flex flex-row space-x-4 text-center text-sm">
 								<a class="border p-2 min-w-32" href="/">Adventure</a>
-								<a class="border p-2 min-w-32" href="/dungeon">Dungeon</a>
+								<a class="border p-2 min-w-32" href="/battle/dungeon">Dungeon</a
+								>
 							</div>
 						{/if}
 						<div class="overflow-y-scroll h-full">
@@ -60,9 +59,6 @@
 						</div>
 					</div>
 
-					<div class="border-t mt-auto max-h-4/12">
-						<Inventory />
-					</div>
 					<div class="absolute bottom-5 right-5">
 						{#each notificationList as notification}
 							<NotificationHandler

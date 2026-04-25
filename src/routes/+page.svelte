@@ -7,8 +7,7 @@
 		Game.Engine.start();
 	});
 
-	let battle = $derived(Game.Battle);
-	let enemies = $derived(battle.CurrentEnemies);
+	let battle = $derived(Game.Adventure);
 </script>
 
 <div class="flex flex-col h-full">
@@ -20,9 +19,6 @@
 			>
 			<span class="text-xs text-gray-500 line-clamp-2"
 				>{battle.CurrentArea?.Description}</span
-			>
-			<span class="text-sm sm:text-md font-bold"
-				>Wave: {battle.CurrentWave?.Name}</span
 			>
 		</div>
 		<div
@@ -110,12 +106,12 @@
 				<!-- Fight button -->
 				{#if !battle.Fighting}
 					<button
-						class="border px-2 sm:px-3 py-1 text-sm sm:text-md font-semibold w-full max-w-[8rem] sm:max-w-none"
+						class="border px-2 sm:px-3 py-1 text-sm sm:text-md font-semibold w-full max-w-32 sm:max-w-none"
 						onclick={() => battle.StartCombat()}>Fight!1!</button
 					>
 				{:else}
 					<button
-						class="border px-2 sm:px-3 py-1 text-sm sm:text-md font-semibold w-full max-w-[8rem] sm:max-w-none"
+						class="border px-2 sm:px-3 py-1 text-sm sm:text-md font-semibold w-full max-w-32 sm:max-w-none"
 						onclick={() => battle.StopCombat()}>Stawp >:(</button
 					>
 				{/if}
