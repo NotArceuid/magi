@@ -4,6 +4,10 @@ stats:
   mana: Mana
   energy: Energy
 
+adventure: 
+  damage: Damage 
+  defence: Defense
+
 leveling:
   offense:
     title: Offense
@@ -41,46 +45,71 @@ combat:
   enemies:
     - name: Young Man
       lore: |
-        I was just walking down the street one day, lost in thought, when a shadow swallowed the sun. 
+        It was a hot afternoon. 
+
+        An exhausted me after a gueling day of meetings after meeting and not achieving anything substantial in my corporate office job.
+        Was taking a break for lunch. With me walking down the same path as before to reach the nearest convenience store near my office.
+        And looking to buy some egg sandwich to satiate my hunger.
+
+        Walking down this familiar street, I was completely unaware of my surroundings and lost in thought.
+        Due to the flame of novelty fading after repeating the same routine for the past 2 year or so. 
+        
+        I.. can't remember when's the first time i did this action.
+
+        And just when I was about to turn left into the convenience store, a shadow swallowed out the sun. 
         Before I could even look up, a young man wearing a strange outfit plummeted from the clear blue sky and crashed onto the stone pavement right in front of me. 
 
-        I stared at his lifeless body, His hands stretched towards me as if he was trying to give me something. 
-        I saw within his hand was a strange glowing silver pendant. It's middle inset with a green gemstone. 
+        There wasn't any sound of impact nor was there any subtle breeze produced by it.
+        Inspecting his body, i saw his left hand bore a strange sigil consisting of a triangle with a T connecting it's base. 
+        His right hands stretching towards me as if he was trying to give me something. 
+
+        I saw within his hand was a strange glowing silver pendant. With it's middle inset with a green gemstone. 
         With curiosity overriding my shock, I pried the pendant from his hand and the instant my fingers touched the cold metal. 
+
         I felt as if i became... stronger
-    - name: Shadow Clone
+    - name: Light Clone
       lore: |
-        I then placed the pocket into my front pocket hoping that it'll possibly bring good fortune to me. 
+        I then placed the pendant into my front pocket thinking that it will bring some sort of good luck. 
+        Not that i belive in magic or anything. It's just that having the pendant near me felt nice :)
 
-        Looking around, i noticed the passerby are oblivious to what just happened and they seem to ignore us. 
-        With one man even straight up strolled right through us!!
-        Without a flinch, i waved my hands at other peopole, but it seems as though other people can't seem to see us too. As if we are just ghosts in some invisible pocket between worlds. 
+        Looking around, i noticed the passerby are completely oblivious to what just happened.
+        With one man even straight up walked right through us!!
+        
+        ????
+        What the f*ck just happened??
+        
+        It seems as though, whatever just happened. Caused me to become like ghost to other people. 
 
-        But then, just as i was about to wave my hands again,
-        i saw a figure in the crowd, wearing a wide-brimmed hat, with two faint red dots as eyes approaching me.
-        Just before i could react, the hat man peeled itself from his shadow and created a copy of himself. And it started sprinting towards me.
+        Must be the pendant i assume. 
+        I need to get rid of this quickly...
+        
+        But just before i was able to take the pendant out from my pocket.
+        i saw a figure in the crowd, wearing a wide-brimmed hat, with two faint yellow dots as eyes approaching me.
+        Before i could react, the hat man peeled itself from his body and created a copy of himself, it's shape looking just like him. 
+        Only that it's made of warm yellow light. And it started sprinting towards me.
 
         I left the young man's body where it lays lifeless and ran.
-        A branch caught my foot and i hit the dirt. 
-        With the clone right behind me, I have no choice but to fight.
-    - name: Shadow Hound 
+
+        While running, A branch caught my foot and luckily I managed to catch myself before hitting the concrete pavement.
+        But this caused the clone to close the distance between us and with the clone right behind me, I have no choice but to fight.
+    - name: Light Hound 
       lore: |
-        With the shadow clone defeated, The hat man barely showed any signs of stopping. 
+        With the light clone defeated, The hat man barely showed any signs of stopping. 
         With the snap of his fingers, something worse took shape. 
-        A hound created from his own shadow. 
+        A hound created from his own light. 
 
         "Why won't he stop?" My chest heaved "Was i in the wrong to come here?"
 
         The hound then lowered its head, it's growl wasn't sound but it was pressure deep inside my bones
         No time for self questioning.. I need to defend myself first
-    - name: Shadow Beast 
+    - name: Light Beast 
       lore: | 
         After defeating the hound, I saw the hat man slowly approached the young man's body and absorbed it. 
         It seems as though it was trying to buy time for himself to absorb whatever the young man had. 
         But why is he acting as though he was trying to kill me. 
         Could it perhaps be he wanted to absorb whatever's inside of me too??
 
-        Just before i could ask ask another question it is then when i look at my sides and saw a shadow beast appeared out of nowhere. 
+        Just before i could ask ask another question it is then when i look at my sides and saw a light beast appeared out of nowhere. 
         It lunged. 
 
         "This man never stops attacking me does he??"
@@ -89,9 +118,9 @@ combat:
         The beast felled, I ran. Slammed by back against a wall and suck air into my burning lungs.
         I felt a tap on my shoulders Twice.
         I spun around. He was there, close enough to end me now. 
-        He spoke to me with a dry and coarse voice and spoke to me "You are not welcome here. Go home."
+        He spoke to me with a angelic voice and spoke to me "You are not welcome here. Go home."
 
-        No time to answer. A spear of shadow solidified and he trusted it into my left chest. 
+        No time to answer. A spear of light solidified and he trusted it into my left chest. 
 
         I closed my eyes. And heard the sound of a spear hitting metal. 
 
@@ -127,7 +156,10 @@ combat:
         
 
 areas:
-  - name: Nileou City
+  - name: Niveou City
     description: |
-      A city situated in southeast asia, just north of Malaysian-Thailand border. 
-      It is a developing city where lush green tropical forest blends with skylines that reach towards the heavens.
+      A developing Asian metropolis south of Malaysia where skyscrapers rise gently from lush tropical forest and residents live in harmony with the greenery that climbs every balcony.
+  - name: Larei Distict
+    description: |
+      One of the 5 district located within Niveou City.
+      With it being located next to the sea of Alebrit. Larei District have became a bustling port for merchants to trade between the southern lands and middle lands. 

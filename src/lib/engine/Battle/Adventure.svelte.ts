@@ -1,7 +1,7 @@
+import { dev } from "$app/environment";
 import type { Engine } from "../Engine.svelte";
 import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
-import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 import { NileouCity } from "./AreasRegistry.svelte";
 import type { EnemyBase } from "./Enemies.svelte";
 
@@ -29,8 +29,8 @@ export class Adventure {
   constructor(engine: Engine, player: Player, saves: Saves) {
     this._player = player;
 
-    engine.Tick.add(this.DamagePlayer);
-    engine.Tick.add(this.DamageEnemy);
+    engine.Tick.add((e) => { this.DamagePlayer(e.total_ticks) });
+    engine.Tick.add((e) => { this.DamageEnemy(e.total_ticks) });
 
     saves.SaveCallback<IAdventureSaves>(this.SAVEKEY, () => {
       return {
@@ -49,7 +49,7 @@ export class Adventure {
     })
   }
 
-  private DamagePlayer() {
+  private DamagePlayer(ticks: number) {
     if (!this.Fighting)
       return;
 
@@ -57,29 +57,34 @@ export class Adventure {
     if (!enemy)
       return;
 
-    let total_damage = Decimal.ZERO;
+    if (!enemy.Tick(ticks, this._player.AtkSpeedDivider.Get()))
+      return;
 
-    if (!enemy.Tick()) {
-      total_damage = total_damage.add(enemy.DealDamage());
+    this._player.TakeDamage(enemy.DealDamage());
+    if (this._player.Health.Value.lte(0)) {
+      this.PlayerOnDeath();
     }
-
-    this._player.TakeDamage(total_damage);
   }
 
-  private DamageEnemy(): void {
-    if (!this.Fighting)
-      return;
+  private PlayerOnDeath() {
+    this.SwitchWave(0);
+    this.SwitchArea(0);
+  }
 
-    if (!this._player.Tick() || !this.CurrentEnemy) return;
-    let remaining = this._player.DealDamage();
+  private DamageEnemy(ticks: number): void {
     let enemy = this.CurrentEnemy;
-
-    if (remaining.lte(0))
+    if (!enemy || !this.Fighting)
       return;
 
-    const healthBefore = enemy.Health.Value;
-    enemy.TakeDamage(remaining);
-    remaining = remaining.minus(healthBefore.minus(enemy.Health.Value));
+    if (!this._player.Tick(ticks, enemy.AtkSpeedDivider))
+      return;
+
+    enemy.TakeDamage(this._player.DealDamage());
+    if (enemy.Health.Value.lte(0)) {
+      enemy.OnDeath();
+      this.StopCombat();
+      this.NextWave();
+    }
   }
 
   public HighestArea: number = $state(0);
@@ -87,8 +92,6 @@ export class Adventure {
 
   public EnterCombat(): void {
     this.InBattle = true;
-    this.AreaIndex = 0;
-    this.WaveIndex = 0;
   }
 
   public StartCombat(): void {
@@ -174,7 +177,7 @@ export class Adventure {
   }
 
   public get CanAdvanceWave(): boolean {
-    return this.Areas[this.AreaIndex].Waves[this.WaveIndex].Health.Value.lte(0);
+    return this.Areas[this.AreaIndex].Waves[this.WaveIndex].Health.Value.lte(0) || dev;
   }
 }
 

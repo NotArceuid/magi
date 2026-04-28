@@ -1,4 +1,4 @@
-import type { IProgress, IProgressGain } from "$lib/components/common/IProgress";
+import type { IProgress } from "$lib/components/common/IProgress.svelte";
 import { Player } from "../Player.svelte";
 import { Saves } from "../Saves";
 import { Game } from "../stores.svelte";
@@ -24,12 +24,11 @@ export abstract class AllocatableProgress {
   public Unlocked: boolean = $state(false);
 
   // Shits break when max isn't at 100, change SpeedFactor, Not Max Progress!!!!!!!!!!!!!
-  public Progress: IProgressGain = $state({
+  public Progress: IProgress = $state({
     // DO NOT CHANGE THIS, CHANGE ALLOCATION TARGET!!!! okay???
     Max: new Decimal(100),
     Min: Decimal.ZERO,
     Value: Decimal.ZERO,
-    Gain: Decimal.ZERO,
   });
 
   protected _player: Player;
@@ -110,7 +109,9 @@ export abstract class AllocatableProgress {
 
     let t = ((this.AllocatedAmount.sub(this.OvercapThreshold))
       .div(this.AllocationTarget.sub(this.OvercapThreshold))).pow(this.OvercapScaling);
-    let y = this.OvercapThreshold.add(new Decimal(100).sub(this.OvercapThreshold).mul(t));
+    //    let y = this.OvercapThreshold.add(new Decimal(100).sub(this.OvercapThreshold).mul(t));
+
+    let y = Decimal.Lerp(this.OvercapThreshold, new Decimal(100), t)
 
     return target_amount
       .div(y.mul(Game.Engine.TickSpeed).div(100))
@@ -134,7 +135,6 @@ export abstract class AllocatableProgress {
 
     this.Progress.Min = new Decimal(this.AllocatedAmount.div(this.OvercapStep).toNumber() / Game.Engine.TickSpeed * 100);
 
-    console.log(this.StaticPart)
     if (tick % Math.max(1, Game.Engine.TickSpeed - this.StaticPart) === 0 && this.StaticPart !== 1) {
       this.OnComplete(new Decimal(this.GainMult));
       return;
@@ -187,6 +187,7 @@ export class Punch extends AllocatableProgress {
   }
 
   public OnComplete = (completions: Decimal): void => {
+    //    console.log(completions.format())
     this.Count = this.Count.plus(completions);
   };
 

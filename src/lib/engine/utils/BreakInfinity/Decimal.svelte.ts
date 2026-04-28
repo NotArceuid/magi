@@ -1815,6 +1815,10 @@ export class Decimal {
   public static get NEGATIVE_INFINITY(): Decimal {
     return NEGATIVE_INFINITY;
   }
+
+  public static Lerp(start: Decimal, end: Decimal, t: Decimal) {
+    return start.plus(end.minus(start).mul(t));
+  }
 }
 
 const MAX_VALUE = ME_NN(1, EXP_LIMIT);

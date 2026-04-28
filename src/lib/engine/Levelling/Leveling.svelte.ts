@@ -2,7 +2,9 @@ import type { ConsoleCommandManager } from "../Command.ts";
 import type { Engine } from "../Engine.svelte.ts";
 import type { Player } from "../Player.svelte.ts";
 import type { Saves } from "../Saves.ts";
+import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
 import { InvokeableEvent } from "../utils/Events.ts";
+import { MultiplierType } from "../utils/Multipliers.ts";
 import { DefenceEnum, OffenseEnum, type MagicEnum, type AllocatableProgress, Punch, Kick, Strike, Elbow, Sweep, Parry, Dodge, Flexibility, Block, Conditioning, Footwork, Lock } from "./LevelingRepo.svelte.ts";
 
 export class Levelilng {
@@ -37,6 +39,19 @@ export class Levelilng {
       [OffenseEnum.Parry, parry],
     ]);
 
+    this._player.DamageMultiplier.Set("leveling", {
+      priority: 0,
+      value: function(): Decimal {
+        return punch.Count
+          .plus(kick.Count.mul(2.5))
+          .plus(strike.Count.mul(5))
+          .plus(elbow.Count.mul(7.5))
+          .plus(sweep.Count.mul(10))
+          .plus(parry.Count.mul(12.5))
+      },
+      type: MultiplierType.Additive
+    })
+
     let dodge = new Dodge(this._player, saves);
     let flexibility = new Flexibility(this._player, saves, dodge);
     let block = new Block(this._player, saves, flexibility);
@@ -52,6 +67,19 @@ export class Levelilng {
       [DefenceEnum.Footwork, footwork],
       [DefenceEnum.Lock, lock],
     ]);
+
+    this._player.HealthMultiplier.Set("leveling", {
+      priority: 0,
+      value: function(): Decimal {
+        return dodge.Count
+          .plus(flexibility.Count.mul(2.5))
+          .plus(block.Count.mul(5))
+          .plus(conditioning.Count.mul(7.5))
+          .plus(footwork.Count.mul(10))
+          .plus(lock.Count.mul(12.5))
+      },
+      type: MultiplierType.Additive
+    })
 
     this._magicRepo = new Map<MagicEnum, AllocatableProgress>();
 

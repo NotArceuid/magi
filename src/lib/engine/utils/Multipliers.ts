@@ -12,7 +12,7 @@ export enum MultiplierType {
   Compounding,
 }
 
-class MultiplierBase {
+export class MultiplierBase {
   public BaseValue: Decimal = Decimal.ONE;
   protected MultiplierList: Map<string, Multiplier> = new Map();
 
@@ -54,9 +54,8 @@ class MultiplierBase {
 
     this.MultiplierList = new Map(sortedEntries);
   }
-}
 
-export const Multipliers = {
-  QualityMultiplier: new MultiplierBase(),
-  SpeedMultiplier: new MultiplierBase(),
-};
+  public static default() {
+    return new MultiplierBase();
+  }
+}

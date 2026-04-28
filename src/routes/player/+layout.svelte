@@ -6,7 +6,7 @@
 
 <div class="min-h-8/12">
 	<div class="flex flex-row space-x-4 text-center text-sm">
-		<a class="border p-2 min-w-32" href="/player/cultivation">Cultivation</a>
+		<a class="border p-2 min-w-32" href="/player">Cultivation</a>
 	</div>
 
 	<div class="pt-4 min-h-8/12">

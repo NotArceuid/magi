@@ -40,41 +40,38 @@
 		class="w-full h-full transition-colors duration-300 bg-bg text-font border-border"
 	>
 		<main class="w-full h-full">
-			<div class="flex flex-row h-full">
-				<div class="flex flex-col w-full h-full">
-					<div class="max-h-2/12">
-						<NavBar />
-					</div>
+			<div class="flex flex-col w-full h-full">
+				<NavBar />
 
-					<div class="p-3 w-full h-full overflow-hidden">
+				<div class="flex flex-row h-full">
+					<div class="p-3 w-full overflow-hidden h-full">
 						{#if $page.route.id === "/" || $page.route.id === "/battle"}
 							<div class="flex flex-row space-x-4 text-center text-sm">
 								<a class="border p-2 min-w-32" href="/">Adventure</a>
-								<a class="border p-2 min-w-32" href="/battle/dungeon">Dungeon</a
-								>
 							</div>
 						{/if}
-						<div class="overflow-y-scroll h-full">
+
+						<div class="overflow-y-scroll">
 							{@render children?.()}
 						</div>
 					</div>
 
-					<div class="absolute bottom-5 right-5">
-						{#each notificationList as notification}
-							<NotificationHandler
-								data={notification}
-								done={() => {
-									notificationList = notificationList.filter(
-										(a) => a.name !== notification.name,
-									);
-								}}
-							/>
-						{/each}
+					<div class="p-3 border-l">
+						<StatsBar />
 					</div>
 				</div>
 
-				<div class="w-2/12 h-full border-l p-3">
-					<StatsBar />
+				<div class="absolute bottom-5 right-5">
+					{#each notificationList as notification}
+						<NotificationHandler
+							data={notification}
+							done={() => {
+								notificationList = notificationList.filter(
+									(a) => a.name !== notification.name,
+								);
+							}}
+						/>
+					{/each}
 				</div>
 			</div>
 		</main>

@@ -31,7 +31,7 @@ export class Engine {
 
   public Tick: InvokeableEvent<TickParams> = new InvokeableEvent();
   public Render: InvokeableEvent<TickParams> = new InvokeableEvent();
-  public timeScale: { speed: number } = { speed: dev ? 100 : 1.0 };
+  public timeScale: { speed: number } = { speed: dev ? 1.0 : 1.0 };
   public fps: number = 0;
   public tps: number = 0;
 
