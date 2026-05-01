@@ -187,7 +187,6 @@ export class Punch extends AllocatableProgress {
   }
 
   public OnComplete = (completions: Decimal): void => {
-    //    console.log(completions.format())
     this.Count = this.Count.plus(completions);
   };
 

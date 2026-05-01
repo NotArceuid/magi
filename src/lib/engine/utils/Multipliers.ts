@@ -28,6 +28,7 @@ export class MultiplierBase {
     this.sortMultipliersByPriority();
   }
 
+  // Might be very slow because it calculates on fetch everytime :P
   public Get(): Decimal {
     let result = new Decimal(this.BaseValue);
     this.MultiplierList.forEach((multiplier) => {
@@ -47,6 +48,13 @@ export class MultiplierBase {
     return result;
   }
 
+  public Remove(source: string): void {
+    let item = this.MultiplierList.get(source);
+    if (!item) return;
+
+    this.MultiplierList.delete(source);
+  }
+
   private sortMultipliersByPriority(): void {
     const sortedEntries = Array.from(this.MultiplierList.entries()).sort(
       ([, a], [, b]) => a.priority - b.priority,
@@ -58,4 +66,9 @@ export class MultiplierBase {
   public static default() {
     return new MultiplierBase();
   }
+}
+
+export enum MultiplierPrioritySchemeEnum {
+  Inventory = 0,
+  Leveling = 1,
 }

@@ -6,7 +6,7 @@ import { Decimal } from "./utils/BreakInfinity/Decimal.svelte.ts";
 import { MultiplierBase } from "./utils/Multipliers.ts";
 
 export class Player {
-  _player = $state<IPlayer>({
+  private _player = $state<IPlayer>({
     Name: "Player",
     Health: {
       Max: new Decimal(100),

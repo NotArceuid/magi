@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Game } from "$lib/engine/stores.svelte";
-	import { fade, fly, slide } from "svelte/transition";
 
 	let equipment_label = [
 		{ label: "Head", key: "head" },
@@ -34,7 +33,7 @@
 					<div
 						class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 2xl:w-20 2xl:h-20 border flex items-center justify-center"
 					>
-						<span class="text-xs text-center truncate px-1">{item?.name}</span>
+						<span class="text-xs text-center truncate px-1">{item?.Name}</span>
 					</div>
 				{/each}
 			</div>

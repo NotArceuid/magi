@@ -41,107 +41,247 @@ leveling:
         description: Lock your enemies, making them unable to move or counter attack. Jiu jitsu style.
   requirement: "{amount} {prev} Needed"
 
+items: 
+  - green_pendant: 
+    - name: Strange Looking Pendant
+      description: The strange pendant looks 
+
 combat:
   enemies:
     - name: Young Man
       lore: |
-        It was a hot afternoon. 
+        It was a hot afternoon in Kuala Lumpur. 
 
-        An exhausted me after a gueling day of meetings after meeting and not achieving anything substantial in my corporate office job.
-        Was taking a break for lunch. With me walking down the same path as before to reach the nearest convenience store near my office.
-        And looking to buy some egg sandwich to satiate my hunger.
+        An exhausted me after a grueling morning of meetings after meeting and not achieving anything substantial in my corporate office job.
+        Was going out for lunch. 
 
-        Walking down this familiar street, I was completely unaware of my surroundings and lost in thought.
-        Due to the flame of novelty fading after repeating the same routine for the past 2 year or so. 
-        
-        I.. can't remember when's the first time i did this action.
+        Walking down the familiar streets of KL, 
+        The street light goes red. I stopped, A car radiator warms the air nearby. Cars hum.
+        From above, a bird chirps and the winds gently sways the trees that lines the street. 
+        With each breeze of air, more leaves are carpeting the concrete pavement. Painting the otherwise gray sidewalk green and brown. 
 
-        And just when I was about to turn left into the convenience store, a shadow swallowed out the sun. 
+        *crack* *crack* with each step i take, the leaves crushes beneath my feet. 
+
+        "This isn't the first time I've been here." I thought to myself.
+        "Since childhood, I've walked down this street. Each time discovering something new, something exciting, something worth living up to."
+
+        But now.. 
+        "I... can't remember when's the last time i genuinely want to explore..."
+        "I feel empty.. tired. The lights turned green, but i don't want to cross yet."
+
+        And just when I was about to cross the road, a shadow swallowed out the sun. 
         Before I could even look up, a young man wearing a strange outfit plummeted from the clear blue sky and crashed onto the stone pavement right in front of me. 
 
         There wasn't any sound of impact nor was there any subtle breeze produced by it.
-        Inspecting his body, i saw his left hand bore a strange sigil consisting of a triangle with a T connecting it's base. 
+
+        "Are you alright?" I calmly asked while nudging his shoulders.
+        No respond.
+
+        Scanning his body, i saw his left hand bore a strange sigil consisting of a triangle with a T connecting it's base. 
         His right hands stretching towards me as if he was trying to give me something. 
 
         I saw within his hand was a strange glowing silver pendant. With it's middle inset with a green gemstone. 
-        With curiosity overriding my shock, I pried the pendant from his hand and the instant my fingers touched the cold metal. 
+        Slowly pulsing with radiant green light.
+
+        I hesistated for a moment before prying the pendant from his hand and the instant my fingers touched the cold metal. 
 
         I felt as if i became... stronger
     - name: Light Clone
       lore: |
-        I then placed the pendant into my front pocket thinking that it will bring some sort of good luck. 
-        Not that i belive in magic or anything. It's just that having the pendant near me felt nice :)
+        [Feature Unlock: Leveling]
+
+        "Is this what it feels to be alive?"
+        "I don't deserve this... and yet it happened."
+
+        With guilt subtly affecting my psyche, I slipped the pendant into my front pocket. In case if the young man woke up.
 
         Looking around, i noticed the passerby are completely oblivious to what just happened.
         With one man even straight up walked right through us!!
         
-        ????
-        What the f*ck just happened??
+        "???"
+        "What the f*ck"
         
-        It seems as though, whatever just happened. Caused me to become like ghost to other people. 
+        "It seems as though, whatever just happened. Caused me to become like ghost to other people."
 
-        Must be the pendant i assume. 
-        I need to get rid of this quickly...
+        "Must be the pendant i assume."
+        "I need to get rid of this quickly..."
         
         But just before i was able to take the pendant out from my pocket.
-        i saw a figure in the crowd, wearing a wide-brimmed hat, with two faint yellow dots as eyes approaching me.
-        Before i could react, the hat man peeled itself from his body and created a copy of himself, it's shape looking just like him. 
-        Only that it's made of warm yellow light. And it started sprinting towards me.
+        i saw a figure on the other side of the street, wearing a wide-brimmed hat, with two faint yellow dots as eyes staring at me.
 
-        I left the young man's body where it lays lifeless and ran.
+        I froze.
+
+        Before i could react, the hat man peeled itself from his body and created a copy of himself, its shape looking just like him. 
+        Only that it's made of soft incandescent yellow light. 
+    
+        And it started sprinting towards me.
+        
+        I didn't think. I just ran.
 
         While running, A branch caught my foot and luckily I managed to catch myself before hitting the concrete pavement.
-        But this caused the clone to close the distance between us and with the clone right behind me, I have no choice but to fight.
+        But this caused the clone to close the distance between us and with the clone right behind me.
+
+        I tried to sidestep him. He matched me, I tried to run again. His hands reaching for my throat. 
+        "I have no choice but to fight."
     - name: Light Hound 
       lore: |
-        With the light clone defeated, The hat man barely showed any signs of stopping. 
-        With the snap of his fingers, something worse took shape. 
-        A hound created from his own light. 
+        The light clone fell. I kept running.
+        With my head getting lighter and lungs getting colder with each step.
 
-        "Why won't he stop?" My chest heaved "Was i in the wrong to come here?"
+        Snap. I looked back.
 
-        The hound then lowered its head, it's growl wasn't sound but it was pressure deep inside my bones
-        No time for self questioning.. I need to defend myself first
+        The hat man stood at the junction where the young man's body once was. 
+        And for a moment I saw yellow triangles rising from where the body had been. 
+
+        Then a sphere of incandescent light manifested in his left palm. 
+        While his right hand was held high as if he had just snapped his fingers.
+
+        The next instant, I heard a howl, like a dog.
+  
+        "What? I thought."
+
+        I looked back again. Besides the hat man, stood a large hound. Reaching half his height,
+        with bright red eyes and yellow light similar to the hat man. 
+        Its fur had a slight yellow glow to its tips with its middle being slightly darker though still radiating warm incandescent light.
+
+        A moment later the hound chased after me. 
+        I ran, while phasing through every human that i came in contact with.
+        Within my panicked state, I made a wrong turn. 
+
+        Dead end alley, graffiti, garbage smell, humming of AC units.
+
+        "I'm done for..."
+        "No time for processing... Defend first."
+
     - name: Light Beast 
       lore: | 
-        After defeating the hound, I saw the hat man slowly approached the young man's body and absorbed it. 
-        It seems as though it was trying to buy time for himself to absorb whatever the young man had. 
-        But why is he acting as though he was trying to kill me. 
-        Could it perhaps be he wanted to absorb whatever's inside of me too??
+        [Feature Unlock: Inventory]
 
-        Just before i could ask ask another question it is then when i look at my sides and saw a light beast appeared out of nowhere. 
-        It lunged. 
+        With the light hound now gone, I hid behind a dumpster in the alleyway.
+        Trying to catch my breath while I still heard the hat man's footsteps.
 
-        "This man never stops attacking me does he??"
+        "Why is he so insistent on trying to kill me??"
+        "Does he want to absorb me too?!?", I asked myself with a panicked look within my eyes.
+
+        But just as I was about to ask another question.
+
+        I saw, on one of the AC units, a large light ape hanging from the metal racks used to secure the units. 
+        Its appearance was similar to that of the hat man's summons from earlier. 
+
+        It dropped down. Lunged at me. And pinned me to the ground. 
+        I closed my eyes, awaiting my last moment of existence. 
+
+        Then, from within my closed eyelids, I saw green light. 
+        It was the pendant. 
+
+        It pulsated an intense emerald color. 
+
+        The pendant must've cracked while he pinned me down. 
+        Releasing the gemstone's power.
+        "What is this thing exactly?"
+
+        With its gemstone cracked down the middle the silver housing crumbled.
+
+        "And the beast... It's not moving?"
+        I quickly freed myself from the beast's grasp.
+        But with no way to activate the pendant.
+        
+        I had to do it manually.
+
     - name: Hat man 
       lore: |
-        The beast felled, I ran. Slammed by back against a wall and suck air into my burning lungs.
-        I felt a tap on my shoulders Twice.
-        I spun around. He was there, close enough to end me now. 
-        He spoke to me with a angelic voice and spoke to me "You are not welcome here. Go home."
+        The beast fell. Like the others. 
 
-        No time to answer. A spear of light solidified and he trusted it into my left chest. 
+        At the start of the alley, there he stood. The hat man himself. 
+        He slowly approached me. 
 
-        I closed my eyes. And heard the sound of a spear hitting metal. 
+        Step. Step.
+        
+        "What should I do now??"
+        "There's no way to climb out of here, no way to leave this place." 
+        "I'll just have to run around him."
 
-        The pendant from earlier miraculously absorbed the impact of the spear and saved my life. 
-        I then was forced into close quarter combat with him.
-        Fist to fist, breath to breath.
+        My feet moved. First step. Second step. Third step, and with each step, I ran faster and faster.
+        I never ran this fast in my life. My heart pounded, not from exhaustion but from fear.
 
-    - name: Burning Street Lamp
+        I felt a tap on my shoulder. Twice.  
+         
+        ...
+
+        *Whoosh*
+        He grabbed me. The world blurred. When it stopped, I was pinned against the wall at the end of the alley.
+
+        With him right in front of me, I saw his face, his eyes were teary.
+        "I had to. Goodbye" he said.
+
+        He solidified a spear made out of pure light and held his right arm up, about to stab me.
+
+        When suddenly, I heard a voice. 
+        "Head, move left". 
+
+        I obeyed. But just before moving my head to the left,
+        I saw a blonde man aiming an arrow at him from the rooftop of the building directly opposite us. I closed my eyes and moved my head left.
+
+        *Whiz*
+
+        The next second, A dark arrow appeared and lodged in the man's head. 
+        "He's weak now, go"
+
+    - name: Alleyway
       lore: |
-        After successfully handing blows unto him, His body started turning to ashes and i heard a faint whisper coming from within me. "Don't trust her.." The voice whispered.
-        As his body slowly started to wither away, the ashes of his body drifted to towards northeast in a directed manner. As if it's directing me towards that particular direction.
-      
-        "That voice was telling me to not trust her, but the hat man was clearly a man. "
-        "What motives did he had and why did he try to stop me from coming here?"
+        "It won't be the end,", he said while escaping by climbing the walls of the alleyways. 
 
-        Before i was able to recollect my own thoughts, the street lamp above me suddenly gained sentience and started attack me. 
-        I guess i have no choice but to defend myself then.
+        The next moment I saw the blonde man jumping off from the building's rooftop. He seemed to not be hurt by the fall.
+        He then slowly walked towards me, while phasing through everyone on the street and stopping for the traffic light to turn red.
 
-    - name: Talking Fish?
+        "It seems like we could only phase through living beings." I thought.
+
+        He crossed the street and appeared right in front of me. I managed to get a closer look at his appearance. Short blonde hair, rugged look, maybe mid twenties. 
+        He wore a three piece Victorian suit along with a leather trenchcoat, a gold chain hanging from his vest, 
+        A pocket watch maybe. His eyes were like azure gemstones, shining with trust and purity.
+
+        "Nice to meet you, shifter.", he said while having a subtle smile.
+
+        "Who are you?" I asked. 
+        "I'm Laszlo, a shifter like you. It isn't safe out here, you should return to Astera first.", he chuckled.
+
+        "Um... what?" I asked with a confused look in my eyes.
+
+        "Hmmm. A newcomer eh?" 
+        "No worries, I'll explain along the way. Follow me", he said turning towards the street.
+
+        I glanced back at the alley. The hat man was gone. I followed.
+
+    - name: Condensed slime
       lore: |
-        Anyways, i guess i'm left with no choice and the direction of the ashes is where i should be going.
+        "What is this place exactly?"
+
+        "This place is called the between, a lawless zone between earth and Astera. You've shifted here by one method or another. "
+        "This place isn't safe. There are source hunters out there trying to scavange source for the inhabitants of Astera."
+
+        "Source hunters huh.. It seems like the hat man was one of them"
+
+        "What's this 'Astera' you've been talking about? " I asked, while trying to get to know more about this place. 
+
+        "Astera is the space between the earth realm. It is where entites outside of humans perception lives. It is also where humans usually go to before they reincarnate".
+        "Entities within Astera are unable to live forever due to their lack of source. "
+        "Without source, they simply ceases to exist. "
+
+        "Us shifters however, have an innate ability to derive source from the all. "
+        "Which makes us very sought after by the inhabitants of Astera. "
+
+        "If the hat man wanted my source that badly, why did he teard up before killing me?"
+
+        "Of course, you aren't perfectly safe there either. But atleast there are laws and communities in placed to protect us."
+        "Anyways, that's all i know about this place. I'm still quite new."
+
+        "When did you shifted?"
+        "About 3 months ago in your human time"
+
+        "Where are heading to now?"
+        "We'll be going to the nexus beacon now. No need to worry much, There are Liliad troops stationed there safeguarding that place. "
+
+
     - name: Gnome
       lore: |
     - name: Gnomee
@@ -156,10 +296,11 @@ combat:
         
 
 areas:
-  - name: Niveou City
+  - name: Kuala Lumpur
     description: |
-      A developing Asian metropolis south of Malaysia where skyscrapers rise gently from lush tropical forest and residents live in harmony with the greenery that climbs every balcony.
+      The capital city of Malaysia, Known for its arts and cultural scene. It is a hub where the diverse culture of Malaysia blend together and people of all walks of life live in harmony.
+      It is also your hometown.
   - name: Larei Distict
     description: |
-      One of the 5 district located within Niveou City.
+      One of the 5 district located within Niveou.
       With it being located next to the sea of Alebrit. Larei District have became a bustling port for merchants to trade between the southern lands and middle lands. 

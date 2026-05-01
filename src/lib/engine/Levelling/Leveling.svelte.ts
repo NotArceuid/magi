@@ -4,7 +4,7 @@ import type { Player } from "../Player.svelte.ts";
 import type { Saves } from "../Saves.ts";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
 import { InvokeableEvent } from "../utils/Events.ts";
-import { MultiplierType } from "../utils/Multipliers.ts";
+import { MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.ts";
 import { DefenceEnum, OffenseEnum, type MagicEnum, type AllocatableProgress, Punch, Kick, Strike, Elbow, Sweep, Parry, Dodge, Flexibility, Block, Conditioning, Footwork, Lock } from "./LevelingRepo.svelte.ts";
 
 export class Levelilng {
@@ -40,7 +40,7 @@ export class Levelilng {
     ]);
 
     this._player.DamageMultiplier.Set("leveling", {
-      priority: 0,
+      priority: MultiplierPrioritySchemeEnum.Leveling,
       value: function(): Decimal {
         return punch.Count
           .plus(kick.Count.mul(2.5))
@@ -69,7 +69,7 @@ export class Levelilng {
     ]);
 
     this._player.HealthMultiplier.Set("leveling", {
-      priority: 0,
+      priority: MultiplierPrioritySchemeEnum.Leveling,
       value: function(): Decimal {
         return dodge.Count
           .plus(flexibility.Count.mul(2.5))

@@ -20,7 +20,7 @@ export const Game: IGame = $state({
   Player: player,
   Achievement: new Achievement(saves),
   Settings: new Settings(saves),
-  Inventory: new Inventory(saves),
+  Inventory: new Inventory(player, saves),
   Dungeon: new Dungeon(),
   Leveling: new Levelilng(engine, player, saves, console_command),
   Adventure: new Adventure(engine, player, saves),

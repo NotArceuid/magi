@@ -1,5 +1,6 @@
 import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte"
 import type { MultiplierBase } from "$lib/engine/utils/Multipliers";
+import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
 
 export interface IProgress {
   Value: Decimal;
@@ -23,5 +24,9 @@ export class Progress implements IProgress {
     this.value_multiplier = $state(value_multiplier);
     this.max_multiplier = $state(max_multiplier);
     this.min_multiplier = $state(min_multiplier);
+  }
+
+  format(): ReactiveText {
+    return new ReactiveText(this.Value.format() + "/" + this.Max.format());
   }
 }
