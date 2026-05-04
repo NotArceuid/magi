@@ -1,10 +1,11 @@
+import { SvelteMap } from "svelte/reactivity";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
-import { MultiplierType } from "../utils/Multipliers";
-import type { ReactiveText } from "../utils/ReactiveText.svelte";
-import { Inventory } from "./Inventory.svelte";
+import { MultiplierType, type Multiplier } from "../utils/Multipliers";
+import { ReactiveText } from "../utils/ReactiveText.svelte";
+import { EquipmentEffect, Inventory } from "./Inventory.svelte";
 
 export enum ItemsEnum {
-  GreenPendant
+  BrokenPendant
 }
 
 export enum ItemType {
@@ -16,96 +17,144 @@ export enum ItemType {
   Ring2 = 5,
   Accessory1 = 6,
   Accessory2 = 7,
-  Book = 8,
-  Wand = 9,
+  Mark = 8,
+  Gun = 9,
+  Other,
 }
 
-//TODO: Mechanic idea links 
-// Each items have links 
-// each links links the item with other linked items 
-// giving them a boost 
-// Links can be elemental 
-// Links can be obtained by trashing level 100 items of that specific category 
-// Use chromatic orb to change the element of an item Or Cleansing orb to remove the elemnt of an item 
-// Elemental items boost other 
-//
-// TODO: Other mechanic: Attunement
-// Each item can have attunement 
-// whihc is like poe's color sockets 
-// where attuned items will get special bonuses from your elements 
-// Attuned stat can be increased in colros
-// like 
-// Attunement can also support many stats
-// But ofc it's going to be very expensive to max attune an item
-// Armor: attuned to fire 
-// Fire grants attack attuenment 
-export interface InventoryItem {
-  Name: string;
-  Icon_path: string;
-  ItemEnum: ItemsEnum;
-  Level: number;
-  Description: string;
-  Links: number;
-  ApplyEffect: (inventory: Inventory) => void;
-  Remove: (inventory: Inventory) => void;
+// TODO: Add colors when these elements are added
+enum Color {
+  Base = "text-white",
+  Red = "", // fire
+  Blue = "", // Water
+  Green = "", // Earth
+  Gray = "", // Air
+  Purple = "", // Space  
 }
 
-export abstract class ItemBase implements InventoryItem {
+export abstract class ItemBase {
   public abstract Name: string;
   public abstract ItemEnum: ItemsEnum;
   public abstract Icon_path: string;
   public abstract Level: number;
   public abstract Description: string;
-  public abstract ApplyEffect(inventory: Inventory): void;
-  public abstract Remove(inventory: Inventory): void;
-  public Links: number = 0;
-  private _inventory: Inventory;
-  public EffectText: Map<string, ReactiveText> = new Map();
+  protected _inventory: Inventory;
+  public Effects: SvelteMap<EquipmentEffect, Substats> = new SvelteMap();
+  public readonly LevelCap = 100;
+  public ItemType: ItemType = ItemType.Other;
 
   constructor(inventory: Inventory) {
     this._inventory = inventory;
   }
 
   public OnEquip() {
-    this.ApplyEffect(this._inventory);
+    this.Effects.forEach((value, key) => {
+      this._inventory.EquipmentMultiplier[key].Set(value.EquipmentEffect.toString(), {
+        priority: this.ItemType as number,
+        value: () => {
+          return value.Effect(this._inventory, value);
+        },
+        type: MultiplierType.Additive
+      });
+    })
   }
 
   public OnRemove() {
-    this.Remove(this._inventory);
+    this.Effects.forEach((value, key) => {
+      this._inventory.EquipmentMultiplier[key].Remove(value.EquipmentEffect.toString());
+    })
   }
 }
 
-class GreenPendant extends ItemBase {
-  Name = "items.green_pendant.name";
-  ItemEnum = ItemsEnum.GreenPendant;
-  Icon_path = "/items/green_pendant.png";
-  Level = $state(0);
-  Description = "items.green_pendant.description";
+interface SubstatText {
+  Color: string;
+  Text: ReactiveText;
+}
 
-  EffectText() {
-
+class Substats {
+  public EquipmentEffect: EquipmentEffect;
+  public get View(): SubstatText {
+    return {
+      Color: this.Color.toString(),
+      Text: new ReactiveText(this.EquipmentEffect.toString(), ` (${this.AllocateStart}/${this.AllocationTarget}) - ${this.Effect(this._inventory, this).format()}x ${(this.AllocateStart / this.AllocateEnd) == 1 ? '(Capped)' : ''}`)
+    }
   }
 
-  ApplyEffect(inventory: Inventory) {
-    const _self = this;
-    inventory.DamageMultiplier.Set(ItemType.Amulet.toString(), {
-      priority: ItemType.Amulet,
-      value(): Decimal {
-        return new Decimal(_self.Level);
+  public Color: Color;
+  private _links = 0;
+  public get Links() { return this._links; }
+  public set Links(val) { this._links = Math.min(this._links + val, this.LinkCap); }
+
+  public LinkCap: number = 6;
+  public AllocateStart: number = 0;
+  public AllocationTarget: number;
+  public get AllocateEnd() { return this.AllocationTarget * (this.parent.Level / this.parent.LevelCap) }
+  public AllocateStat(val: number) { this.AllocateStart += val; }
+
+  public Effect: (inventory: Inventory, stat: Substats) => Decimal;
+  protected _inventory: Inventory;
+  protected parent: ItemBase;
+
+  constructor(parent: ItemBase, inventory: Inventory, config: SubstatConfig) {
+    this.parent = parent;
+    this._inventory = inventory;
+
+    this.Effect = config.Effect;
+    this.Color = config.Color;
+    this.AllocationTarget = config.AllocationTarget;
+    this.EquipmentEffect = $state(config.EquipmentEffect);
+  }
+
+  public ApplyEffect(multiplier: Multiplier) {
+    this._inventory.EquipmentMultiplier[this.EquipmentEffect].Set(this.parent.ItemEnum.toString(), multiplier);
+  }
+
+  public RemoveEffect() {
+    this._inventory.EquipmentMultiplier[this.EquipmentEffect].Remove(this.parent.ItemEnum.toString());
+  }
+}
+
+interface SubstatConfig {
+  Effect: (inventory: Inventory, stat: Substats) => Decimal;
+  AllocationTarget: number;
+  EquipmentEffect: EquipmentEffect;
+  Color: Color;
+  LinkCap: number;
+}
+
+class BrokenPendant extends ItemBase {
+  Name = "items.broken_pendant.name";
+  ItemEnum = ItemsEnum.BrokenPendant;
+  Icon_path = "/items/broken_pendant.png";
+  Level = $state(1);
+  Description = "items.broken_pendant.description";
+
+  constructor(inventory: Inventory) {
+    super(inventory);
+
+    this.Effects.set(EquipmentEffect.Damage, new Substats(this, this._inventory, {
+      Effect: (inventory: Inventory, stat: Substats): Decimal => {
+        return new Decimal(1.5).mul(this.Level / this.LevelCap).mul(stat.Links + 1).plus(1);
       },
-      type: MultiplierType.Additive
-    });
-  }
+      AllocationTarget: 10,
+      EquipmentEffect: EquipmentEffect.Damage,
+      Color: Color.Base,
+      LinkCap: 6
+    }));
 
-  Remove(inventory: Inventory) {
-    inventory.DamageMultiplier.Remove(ItemType.Amulet.toString());
+    this.Effects.set(EquipmentEffect.Defence, new Substats(this, this._inventory, {
+      Effect: (inventory: Inventory, stat: Substats): Decimal => {
+        return new Decimal(1.5).mul(this.Level / this.LevelCap).mul(stat.Links + 1).plus(1);
+      },
+      AllocationTarget: 10,
+      EquipmentEffect: EquipmentEffect.Defence,
+      Color: Color.Base,
+      LinkCap: 6
+    }))
+
   }
 }
 
-const ItemsRepository: Record<ItemsEnum, new (inventory: Inventory) => ItemBase> = {
-  [ItemsEnum.GreenPendant]: GreenPendant,
+export const ItemsRepository: Record<ItemsEnum, (inventory: Inventory) => ItemBase> = {
+  [ItemsEnum.BrokenPendant]: (inventory) => new BrokenPendant(inventory),
 };
-
-export function BuildItem(inventory: Inventory, item: ItemsEnum): ItemBase {
-  return new ItemsRepository[item](inventory);
-}

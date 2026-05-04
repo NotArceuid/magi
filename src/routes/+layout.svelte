@@ -43,24 +43,21 @@
 			<div class="flex flex-col w-full h-full">
 				<NavBar />
 
-				<div class="flex flex-row h-full">
-					<div class="p-3 w-full overflow-hidden h-full">
+				<div class="flex flex-row h-full min-h-0">
+					<div class="p-3 w-full overflow-hidden flex flex-col min-h-0">
 						{#if $page.route.id === "/" || $page.route.id === "/battle"}
-							<div class="flex flex-row space-x-4 text-center text-sm">
+							<div class="flex flex-row space-x-4 text-center text-sm shrink-0">
 								<a class="border p-2 min-w-32" href="/">Adventure</a>
 							</div>
 						{/if}
-
-						<div class="overflow-y-scroll">
+						<div class="flex-1 min-h-0">
 							{@render children?.()}
 						</div>
 					</div>
-
-					<div class="p-3 border-l">
+					<div class="p-3 border-l shrink-0">
 						<StatsBar />
 					</div>
 				</div>
-
 				<div class="absolute bottom-5 right-5">
 					{#each notificationList as notification}
 						<NotificationHandler

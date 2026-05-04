@@ -7,7 +7,7 @@ import { MultiplierBase } from "./utils/Multipliers.ts";
 
 export class Player {
   private _player = $state<IPlayer>({
-    Name: "Player",
+    Name: "Arcc",
     Health: {
       Max: new Decimal(100),
       Min: new Decimal(0),

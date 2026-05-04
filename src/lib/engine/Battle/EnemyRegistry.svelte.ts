@@ -6,57 +6,98 @@ export enum Enemy {
   LightHound,
   LightBeast,
   HatMan,
+  Alleyway,
+  CondensedSlime,
+  TunnelSludge,
 }
 
-export const EnemyRegistry: Record<Enemy, IEnemyConfig> = {
+export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
   [Enemy.YoungMan]: {
     Name: "combat.enemies.0.name",
     Description: "combat.enemies.0.lore",
-    Icon: "/youngman.png",
+    Icon: "enemies/youngman.png",
     Health: new Decimal(25),
     AtkSpeedDivider: new Decimal(100),
     Damage: new Decimal(0),
     AtkSpeed: new Decimal(0),
+    Regen: new Decimal(0),
     OnDeath: () => { },
   },
   [Enemy.LightClone]: {
     Name: "combat.enemies.1.name",
     Description: "combat.enemies.1.lore",
-    Icon: "/lightclone.png",
+    Icon: "enemies/lightclone.png",
     Health: new Decimal(2.5e6),
     Damage: new Decimal(1e4),
     AtkSpeedDivider: new Decimal(100),
     AtkSpeed: new Decimal(1),
+    Regen: new Decimal(0),
     OnDeath: () => { },
   },
   [Enemy.LightHound]: {
     Name: "combat.enemies.2.name",
     Description: "combat.enemies.2.lore",
-    Icon: "/lightclone.png",
+    Icon: "enemies/lighthound.png",
     Health: new Decimal(1000),
     Damage: new Decimal(10),
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(10),
+    Regen: new Decimal(0),
     OnDeath: () => { },
   },
   [Enemy.LightBeast]: {
     Name: "combat.enemies.3.name",
     Description: "combat.enemies.3.lore",
-    Icon: "/lightclone.png",
+    Icon: "enemies/lightbeast.png",
     Health: new Decimal(1000),
     Damage: new Decimal(100),
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(100),
+    Regen: new Decimal(0),
     OnDeath: () => { },
   },
   [Enemy.HatMan]: {
     Name: "combat.enemies.4.name",
     Description: "combat.enemies.4.lore",
-    Icon: "/lightclone.png",
+    Icon: "enemies/hatman.png",
     Health: new Decimal(1000),
     Damage: new Decimal(100),
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(100),
+    Regen: new Decimal(0),
+    OnDeath: () => { },
+  },
+  [Enemy.Alleyway]: {
+    Name: "combat.enemies.5.name",
+    Description: "combat.enemies.5.lore",
+    Icon: "enemies/alleyway.png",
+    Health: new Decimal(1000),
+    Damage: new Decimal(100),
+    AtkSpeed: new Decimal(10),
+    AtkSpeedDivider: new Decimal(100),
+    Regen: new Decimal(0),
+    OnDeath: () => { },
+  },
+  [Enemy.CondensedSlime]: {
+    Name: "combat.enemies.6.name",
+    Description: "combat.enemies.6.lore",
+    Icon: "enemies/condensedslime.png",
+    Health: new Decimal(1000),
+    Damage: new Decimal(100),
+    AtkSpeed: new Decimal(10),
+    AtkSpeedDivider: new Decimal(100),
+    Regen: new Decimal(0),
+    OnDeath: () => { },
+  },
+  [Enemy.TunnelSludge]: {
+    Name: "combat.enemies.7.name",
+    Description: "combat.enemies.7.lore",
+    Icon: "enemies/tunnel.png",
+    Health: new Decimal(1000),
+    Damage: new Decimal(100),
+    AtkSpeed: new Decimal(10),
+    AtkSpeedDivider: new Decimal(100),
+    Regen: new Decimal(0),
     OnDeath: () => { },
   },
 };
@@ -68,6 +109,7 @@ export interface IEnemyConfig {
   Damage: Decimal;
   AtkSpeed: Decimal;
   AtkSpeedDivider: Decimal;
+  Regen: Decimal;
   Icon: string;
   OnDeath?: () => void;
 }

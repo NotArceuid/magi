@@ -14,6 +14,9 @@ export class NileouCity implements IAdventureArea {
       BuildEnemy(Enemy.LightHound),
       BuildEnemy(Enemy.LightBeast),
       BuildEnemy(Enemy.HatMan),
+      BuildEnemy(Enemy.Alleyway),
+      BuildEnemy(Enemy.CondensedSlime),
+      BuildEnemy(Enemy.TunnelSludge),
     ];
   }
 }

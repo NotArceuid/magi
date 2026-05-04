@@ -9,8 +9,6 @@ Also browser best game engine
 
 ## Features:
 - Programmer art 
-- Some lore to discover while you're waiting for the bar to fill up 
-- This game is a webnovel disguised as an incremental game. 
-- First time writing a novel btw lol 
+- Some shitty lore that looks like it's written by a 5 year old to read while you're waiting for the bars to fill up
 - A damn cat
 - also wip

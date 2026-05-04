@@ -1,10 +1,10 @@
 import type { IProgress } from "$lib/components/common/IProgress.svelte";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 import { MultiplierBase } from "../utils/Multipliers";
-import { EnemyRegistry, type Enemy, type IEnemyConfig } from "./EnemyRegistry.svelte";
+import { BattleRegistry, type Enemy, type IEnemyConfig } from "./EnemyRegistry.svelte";
 
 export function BuildEnemy(type: Enemy): EnemyBase {
-  const config = EnemyRegistry[type];
+  const config = BattleRegistry[type];
   return new BuiltEnemy(config);
 }
 
@@ -13,6 +13,7 @@ export abstract class EnemyBase {
   public abstract Damage: Decimal;
   public abstract AtkSpeed: Decimal;
   public abstract Name: string;
+  public abstract Regen: Decimal;
   public abstract Description: string;
   public abstract AtkSpeedDivider: Decimal;
   public abstract Icon: string;
@@ -39,6 +40,7 @@ class BuiltEnemy extends EnemyBase {
   public Description: string;
   public Health: IProgress;
   public Damage: Decimal;
+  public Regen: Decimal;
   public AtkSpeed: Decimal;
   public AtkSpeedDivider: Decimal;
   public Icon: string;
@@ -58,6 +60,7 @@ class BuiltEnemy extends EnemyBase {
     this.Damage = config.Damage;
     this.AtkSpeed = config.AtkSpeed;
     this._onDeath = config.OnDeath;
+    this.Regen = config.Regen;
   }
 
   public DealDamage(): Decimal {

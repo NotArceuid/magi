@@ -2,15 +2,16 @@ import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 import { MultiplierBase, MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers";
-import { BuildItem, ItemsEnum, ItemType, type InventoryItem } from "./InventoryRepo.svelte";
+import { ItemBase, ItemsEnum, ItemsRepository, ItemType } from "./InventoryRepo.svelte";
 
 export class Inventory {
   private readonly MAX_SLOTS = 12;
-  private Inventory: Array<InventoryItem | null> = $state([]);
+  private Inventory: Array<ItemBase | null> = $state([]);
   private readonly PendingItems: Array<ItemsEnum> = $state([]);
   private readonly SAVEKEY = "inventory";
+  public EquipmentUnlock: Map<ItemsEnum, number> = new Map();
 
-  public Equipment: Record<ItemType, InventoryItem | undefined> = {
+  public Equipment: Record<ItemType, ItemBase | undefined> = {
     [ItemType.Head]: undefined,
     [ItemType.Robes]: undefined,
     [ItemType.Boots]: undefined,
@@ -19,21 +20,22 @@ export class Inventory {
     [ItemType.Ring2]: undefined,
     [ItemType.Accessory1]: undefined,
     [ItemType.Accessory2]: undefined,
-    [ItemType.Book]: undefined,
-    [ItemType.Wand]: undefined,
+    [ItemType.Mark]: undefined,
+    [ItemType.Gun]: undefined,
+    [ItemType.Other]: undefined,
   };
 
-  public readonly DamageMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly HealthMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly RegenMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly EnergyCapMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly EnergySpeedMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly EnergyPowerMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly ManaCapMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly ManaSpeedMultiplier: MultiplierBase = new MultiplierBase();
-  public readonly ManaPowerMultiplier: MultiplierBase = new MultiplierBase();
+  public EquipmentMultiplier: Record<EquipmentEffect, MultiplierBase> = {
+    [EquipmentEffect.Damage]: new MultiplierBase(),
+    [EquipmentEffect.Defence]: new MultiplierBase(),
+    [EquipmentEffect.Regen]: new MultiplierBase(),
+    [EquipmentEffect.EnergyCap]: new MultiplierBase(),
+    [EquipmentEffect.EnergySpeed]: new MultiplierBase(),
+    [EquipmentEffect.SourceCap]: new MultiplierBase(),
+    [EquipmentEffect.SourceSpeed]: new MultiplierBase()
+  }
 
-  public EquipItem(slot: ItemType, item: InventoryItem) {
+  public EquipItem(slot: ItemType, item: ItemBase) {
     let prev = this.Equipment[slot];
     if (prev) this.GiveItem(prev.ItemEnum);
 
@@ -55,11 +57,11 @@ export class Inventory {
       type: MultiplierType.Additive
     })
 
-    save.SaveCallback<(InventoryItem | null)[]>(this.SAVEKEY, () => {
+    save.SaveCallback<(ItemBase | null)[]>(this.SAVEKEY, () => {
       return this.Inventory;
     });
 
-    save.LoadCallback<(InventoryItem | null)[]>(this.SAVEKEY, (data) => {
+    save.LoadCallback<(ItemBase | null)[]>(this.SAVEKEY, (data) => {
       if (data && Array.isArray(data)) {
         this.Inventory = data;
 
@@ -73,7 +75,7 @@ export class Inventory {
     });
   }
 
-  public GetAll(): Array<InventoryItem | null> {
+  public GetAll(): Array<ItemBase | null> {
     return this.Inventory;
   }
 
@@ -83,11 +85,11 @@ export class Inventory {
       return;
     }
 
-    let new_item = BuildItem(this, item);
+    let new_item = ItemsRepository[item](this);
     this.Inventory[this.Inventory.length - 1] = new_item;
   }
 
-  public Get(at: number): InventoryItem | null {
+  public Get(at: number): ItemBase | null {
     if (at >= 0 && at < this.Inventory.length) {
       return this.Inventory[at];
     }
@@ -107,3 +109,18 @@ export class Inventory {
     this.GiveItem(pending_items);
   }
 }
+
+export enum EquipmentEffect {
+  Damage = "items.stats.damage",
+  Defence = "items.stats.defence",
+  Regen = "items.stats.regen",
+
+  EnergyCap = "items.stats.energy_cap",
+  EnergySpeed = "items.stats.energy_speed",
+  EnergyPower = "items.stats.energy_speed",
+
+  SourceCap = "items.stats.source_cap",
+  SourceSpeed = "items.stats.source_speed",
+  SourcePower = "items.stats.source_speed",
+}
+

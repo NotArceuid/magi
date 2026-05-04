@@ -7,7 +7,6 @@
 	import { slide } from "svelte/transition";
 	import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
 	import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
-
 	let {
 		data,
 		not_unlocked,
@@ -20,21 +19,20 @@
 	let open = $state(false);
 </script>
 
-<div class="w-full h-full flex flex-col border p-2 gap-2">
-	<div class="flex flex-row gap-2 items-center">
+<div class="w-full h-full flex flex-col border p-3 gap-3">
+	<div class="flex flex-row gap-3 items-center">
 		<div class="relative grow">
 			<ProgressBar
-				containerClass={"border min-h-5"}
+				containerClass={"border min-h-6"}
 				min={data.Progress.Min}
 				max={data.Progress.Max}
 				value={not_unlocked ? Decimal.ZERO : data.Progress.Value}
 				text={new ReactiveText(not_unlocked ? (text ?? "") : "")}
 			/>
 		</div>
-
-		<div class="flex shrink-0 justify-end gap-1">
+		<div class="flex shrink-0 justify-end gap-1.5">
 			<button
-				class="border w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-gray-100 cursor-pointer select-none"
+				class="border w-7 h-7 flex items-center justify-center text-sm leading-none hover:bg-gray-100 cursor-pointer select-none"
 				onclick={() => {
 					if (!not_unlocked) data.Allocate(Game.Player.Energy);
 				}}
@@ -42,7 +40,7 @@
 				+
 			</button>
 			<button
-				class="border w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-gray-100 cursor-pointer select-none"
+				class="border w-7 h-7 flex items-center justify-center text-sm leading-none hover:bg-gray-100 cursor-pointer select-none"
 				onclick={() => {
 					if (!not_unlocked) data.Deallocate(Game.Player.Energy);
 				}}
@@ -50,7 +48,7 @@
 				-
 			</button>
 			<button
-				class="border w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-gray-100 cursor-pointer select-none"
+				class="border w-12 h-7 flex items-center justify-center text-sm leading-none hover:bg-gray-100 cursor-pointer select-none"
 				onclick={() => {
 					if (!not_unlocked) data.AllocateMax(Game.Player.Energy);
 				}}
@@ -59,25 +57,23 @@
 			</button>
 		</div>
 	</div>
-
-	<div class="flex justify-between items-center text-sm font-medium">
-		<span
-			>{$_(data.Name)}
+	<div class="flex justify-between items-center text-base font-medium">
+		<span>
+			{$_(data.Name)}
 			{data.Count}x
 			{#if data.AllocatedAmount.gte(data.MaxAllocation)}
 				(Max)
 			{/if}
 		</span>
-		<span>{data.AllocatedAmount} </span>
+		<span>{data.AllocatedAmount}</span>
 	</div>
-
 	<CollapsibleCard transition={{ transition: slide }} bind:isOpen={open}>
 		{#snippet header()}
 			<div class="flex items-center gap-2 cursor-pointer border-t pt-2">
 				<span class="text-sm">
 					Max: {data.MaxAllocation.format(0)}
 				</span>
-				<span style="margin-left: auto; " class="text-xs">
+				<span style="margin-left: auto;" class="text-sm">
 					{open ? "-" : "+"}
 				</span>
 			</div>
