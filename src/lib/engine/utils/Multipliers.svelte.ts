@@ -1,3 +1,4 @@
+import { SvelteMap } from "svelte/reactivity";
 import { Decimal, type DecimalSource } from "./BreakInfinity/Decimal.svelte";
 
 export interface Multiplier {
@@ -14,7 +15,7 @@ export enum MultiplierType {
 
 export class MultiplierBase {
   public BaseValue: Decimal;
-  protected MultiplierList: Map<string, Multiplier> = new Map();
+  protected MultiplierList: SvelteMap<string, Multiplier> = new SvelteMap();
 
   constructor(base?: DecimalSource) {
     this.BaseValue = $state(new Decimal(base) ?? Decimal.ONE);
@@ -64,7 +65,7 @@ export class MultiplierBase {
       ([, a], [, b]) => a.priority - b.priority,
     );
 
-    this.MultiplierList = new Map(sortedEntries);
+    this.MultiplierList = new SvelteMap(sortedEntries);
   }
 
   public static default() {

@@ -8,7 +8,7 @@
 	let defense = Game.Leveling.DefenceRepo.entries().toArray();
 </script>
 
-<div class="overflow-scroll h-full flex flex-col p-4">
+<div class="overflow-scroll h-full flex flex-col p-4 border">
 	<div class="flex flex-row justify-center gap-6 h-full">
 		<div class="w-1/3 text-center bg-gray-400/25 h-full">
 			<CollapsibleCard transition={{ transition: slide }} isOpen={true}>

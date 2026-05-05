@@ -19,7 +19,7 @@ export class Inventory {
     [ItemType.Other]: undefined,
   });
 
-  public EquipmentMultiplier: Record<EquipmentEffect, MultiplierBase> = {
+  public EquipmentMultiplier: Record<EquipmentEffect, MultiplierBase> = $state({
     [EquipmentEffect.Damage]: new MultiplierBase(1),
     [EquipmentEffect.Defence]: new MultiplierBase(1),
     [EquipmentEffect.Regen]: new MultiplierBase(1),
@@ -27,7 +27,7 @@ export class Inventory {
     [EquipmentEffect.EnergySpeed]: new MultiplierBase(1),
     [EquipmentEffect.SourceCap]: new MultiplierBase(1),
     [EquipmentEffect.SourceSpeed]: new MultiplierBase(1)
-  }
+  })
 
   public EquipItem(slot: ItemType, item: ItemBase) {
     let prev = this.Equipment[slot];

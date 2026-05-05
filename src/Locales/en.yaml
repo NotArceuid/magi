@@ -42,15 +42,37 @@ leveling:
   requirement: "{amount} {prev} Needed"
 
 items: 
-  - stats: 
+    stats: 
       energy_speed: Energy Speed
       energy_power: Energy Power 
       damage: Damage
-      defence: Defence 
+      defence: Health
 
-  - green_pendant: 
-    - name: Broken Pendant
+    broken_pendant: 
+      name: Broken Pendant
       description: This pendant broke during your fight with Hat man, maybe you could find a way to recover this.
+    rugged_clothes: 
+      name: Rugged Clothes
+      description: Some rugged clothes you picked up on the street. It doesn't provide any form of protection but atleast you're grateful not having to wear the hot office clothes.
+    crocs: 
+      name: Crocs
+      description: You found this in the trash can next to the street. Not sure who is going home shoeless but yeah it's yours now :)
+    pistol: 
+      name: Laszlo's Spare Pistol
+      description: Standard issue Laterian harvester pistol. Given to you by Laszlo, its distinctive metalic floral engraved grip coupled with its compact size makes it a very comfortable sidearm to use.
+    scarf: 
+      name: Ragged Scarf 
+      description: A piece of long fabric you found on the street that've been converted into a scarf. It doesn't provide much protection but atleast it keeps you warm
+
+    t1_def_gem: 
+      name: T1 Emerald Gem
+      description: A gemstone of Emerald. Suitable for hardening one's equipment
+    t1_str_gem: 
+      name: T1 Crimson Gem
+      description: A gemstone of Crimson. Suitable for sharpening one's equipment
+    t1_magic_gem: 
+      name: T1 Purity Gem
+      description: A gemstone of Purity. Suitable for improving the resonance of one's equipment to source
 
 combat:
   enemies:
