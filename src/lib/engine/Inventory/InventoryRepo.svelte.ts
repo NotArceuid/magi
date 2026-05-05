@@ -10,16 +10,18 @@ export enum ItemsEnum {
 
 export enum ItemType {
   Head = 0,
-  Robes = 1,
+  Vest = 1,
   Boots = 2,
-  Amulet = 3,
-  Ring1 = 4,
-  Ring2 = 5,
-  Accessory1 = 6,
-  Accessory2 = 7,
-  Mark = 8,
-  Gun = 9,
-  Other,
+  Seal = 3,
+  Gun = 4,
+  Amulet = 5,
+  Ring1 = 6,
+  Ring2 = 7,
+  Ring3 = 8,
+  Accessory1 = 9,
+  Accessory2 = 10,
+  Accessory3 = 11,
+  Other = 12,
 }
 
 // TODO: Add colors when these elements are added
@@ -126,6 +128,7 @@ class BrokenPendant extends ItemBase {
   Name = "items.broken_pendant.name";
   ItemEnum = ItemsEnum.BrokenPendant;
   Icon_path = "/items/brokenpendant.png";
+  ItemType = ItemType.Amulet;
   Level = $state(1);
   Description = "items.broken_pendant.description";
 

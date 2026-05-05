@@ -1,5 +1,5 @@
 <script>
-	import Inventory from "$lib/components/Inventory.svelte";
+	import Inventory from "$lib/components/battle/Inventory.svelte";
 
 	let { children } = $props();
 </script>

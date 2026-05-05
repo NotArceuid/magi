@@ -11,19 +11,13 @@ export class Inventory {
   private readonly SAVEKEY = "inventory";
   public EquipmentUnlock: Map<ItemsEnum, number> = new Map();
 
-  public Equipment: Record<ItemType, ItemBase | undefined> = {
-    [ItemType.Head]: undefined,
-    [ItemType.Robes]: undefined,
-    [ItemType.Boots]: undefined,
-    [ItemType.Amulet]: undefined,
-    [ItemType.Ring1]: undefined,
-    [ItemType.Ring2]: undefined,
-    [ItemType.Accessory1]: undefined,
-    [ItemType.Accessory2]: undefined,
-    [ItemType.Mark]: undefined,
-    [ItemType.Gun]: undefined,
+  public Equipment: Record<ItemType, ItemBase | undefined> = $state({
+    [ItemType.Head]: undefined, [ItemType.Vest]: undefined, [ItemType.Boots]: undefined,
+    [ItemType.Seal]: undefined, [ItemType.Gun]: undefined, [ItemType.Amulet]: undefined,
+    [ItemType.Ring1]: undefined, [ItemType.Ring2]: undefined, [ItemType.Ring3]: undefined,
+    [ItemType.Accessory1]: undefined, [ItemType.Accessory2]: undefined, [ItemType.Accessory3]: undefined,
     [ItemType.Other]: undefined,
-  };
+  });
 
   public EquipmentMultiplier: Record<EquipmentEffect, MultiplierBase> = {
     [EquipmentEffect.Damage]: new MultiplierBase(1),
@@ -82,13 +76,14 @@ export class Inventory {
   }
 
   public GiveItem(item: ItemsEnum): void {
-    if (this.Inventory.length > this.MAX_SLOTS) {
+    const freeSlot = this.Inventory.indexOf(null);
+    if (freeSlot === -1) {
       this.PendingItems.push(item);
       return;
     }
 
     let new_item = ItemsRepository[item](this);
-    this.Inventory[this.Inventory.length - 1] = new_item;
+    this.Inventory[freeSlot] = new_item;
   }
 
   public Get(at: number): ItemBase | null {
@@ -99,16 +94,18 @@ export class Inventory {
     return null;
   }
 
+  public Set(at: number, item: ItemBase) {
+    this.Inventory[at] = item;
+  }
+
   // This does not have notification 
   // very dangeroud
   public RemoveItem(at: number): void {
-    this.Inventory[this.Inventory.length - 1] = null;
+    this.Inventory[at] = null;
 
-    let pending_items = this.PendingItems.at(at);
-    if (!pending_items)
-      return;
-
-    this.GiveItem(pending_items);
+    const pending = this.PendingItems.shift();
+    if (pending === undefined) return;
+    this.GiveItem(pending);
   }
 }
 

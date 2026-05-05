@@ -8,7 +8,6 @@
 		NotificationPopUp,
 		type INotification,
 	} from "$lib/components/Notification.svelte";
-	import NavBar from "$lib/components/NavBar.svelte";
 	import Footer from "$lib/components/index/Footer.svelte";
 	import { Game } from "$lib/engine/stores.svelte";
 	import StatsBar from "$lib/components/StatsBar.svelte";
@@ -41,7 +40,16 @@
 	>
 		<main class="w-full h-full">
 			<div class="flex flex-col w-full h-full">
-				<NavBar />
+				<div
+					class="p-3 border-b flex flex-row space-x-4 text-center text-sm font-bold"
+				>
+					<a class="border p-2 min-w-32" href="/">Battle</a>
+					<a class="border p-2 min-w-32" href="/player">{Game.Player.Name}</a>
+
+					<a class="border p-2 min-w-32 ml-auto" href="/shop">Shop</a>
+					<a class="border p-2 min-w-32" href="/achievement">Achievements</a>
+					<a class="border p-2 min-w-32" href="/settings">Settings</a>
+				</div>
 
 				<div class="flex flex-row h-full min-h-0">
 					<div class="p-3 w-full overflow-hidden flex flex-col min-h-0">
