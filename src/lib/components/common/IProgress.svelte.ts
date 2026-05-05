@@ -1,5 +1,5 @@
 import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte"
-import type { MultiplierBase } from "$lib/engine/utils/Multipliers";
+import type { MultiplierBase } from "$lib/engine/utils/Multipliers.svelte.ts";
 import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
 
 export interface IProgress {

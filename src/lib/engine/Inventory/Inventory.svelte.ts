@@ -1,7 +1,7 @@
 import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
-import { MultiplierBase, MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers";
+import { MultiplierBase, MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.svelte.ts";
 import { ItemBase, ItemsEnum, ItemsRepository, ItemType } from "./InventoryRepo.svelte";
 
 export class Inventory {
@@ -26,13 +26,13 @@ export class Inventory {
   };
 
   public EquipmentMultiplier: Record<EquipmentEffect, MultiplierBase> = {
-    [EquipmentEffect.Damage]: new MultiplierBase(),
-    [EquipmentEffect.Defence]: new MultiplierBase(),
-    [EquipmentEffect.Regen]: new MultiplierBase(),
-    [EquipmentEffect.EnergyCap]: new MultiplierBase(),
-    [EquipmentEffect.EnergySpeed]: new MultiplierBase(),
-    [EquipmentEffect.SourceCap]: new MultiplierBase(),
-    [EquipmentEffect.SourceSpeed]: new MultiplierBase()
+    [EquipmentEffect.Damage]: new MultiplierBase(1),
+    [EquipmentEffect.Defence]: new MultiplierBase(1),
+    [EquipmentEffect.Regen]: new MultiplierBase(1),
+    [EquipmentEffect.EnergyCap]: new MultiplierBase(1),
+    [EquipmentEffect.EnergySpeed]: new MultiplierBase(1),
+    [EquipmentEffect.SourceCap]: new MultiplierBase(1),
+    [EquipmentEffect.SourceSpeed]: new MultiplierBase(1)
   }
 
   public EquipItem(slot: ItemType, item: ItemBase) {
@@ -73,6 +73,8 @@ export class Inventory {
         this.Inventory = new Array(this.MAX_SLOTS).fill(null);
       }
     });
+
+    this.GiveItem(ItemsEnum.BrokenPendant);
   }
 
   public GetAll(): Array<ItemBase | null> {

@@ -67,6 +67,7 @@ export class Adventure {
   }
 
   private PlayerOnDeath() {
+    this.StopCombat();
     this.SwitchWave(0);
     this.SwitchArea(0);
   }

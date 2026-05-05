@@ -48,46 +48,60 @@ export abstract class AllocatableProgress {
   }
 
   public Deallocate(progress: IProgress) {
-    let allocatedAmount = this._player.AllocationAmount;
+    const allocatedAmount = this._player.AllocationAmount;
+
     if (this.AllocatedAmount.lte(allocatedAmount)) {
-      let clone = this.AllocatedAmount.clone();
-      progress.Value = clone.plus(progress.Value);
+      const newValue = Decimal.min(
+        progress.Max,
+        progress.Value.plus(this.AllocatedAmount)
+      );
+      progress.Value = newValue;
       this.AllocatedAmount = Decimal.ZERO;
       return;
     }
 
-    let diff = this.AllocatedAmount.minus(allocatedAmount);
-    progress.Value = progress.Value.plus(allocatedAmount);
-    this.AllocatedAmount = diff;
+    const newValue = Decimal.min(
+      progress.Max,
+      progress.Value.plus(allocatedAmount)
+    );
+    progress.Value = newValue;
+    this.AllocatedAmount = this.AllocatedAmount.minus(allocatedAmount);
   }
 
   public Allocate(progress: IProgress) {
-    let amount = this._player.AllocationAmount;
+    if (progress.Value.lte(Decimal.ZERO)) return;
+
+    const amount = this._player.AllocationAmount;
     if (progress.Value.lte(amount)) {
       this.AllocatedAmount = this.AllocatedAmount.plus(progress.Value);
       progress.Value = Decimal.ZERO;
       return;
     }
 
-    if (progress.Value.minus(amount).lte(0)) {
-      let clone = progress.Value.clone();
-      progress.Value = Decimal.ZERO;
-      this.AllocatedAmount = clone;
-      return;
-    }
-
-    let diff = Decimal.max(0, progress.Value.minus(amount));
-    progress.Value = diff;
+    const newValue = Decimal.max(
+      progress.Min,
+      progress.Value.minus(amount)
+    );
+    progress.Value = newValue;
     this.AllocatedAmount = this.AllocatedAmount.plus(amount);
   }
 
   public AllocateMax(progress: IProgress) {
-    if (progress.Value.lte(0))
-      return;
+    if (progress.Value.lte(Decimal.ZERO)) return;
 
-    let amount = Decimal.min(progress.Value, this.AllocationTarget.minus(this.AllocatedAmount));
-    progress.Value = progress.Value.minus(amount);
-    this.AllocatedAmount = this.AllocatedAmount.plus(amount);
+    const available = Decimal.min(
+      progress.Value,
+      this.AllocationTarget.minus(this.AllocatedAmount)
+    );
+
+    if (available.lte(Decimal.ZERO)) return;
+
+    const newValue = Decimal.max(
+      progress.Min,
+      progress.Value.minus(available)
+    );
+    progress.Value = newValue;
+    this.AllocatedAmount = this.AllocatedAmount.plus(available);
   }
 
   protected get SpeedFactor(): Decimal {

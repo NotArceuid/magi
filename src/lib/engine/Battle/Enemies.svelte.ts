@@ -1,6 +1,6 @@
 import type { IProgress } from "$lib/components/common/IProgress.svelte";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
-import { MultiplierBase } from "../utils/Multipliers";
+import { MultiplierBase } from "../utils/Multipliers.svelte.ts";
 import { BattleRegistry, type Enemy, type IEnemyConfig } from "./EnemyRegistry.svelte";
 
 export function BuildEnemy(type: Enemy): EnemyBase {
@@ -23,8 +23,8 @@ export abstract class EnemyBase {
     return elapsed % tick == 0;
   }
 
-  public DamageMultiplier: MultiplierBase = new MultiplierBase();
-  public AttackSpeedMultiplier: MultiplierBase = new MultiplierBase();
+  public DamageMultiplier: MultiplierBase = MultiplierBase.default();
+  public AttackSpeedMultiplier: MultiplierBase = MultiplierBase.default();
 
   public TakeDamage(damage: Decimal): void {
     if (damage.lte(0)) return;

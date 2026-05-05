@@ -1,6 +1,6 @@
 import { SvelteMap } from "svelte/reactivity";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
-import { MultiplierType, type Multiplier } from "../utils/Multipliers";
+import { MultiplierType, type Multiplier } from "../utils/Multipliers.svelte";
 import { ReactiveText } from "../utils/ReactiveText.svelte";
 import { EquipmentEffect, Inventory } from "./Inventory.svelte";
 
@@ -125,7 +125,7 @@ interface SubstatConfig {
 class BrokenPendant extends ItemBase {
   Name = "items.broken_pendant.name";
   ItemEnum = ItemsEnum.BrokenPendant;
-  Icon_path = "/items/broken_pendant.png";
+  Icon_path = "/items/brokenpendant.png";
   Level = $state(1);
   Description = "items.broken_pendant.description";
 

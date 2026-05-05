@@ -1,4 +1,4 @@
-import { Decimal } from "./BreakInfinity/Decimal.svelte";
+import { Decimal, type DecimalSource } from "./BreakInfinity/Decimal.svelte";
 
 export interface Multiplier {
   priority: number;
@@ -13,8 +13,12 @@ export enum MultiplierType {
 }
 
 export class MultiplierBase {
-  public BaseValue: Decimal = Decimal.ONE;
+  public BaseValue: Decimal;
   protected MultiplierList: Map<string, Multiplier> = new Map();
+
+  constructor(base?: DecimalSource) {
+    this.BaseValue = $state(new Decimal(base) ?? Decimal.ONE);
+  }
 
   public Set(source: string, multiplier: Multiplier): void {
     for (const [_, existingMultiplier] of this.MultiplierList) {
@@ -64,7 +68,7 @@ export class MultiplierBase {
   }
 
   public static default() {
-    return new MultiplierBase();
+    return new MultiplierBase(1);
   }
 }
 

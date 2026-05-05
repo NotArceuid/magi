@@ -94,18 +94,14 @@
 						</div>
 					</div>
 
-					<!-- Fight button -->
-					{#if !battle.Fighting}
-						<button
-							class="border px-3 sm:px-4 py-1.5 text-base sm:text-lg font-semibold w-full max-w-32 sm:max-w-none"
-							onclick={() => battle.StartCombat()}>Fight!1!</button
-						>
-					{:else}
-						<button
-							class="border px-3 sm:px-4 py-1.5 text-base sm:text-lg font-semibold w-full max-w-32 sm:max-w-none"
-							onclick={() => battle.StopCombat()}>Stawp >:(</button
-						>
-					{/if}
+					<button
+						class="border px-3 sm:px-4 py-1.5 text-base sm:text-lg font-semibold w-full max-w-32 sm:max-w-none"
+						onclick={() => battle.StopCombat()}>Lore</button
+					>
+					<button
+						class="border px-3 sm:px-4 py-1.5 text-base sm:text-lg font-semibold w-full max-w-32 sm:max-w-none"
+						onclick={() => battle.StopCombat()}>Combat</button
+					>
 				</div>
 
 				<!-- Enemy -->

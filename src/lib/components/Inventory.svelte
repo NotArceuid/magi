@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Game } from "$lib/engine/stores.svelte";
+	import { _ } from "svelte-i18n";
 	let equipment_label = [
 		{ label: "Head", key: "head" },
 		{ label: "Robes", key: "robes" },
@@ -38,7 +39,7 @@
 					<div
 						class="w-14 h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 2xl:w-20 2xl:h-20 border flex items-center justify-center"
 					>
-						<span class="text-xs text-center truncate px-1">{item?.Name}</span>
+						<img src={item?.Icon_path} alt={$_(item?.Name ?? "notfound")} />
 					</div>
 				{/each}
 			</div>

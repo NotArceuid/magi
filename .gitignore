@@ -26,3 +26,4 @@ api/
 
 /static/krita
 /enemies/*.kra
+/items/*.kra

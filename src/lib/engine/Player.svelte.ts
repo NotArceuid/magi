@@ -1,9 +1,8 @@
-import { dev } from "$app/environment";
 import { Progress, type IProgress } from "$lib/components/common/IProgress.svelte.ts";
 import type { Engine } from "./Engine.svelte.ts";
 import type { Saves } from "./Saves.ts";
 import { Decimal } from "./utils/BreakInfinity/Decimal.svelte.ts";
-import { MultiplierBase } from "./utils/Multipliers.ts";
+import { MultiplierBase, MultiplierType, type Multiplier } from "./utils/Multipliers.svelte.ts";
 
 export class Player {
   private _player = $state<IPlayer>({
@@ -19,9 +18,9 @@ export class Player {
       Value: new Decimal(100),
     },
     Energy: {
-      Max: new Decimal(10000),
+      Max: new Decimal(1),
       Min: new Decimal(0),
-      Value: new Decimal(dev ? 10000 : 0),
+      Value: new Decimal(1),
     },
     RebirthCount: 0,
     RebirthFactor: Decimal.ZERO,
@@ -32,12 +31,12 @@ export class Player {
     cultivationamount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   });
 
-  public readonly HealthRegen = new MultiplierBase();
-  public readonly AtkSpeedDivider = new MultiplierBase();
-  public readonly DamageMultiplier = new MultiplierBase();
-  public readonly AttackSpeedMultiplier = new MultiplierBase();
-  public readonly HealthMultiplier = new MultiplierBase();
-  public readonly EnergyCapMultiplier = new MultiplierBase();
+  public readonly HealthRegen = MultiplierBase.default();
+  public readonly AtkSpeedDivider = MultiplierBase.default();
+  public readonly DamageMultiplier = MultiplierBase.default();
+  public readonly AttackSpeedMultiplier = MultiplierBase.default();
+  public readonly HealthMultiplier = MultiplierBase.default();
+  public readonly EnergyCapMultiplier = new MultiplierBase(10000);
 
   get Name() { return this._player.Name; }
   set Name(val) { this._player.Name = val; }
@@ -47,7 +46,11 @@ export class Player {
   public readonly Health = new Progress(this._player.Health, MultiplierBase.default(), this.HealthMultiplier);
   public readonly Damage = $derived(this.DamageMultiplier.Get());
   public readonly Mana: IProgress = this._player.Mana;
-  public readonly Energy: IProgress = new Progress(this._player.Energy, MultiplierBase.default(),)
+
+  public readonly Energy: IProgress;
+  public EnergyGain: MultiplierBase = new MultiplierBase(1);
+  public EnergySpeed: MultiplierBase = new MultiplierBase(0);
+
   get AllocationAmount(): Decimal { return this._player.AllocationAmount; }
   set AllocationAmount(val) { this._player.AllocationAmount = val }
   public get Icon() { return "/mc.png"; }
@@ -95,6 +98,23 @@ export class Player {
       this._player.AllocationAmount = data.allocationAmount;
       this._player.RebirthCount = data.rebirthcount;
       this._player.RebirthFactor = data.rebirthfactor;
+    });
+
+    let _self = this;
+    this.HealthRegen.Set("base", {
+      priority: 0,
+      value: function(): Decimal {
+        return _self.Health.Value.mul(0.01);
+      },
+      type: MultiplierType.Additive
+    });
+
+
+    this.Energy = new Progress(this._player.Energy, MultiplierBase.default(), this.EnergyCapMultiplier);
+    this._engine.Tick.add((param) => {
+      if (param.total_ticks % (60 - this.EnergySpeed.Get().toNumber()) === 0) {
+        this.Energy.Value = Decimal.min(this.Energy.Max, this.Energy.Value.plus(this.EnergyGain.Get()));
+      }
     });
   }
 

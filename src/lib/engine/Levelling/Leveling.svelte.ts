@@ -4,7 +4,7 @@ import type { Player } from "../Player.svelte.ts";
 import type { Saves } from "../Saves.ts";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
 import { InvokeableEvent } from "../utils/Events.ts";
-import { MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.ts";
+import { MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.svelte.ts";
 import { DefenceEnum, OffenseEnum, type MagicEnum, type AllocatableProgress, Punch, Kick, Strike, Elbow, Sweep, Parry, Dodge, Flexibility, Block, Conditioning, Footwork, Lock } from "./LevelingRepo.svelte.ts";
 
 export class Levelilng {
