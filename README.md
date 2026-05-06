@@ -2,11 +2,7 @@
 
 ## Background:
 Why i made this? 
-Ngu idle too long no update me sad.
-Lack of browser incrementals. Me also sad.
-Too much ai slop incrementals. Me sadsad.  :(
-This is also a giant fck u to ai generated slop
-browser best game engine :>
+lack of good incrementals
 
 ## Features:
 - Programmer art 
@@ -24,9 +20,3 @@ browser best game engine :>
 - AI generated ui that contain class="border rounded-2xl" within class="border rounded-2xl"
 - Explodingnumbers with multiplier exponents being exponented
 - Closed source fork of this game. (gotta love gpl license)
-
-## Save Editing: 
-It's possible to edit your savefile. Just decode it as base64 and encode it back once you're done. 
-Don't complain to me the game sucks because you've basically skipped the boring parts in the game. 
-
-Light cannot exist without shadow.
