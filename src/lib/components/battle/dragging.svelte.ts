@@ -56,10 +56,12 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
       } else if (drag_item.source.type === SourceEnum.equipment) {
         const equipSlot = drag_item.source.slot;
         if (targetItem && canEquip(targetItem, equipSlot)) {
+          Game.Inventory.UnequipItem(equipSlot);
           Game.Inventory.Equipment[equipSlot] = targetItem;
+          targetItem.OnEquip();
           Game.Inventory.Set(self.index, drag_item.item);
         } else if (!targetItem) {
-          Game.Inventory.Equipment[equipSlot] = undefined;
+          Game.Inventory.UnequipItem(equipSlot);
           Game.Inventory.Set(self.index, drag_item.item);
         }
 
@@ -91,16 +93,23 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
 
       } else if (drag_item.source.type === SourceEnum.equipment) {
         const sourceSlot = drag_item.source.slot;
-
         if (sourceSlot === targetSlot) break;
         const isRing = (s: ItemType) => s >= ItemType.Ring1 && s <= ItemType.Ring3;
         const isAccessory = (s: ItemType) => s >= ItemType.Accessory1 && s <= ItemType.Accessory3;
         const sameGroup = (isRing(sourceSlot) && isRing(targetSlot)) ||
           (isAccessory(sourceSlot) && isAccessory(targetSlot));
         if (!sameGroup) break;
-        const displaced = Game.Inventory.Equipment[targetSlot];
-        Game.Inventory.Equipment[targetSlot] = drag_item.item;
-        Game.Inventory.Equipment[sourceSlot] = displaced;
+
+        const sourceItem = Game.Inventory.UnequipItem(sourceSlot);
+        const targetItem = Game.Inventory.UnequipItem(targetSlot);
+        if (sourceItem) {
+          Game.Inventory.Equipment[targetSlot] = sourceItem;
+          sourceItem.OnEquip();
+        }
+        if (targetItem) {
+          Game.Inventory.Equipment[sourceSlot] = targetItem;
+          targetItem.OnEquip();
+        }
       }
       break;
     }
@@ -119,12 +128,13 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
 
       } else if (drag_item.source.type === SourceEnum.equipment) {
         const equipSlot = drag_item.source.slot;
+        Game.Inventory.UnequipItem(equipSlot);
         setRefineSlot(targetRefineSlot, drag_item.item);
         if (currentInRefine && canEquip(currentInRefine, equipSlot)) {
           Game.Inventory.Equipment[equipSlot] = currentInRefine;
-        } else {
-          Game.Inventory.Equipment[equipSlot] = undefined;
-          if (currentInRefine) Game.Inventory.GiveItem(currentInRefine.ItemEnum);
+          currentInRefine.OnEquip();
+        } else if (currentInRefine) {
+          Game.Inventory.GiveItem(currentInRefine.ItemEnum);
         }
 
       } else if (drag_item.source.type === SourceEnum.refine) {
@@ -180,8 +190,8 @@ export function touch_start(
     left: `${touch.clientX - touchOffsetX}px`,
     top: `${touch.clientY - touchOffsetY}px`,
   });
-  document.body.appendChild(ghostEl);
 
+  document.body.appendChild(ghostEl);
   document.addEventListener("touchmove", _touch_move, { passive: false });
   document.addEventListener("touchend", _touch_end, { once: true });
 
@@ -214,7 +224,7 @@ function _touch_end(e: TouchEvent) {
   );
 
   if (!dropTarget) {
-    dragStore.drag_item = null;
+    drag_end()
     return;
   }
 
@@ -229,7 +239,7 @@ function _touch_end(e: TouchEvent) {
     targetSource = { type: SourceEnum.refine, slot: +refine };
 
   if (targetSource) on_drop(dragStore.drag_item, targetSource);
-  else dragStore.drag_item = null;
+  else drag_end()
 }
 
 export function lockScrollWhileDragging(node: HTMLElement) {

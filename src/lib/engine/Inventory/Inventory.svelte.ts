@@ -29,11 +29,20 @@ export class Inventory {
     [EquipmentEffect.SourceSpeed]: new MultiplierBase(1)
   })
 
-  public EquipItem(slot: ItemType, item: ItemBase) {
-    let prev = this.Equipment[slot];
-    if (prev) this.GiveItem(prev.ItemEnum);
+  public UnequipItem(slot: ItemType): ItemBase | undefined {
+    const item = this.Equipment[slot];
+    if (item) {
+      item.OnRemove();
+      this.Equipment[slot] = undefined;
+    }
+    return item;
+  }
 
+  public EquipItem(slot: ItemType, item: ItemBase) {
+    const prev = this.UnequipItem(slot);
+    if (prev) this.GiveItem(prev.ItemEnum);
     this.Equipment[slot] = item;
+    item.OnEquip();
   }
 
   private _player: Player;

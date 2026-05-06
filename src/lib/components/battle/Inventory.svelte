@@ -48,7 +48,6 @@
 								drag_start(item, { type: SourceEnum.inventory, index: i }, e)}
 							ondragover={drag_over}
 							ondragend={drag_end}
-							ontouchend={drag_end}
 							ondrop={(_) =>
 								on_drop(dragStore.drag_item, {
 									type: SourceEnum.inventory,
@@ -85,7 +84,6 @@
 									e,
 								)}
 							ondragend={drag_end}
-							ontouchend={drag_end}
 							ondragover={drag_over}
 							ondrop={(_) =>
 								on_drop(dragStore.drag_item, {
@@ -122,7 +120,6 @@
 									e,
 								)}
 							ondragend={drag_end}
-							ontouchend={drag_end}
 							ondragover={drag_over}
 							ondrop={(_) =>
 								on_drop(dragStore.drag_item, {
@@ -155,7 +152,6 @@
 								e,
 							)}
 						ondragend={drag_end}
-						ontouchend={drag_end}
 					>
 						{#if dragStore.refineResult}
 							<img
@@ -189,7 +185,6 @@
 								slot: 1,
 							})}
 						ondragend={drag_end}
-						ontouchend={drag_end}
 						ontouchstart={(e) =>
 							touch_start(
 								dragStore.refineSlot1,
@@ -205,7 +200,7 @@
 						{/if}
 					</div>
 
-					<span class="text-xl">→</span>
+					<span class="text-xl">+</span>
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						class="w-14 h-14 border flex items-center justify-center transition-shadow {dragStore.drag_item
@@ -217,9 +212,9 @@
 								{ type: SourceEnum.refine, slot: 2 },
 								e,
 							)}
+						data-refine="2"
 						ondragover={drag_over}
 						ondragend={drag_end}
-						ontouchend={drag_end}
 						ondrop={(_) =>
 							on_drop(dragStore.drag_item, {
 								type: SourceEnum.refine,
@@ -252,7 +247,6 @@
 								e,
 							)}
 						ondragend={drag_end}
-						ontouchend={drag_end}
 						ontouchstart={(e) =>
 							touch_start(
 								dragStore.refineResult,

@@ -63,7 +63,6 @@
             "
 						draggable={Game.Inventory.Equipment[slot.key] !== undefined}
 						ondragend={drag_end}
-						ontouchend={drag_end}
 						ondragstart={(e) =>
 							drag_start(
 								Game.Inventory.Equipment[slot.key]!,
