@@ -1,14 +1,13 @@
 <script lang="ts">
 	import {
+		canEquip,
+		drag_end,
+		drag_over,
+		drag_start,
 		dragStore,
-		handleDragEnd,
-		handleEquipmentDragStart,
-		handleSlotDragLeave,
-		handleSlotDragOver,
-		handleSlotDrop,
-		handleTouchEnd,
-		handleTouchMove,
-		handleTouchStart,
+		on_drop,
+		SourceEnum,
+		touch_start,
 	} from "$lib/components/battle/dragging.svelte";
 	import { ItemType } from "$lib/engine/Inventory/InventoryRepo.svelte";
 	import { Game } from "$lib/engine/stores.svelte";
@@ -35,7 +34,7 @@
 
 <div class="flex flex-col md:flex-row gap-4 w-full h-full border p-4">
 	<!-- Equipment Slots -->
-	<div class="shrink-0 flex flex-col gap-2 min-w-9/12 max-w-9/12">
+	<div class="shrink-0 flex flex-col gap-2 sm:min-w-9/12 sm:max-w-9/12">
 		<div class="flex flex-row border-b">
 			<span class="text-lg font-semibold mb-1">Equipment</span>
 			<!-- TODO: Add a achievemnt congradulating the player for being so dumb that he actually dragged to the span here hehe-->
@@ -56,30 +55,33 @@
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						data-slot={slot.key}
-						class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 2xl:w-20 2xl:h-20 border shrink-0 flex items-center justify-center transition-shadow {dragStore.dragOverSlot ===
-						slot.key
-							? 'ring-2 shadow-lg shadow-blue-400/50'
-							: ''}"
+						class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 2xl:w-20 2xl:h-20 border shrink-0 flex items-center justify-center transition-shadow
+             {dragStore.drag_item &&
+						canEquip(dragStore.drag_item.item, slot.key)
+							? 'ring-3 ring-blue-400/50 shadow-lg shadow-blue-400/40'
+							: ''}
+            "
 						draggable={Game.Inventory.Equipment[slot.key] !== undefined}
+						ondragend={drag_end}
+						ontouchend={drag_end}
 						ondragstart={(e) =>
-							handleEquipmentDragStart(
+							drag_start(
+								Game.Inventory.Equipment[slot.key]!,
+								{ type: SourceEnum.equipment, slot: slot.key },
 								e,
-								slot.key,
-								Game.Inventory.Equipment[slot.key],
 							)}
-						ondragend={handleDragEnd}
-						ondragover={(e) => handleSlotDragOver(e, slot.key)}
-						ondragleave={handleSlotDragLeave}
-						ondrop={(e) => handleSlotDrop(e, slot.key)}
+						ondragover={drag_over}
+						ondrop={(_) =>
+							on_drop(dragStore.drag_item, {
+								type: SourceEnum.equipment,
+								slot: slot.key,
+							})}
 						ontouchstart={(e) =>
-							handleTouchStart(
+							touch_start(
+								Game.Inventory.Equipment[slot.key] ?? null,
+								{ type: SourceEnum.equipment, slot: slot.key },
 								e,
-								-1,
-								Game.Inventory.Equipment[slot.key],
-								slot.key,
 							)}
-						ontouchmove={(e) => handleTouchMove(e)}
-						ontouchend={(e) => handleTouchEnd(e)}
 					>
 						{#if Game.Inventory.Equipment[slot.key]}
 							<img

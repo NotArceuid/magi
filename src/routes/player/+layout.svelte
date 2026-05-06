@@ -14,7 +14,7 @@
 	<div class="flex-1 min-h-0 pt-4 overflow-y-auto">
 		{@render children?.()}
 	</div>
-	<div class="shrink-0 max-h-96 flex flex-col min-h-0">
+	<div class="shrink-0 max-h-72 flex flex-col">
 		<Inventory />
 	</div>
 </div>
