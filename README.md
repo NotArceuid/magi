@@ -1,5 +1,9 @@
 # Kitaran
 
+Dont play this, everything suck right now
+
+Note: Mobile is NOT very good rn
+
 ## Background:
 Why i made this? 
 lack of good incrementals

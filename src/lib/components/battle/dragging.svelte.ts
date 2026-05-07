@@ -9,12 +9,14 @@ type Source =
 
 export const dragStore = $state<{
   drag_item: { item: ItemBase, source: Source } | null;
+  hover_item: ItemBase | null;
 
   refineSlot1: ItemBase | null;
   refineSlot2: ItemBase | null;
   refineResult: ItemBase | null;
 }>({
   drag_item: null,
+  hover_item: null,
 
   refineSlot1: null,
   refineSlot2: null,
@@ -172,6 +174,7 @@ export function touch_start(
 ) {
   if (!item) return;
   dragStore.drag_item = { item, source };
+  dragStore.hover_item = item;
 
   const touch = e.touches[0];
   const target = e.currentTarget as HTMLElement;
@@ -213,6 +216,8 @@ function _touch_end(e: TouchEvent) {
 
   if (!dragStore.drag_item) return;
 
+  dragStore.hover_item = null;
+
   const touch = e.changedTouches[0];
   const el = document.elementFromPoint(
     touch.clientX,
@@ -252,4 +257,13 @@ export function lockScrollWhileDragging(node: HTMLElement) {
 
 export function drag_end() {
   dragStore.drag_item = null;
+}
+
+
+export function on_hover(item: ItemBase | null) {
+  dragStore.hover_item = item;
+}
+
+export function stop_hover() {
+  dragStore.hover_item = null;
 }

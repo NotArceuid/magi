@@ -1,6 +1,4 @@
 <script>
-	import Inventory from "$lib/components/battle/Inventory.svelte";
-
 	let { children } = $props();
 </script>
 
@@ -11,10 +9,7 @@
 			<a class="border p-2 min-w-32" href="/player/equipment">Equipment</a>
 		</div>
 	</div>
-	<div class="flex-1 min-h-0 pt-4 overflow-y-auto">
+	<div class="flex-1 min-h-0 pt-4">
 		{@render children?.()}
-	</div>
-	<div class="shrink-0 max-h-72 flex flex-col">
-		<Inventory />
 	</div>
 </div>

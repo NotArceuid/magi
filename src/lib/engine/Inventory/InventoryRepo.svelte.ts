@@ -73,7 +73,7 @@ interface SubstatText {
   Text: ReactiveText;
 }
 
-class Substats {
+export class Substats {
   public EquipmentEffect: EquipmentEffect;
   public get View(): SubstatText {
     return {
