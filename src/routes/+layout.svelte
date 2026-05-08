@@ -28,6 +28,8 @@
 		});
 		Game.Engine.start();
 	});
+
+	let show_stats = $state(false);
 </script>
 
 <svelte:head>
@@ -62,7 +64,26 @@
 							{@render children?.()}
 						</div>
 					</div>
-					<div class="p-3 border-l shrink-0">
+					{#if show_stats}
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<div
+							class="lg:hidden fixed inset-0 z-40 bg-black/50"
+							onclick={() => (show_stats = false)}
+						></div>
+						<div
+							class="lg:hidden fixed top-0 right-0 z-50 border h-full w-8/12 bg-white p-3 overflow-y-auto"
+						>
+							<StatsBar />
+						</div>
+					{/if}
+					<button
+						class="lg:hidden fixed bottom-4 left-4 z-50 border px-3 py-2 bg-white text-sm"
+						onclick={() => (show_stats = !show_stats)}
+					>
+						Stats
+					</button>
+					<div class="hidden lg:block p-3 border-l">
 						<StatsBar />
 					</div>
 				</div>

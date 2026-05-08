@@ -12,25 +12,36 @@
 
 	let battle = $derived(Game.Adventure);
 	let current_enemy = $derived(Game.Adventure.CurrentEnemy);
+	let show_lore = $state(false);
+
+	let mobile_view = $state("combat"); // 'combat' | 'lore' | 'logs'
+	let show_mobile_menu = $state(false);
+
+	function setMobileView(view: string) {
+		mobile_view = view;
+		show_mobile_menu = false;
+		if (view === "lore") show_lore = true;
+		if (view === "logs") show_lore = false;
+	}
 </script>
 
 <div class="flex flex-col h-full">
-	<div class="max-h-8/12 pt-3">
+	<div class="h-full pt-1 sm:pt-3 min-h-0">
 		<!-- Main battle area -->
-		<div class="flex flex-col sm:flex-row w-full h-full mt- sm:mt-0 min-h-0">
+		<div class="flex-1 flex-col sm:flex-row w-full h-full sm:mt-0 min-h-0">
 			<div
-				class="flex flex-col sm:flex-row w-full h-full border gap-2 sm:gap-6 overflow-auto"
+				class="flex flex-col sm:flex-row w-full h-full border gap-1 sm:gap-6 overflow-hidden"
 			>
 				<!-- Player -->
 				<div
-					class="flex flex-col flex-1 min-w-0 p-3 sm:p-6 lg:p-5 items-center sm:items-stretch"
+					class="flex flex-col flex-1 min-w-0 p-1 sm:p-6 lg:p-5 items-center sm:items-stretch"
 				>
 					<span class="text-base sm:text-xl text-center font-semibold"
 						>{Game.Player.Name}</span
 					>
 					<div class="flex w-full flex-1 items-center justify-center py-2">
 						<div
-							class="relative w-full 2xl:max-w-[20rem] lg:max-w-60 aspect-square border"
+							class="relative w-full max-w-28 sm:max-w-full 2xl:max-w-[20rem] lg:max-w-60 aspect-square border mx-auto"
 						>
 							<img
 								src={Game.Player.Icon}
@@ -63,7 +74,7 @@
 				</div>
 
 				<div
-					class="flex flex-row sm:flex-col w-full sm:w-auto sm:h-full items-center justify-center gap-3 sm:gap-4 px-3 sm:px-4 pb-3 sm:pb-0 border-t sm:border-t-0 sm:pt-0"
+					class="flex flex-row sm:flex-col w-full sm:w-auto sm:h-full items-center justify-center gap-2 sm:gap-4 px-2 sm:px-4 py-1 sm:py-0 border-t sm:border-t-0"
 				>
 					<!-- Wave -->
 					<div class="flex flex-col items-center gap-2">
@@ -93,27 +104,18 @@
 							>
 						</div>
 					</div>
-
-					<button
-						class="border px-3 sm:px-4 py-1.5 text-base sm:text-lg font-semibold w-full max-w-32 sm:max-w-none"
-						onclick={() => battle.StopCombat()}>Lore</button
-					>
-					<button
-						class="border px-3 sm:px-4 py-1.5 text-base sm:text-lg font-semibold w-full max-w-32 sm:max-w-none"
-						onclick={() => battle.StopCombat()}>Combat</button
-					>
 				</div>
 
 				<!-- Enemy -->
 				<div
-					class="flex flex-col flex-1 min-w-0 p-3 sm:p-6 lg:p-5 items-center sm:items-stretch"
+					class="flex flex-col flex-1 min-w-0 p-1 sm:p-6 lg:p-5 items-center sm:items-stretch"
 				>
 					<span class="text-base sm:text-xl text-center font-semibold"
 						>{$_(current_enemy?.Name ?? "")}</span
 					>
 					<div class="flex w-full flex-1 items-center justify-center py-2">
 						<div
-							class="relative w-full 2xl:max-w-[20rem] md:max-w-60 aspect-square border"
+							class="relative w-full max-w-28 sm:max-w-full 2xl:max-w-[20rem] lg:max-w-60 aspect-square border mx-auto"
 						>
 							<img
 								src={current_enemy?.Icon}
@@ -149,37 +151,106 @@
 			<div></div>
 		</div>
 	</div>
-	<!-- Lore panel -->
-	<div
-		class="p-3 flex flex-col gap-1 w-full h-full border border-t-0 overflow-hidden"
-	>
-		<span class="text-md font-semibold underline shrink-0">
-			Lore - {$_(current_enemy?.Name ?? "")}
-		</span>
-		<p
-			class="text-md leading-relaxed whitespace-pre-line overflow-y-auto flex-1 min-h-0"
+
+	<div class="lg:hidden fixed bottom-14 left-4 z-50 flex flex-col gap-2">
+		{#if show_mobile_menu}
+			<div class="flex flex-col gap-2">
+				<button
+					class="border px-3 py-1 bg-white text-sm"
+					onclick={() => setMobileView("lore")}>Lore</button
+				>
+				<button
+					class="border px-3 py-1 bg-white text-sm"
+					onclick={() => setMobileView("logs")}>Logs</button
+				>
+				<button
+					class="border px-3 py-1 bg-white text-sm"
+					onclick={() => setMobileView("combat")}>Combat</button
+				>
+			</div>
+		{/if}
+		<button
+			class="border bg-white text-sm"
+			onclick={() => (show_mobile_menu = !show_mobile_menu)}
 		>
-			{$_(battle.CurrentEnemy?.Description ?? "", {
-				values: { player: Game.Player.Name },
-			})}
-		</p>
+			{show_mobile_menu ? "✕" : "Menu"}
+		</button>
 	</div>
 
-	<!-- Header -->
-	<!--	<div class="flex flex-row flex-wrap gap-2 mt-3 sm:mt-5 px-2 sm:px-0">
-		<div class="flex flex-row gap-0.5 min-w-0 flex-1">
-			<span class="text-base font-semibold truncate"
-				>{$_(battle.CurrentArea?.Name ?? "")} -
-			</span>
-			<span class="text-sm text-gray-500 line-clamp-2 mt-auto ml-1"
-				>{$_(battle.CurrentArea?.Description ?? "")}</span
-			>
-		</div>
+	<div
+		class="flex flex-col lg:flex-row w-full min-h-72 max-h-72 border-b mt-auto"
+	>
 		<div
-			class="flex flex-row gap-2 sm:gap-4 text-sm sm:text-base font-bold shrink-0"
+			class="
+      border-l p-3 flex flex-row min-h-0
+      w-full lg:w-8/12
+      {mobile_view === 'combat' ? 'hidden lg:flex' : 'flex'}
+    "
 		>
-			<span>Highest Stage: {battle.HighestArea + 1}</span>
-			<span>Highest Wave: {battle.HighestWave + 1}</span>
+			<div class="border-r pr-3 flex-col hidden lg:flex shrink-0">
+				<button class="border" onclick={() => (show_lore = true)}>Lore</button>
+				<button class="border" onclick={() => (show_lore = false)}>Logs</button>
+			</div>
+
+			{#if show_lore || mobile_view === "lore"}
+				<div class="p-3 pt-0 flex flex-col flex-1 min-h-0">
+					<span class="text-md font-semibold underline shrink-0">
+						Lore - {$_(current_enemy?.Name ?? "")}
+					</span>
+					<p
+						class="text-md leading-relaxed whitespace-pre-line overflow-y-auto flex-1 min-h-0"
+					>
+						{$_(battle.CurrentEnemy?.Description ?? "", {
+							values: { player: Game.Player.Name },
+						})}
+					</p>
+				</div>
+			{:else}
+				<div class="p-3 pt-0 flex flex-col flex-1 min-h-0">
+					<span class="border-b shrink-0">Logs</span>
+					<div class="overflow-y-auto flex-1 min-h-0 flex flex-col">
+						{#each Game.Adventure.BattleInfo as text}
+							<span>{text}</span>
+						{/each}
+					</div>
+				</div>
+			{/if}
 		</div>
-	</div> -->
+
+		<div
+			class="
+      flex gap-2 min-h-0 p-3 border-l
+      w-full lg:w-4/12
+      h-auto lg:h-full
+      {mobile_view !== 'combat' ? 'hidden lg:flex' : 'flex'}
+    "
+		>
+			<div class="flex flex-col flex-1 min-w-0 min-h-0">
+				<div class="flex items-center gap-2 p-2 shrink-0 flex-wrap">
+					<div
+						class="w-14 h-14 2xl:w-20 2xl:h-20 rounded-full shrink-0 border"
+					></div>
+					<div class="flex flex-row gap-1">
+						<div class="h-10 w-10 2xl:h-16 2xl:w-16 border"></div>
+						<div class="h-10 w-10 2xl:h-16 2xl:w-16 border"></div>
+						<div class="h-10 w-10 2xl:h-16 2xl:w-16 border"></div>
+						<div class="h-10 w-10 2xl:h-16 2xl:w-16 border"></div>
+					</div>
+				</div>
+				<div class="flex-1 border min-h-0"></div>
+			</div>
+
+			<div class="flex flex-col gap-1 shrink-0">
+				{#each Array(5) as _}
+					<div class="h-12 w-12 2xl:h-20 2xl:w-16 border"></div>
+				{/each}
+			</div>
+
+			<div class="flex flex-col gap-1 shrink-0">
+				{#each Array(5) as _}
+					<div class="h-12 w-12 2xl:h-20 2xl:w-16 border"></div>
+				{/each}
+			</div>
+		</div>
+	</div>
 </div>

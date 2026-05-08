@@ -11,6 +11,7 @@ export class Adventure {
   public Areas: IAdventureArea[] = [new NileouCity()]
   public AreaIndex: number = $state(0);
   public WaveIndex: number = $state(0);
+  public BattleInfo: string[] = $state([]);
 
   public get CurrentArea(): IAdventureArea | undefined {
     return this.Areas[this.AreaIndex];
