@@ -9,14 +9,7 @@ export class NileouCity implements IAdventureArea {
 
   constructor() {
     this.Waves = [
-      BuildEnemy(Enemy.YoungMan),
-      BuildEnemy(Enemy.LightClone),
-      BuildEnemy(Enemy.LightHound),
-      BuildEnemy(Enemy.LightBeast),
-      BuildEnemy(Enemy.HatMan),
-      BuildEnemy(Enemy.Alleyway),
       BuildEnemy(Enemy.CondensedSlime),
-      BuildEnemy(Enemy.TunnelSludge),
     ];
   }
 }

@@ -18,14 +18,12 @@ export abstract class EnemyBase {
 
   public abstract Regen: Decimal;
   public abstract Resistances: Decimal[];
+
   public CanAttack: boolean = false;
   public CanParry: boolean = $state(false);
-
   public DamageMultiplier: MultiplierBase = MultiplierBase.default();
   public AttackSpeedMultiplier: MultiplierBase = MultiplierBase.default();
 
-  protected _timer: any = null;
-  protected _timeLeft: number = 0;
   public TakeDamage(damage: Decimal): void {
     if (damage.lte(0)) return;
 

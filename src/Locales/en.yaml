@@ -121,9 +121,8 @@ combat:
       lore: |
     - name: Tunnel sludge
       lore: |
+        Feature Unlocked: [Leveling]
     - name: Mutated Rat
-      lore: |
-    - name: Bad Bat
       lore: |
     - name: Feral Doggo
       lore: |
@@ -132,10 +131,24 @@ combat:
         Item Unlocked: [Cracked Pendant]
     - name: Sludge Golem
       lore: |
-    - name: Purple humanoid
-      lore: |
     - name: Sludge Abomination
       lore: | 
+        Area Unlocked: [Loop]
+        - fmi to myself: this scaling will be exponential
+
+    - name: Catacombs Protector
+      lore: |
+    - name: Skeleton Puppet
+      lore: |
+    - name: Weeping spirit 
+      lore: |
+    - name: Lost Spirit
+      lore: |
+    - name: Sludge Knight 
+      lore: |
+    - name: Guardian of the threshold
+      lore: |
+        Feature Unlocked: [Rebirth]
         Area Unlocked: [Farm]
 
     - name: Animated Scarecrow
@@ -151,39 +164,9 @@ combat:
       lore: |
     - name: Cow Beast
       lore: |
-    - name: Twin Cows
+    - name: Twin Cows - titan
       lore: |
         Area Unlocked: [Catacombs]
-
-    - name: Catacombs Protector
-      lore: |
-    - name: Skeleton Puppet
-      lore: |
-    - name: Weeping spirit 
-      lore: |
-    - name: Sludge Knight 
-      lore: |
-    - name: Guardian of the threshold
-      lore: |
-        Feature Unlocked: [Rebirth]
-
-    - name: Latera 
-      lore: |
-        2nd boss: unlock [Unlocks: Purity Source]
-        start of latera arc 
-        - unlocks journal 
-        - shop 
-        - adventure 
-        rebirth at boss 19
-        15 bosses in total
-    - name: Albeitz Catacombs
-      lore: |
-        - first boss rebirth
-        - 5 bosses in total 
-    - name: Latera pt2
-      lore: |
-        - 10 bosses, latera destroyed, some people die
-        - end of pre alpha
 
 areas:
   - name: Kuala Lumpur
