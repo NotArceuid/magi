@@ -76,4 +76,5 @@ export class MultiplierBase {
 export enum MultiplierPrioritySchemeEnum {
   Inventory = 0,
   Leveling = 1,
+  Ability = 2,
 }

@@ -31,12 +31,12 @@ export class Player {
     cultivationamount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   });
 
-  public readonly HealthRegen = MultiplierBase.default();
-  public readonly AtkSpeedDivider = MultiplierBase.default();
   public readonly DamageMultiplier = MultiplierBase.default();
   public readonly AttackSpeedMultiplier = MultiplierBase.default();
   public readonly HealthMultiplier = MultiplierBase.default();
+  public readonly HealthRegen = MultiplierBase.default();
   public readonly EnergyCapMultiplier = new MultiplierBase(10000);
+  public readonly DamageReduction = MultiplierBase.default();
   public readonly Resistance: MultiplierBase[] = [
     MultiplierBase.default(),
     MultiplierBase.default(),
@@ -45,6 +45,8 @@ export class Player {
     MultiplierBase.default()
   ]
 
+  // only if there's a { get; set; }
+  // god i miss c# so much
   get Name() { return this._player.Name; }
   set Name(val) { this._player.Name = val; }
   get Money() { return this._player.Money; }
@@ -136,7 +138,8 @@ export class Player {
 
   public TakeDamage(damage: Decimal): void {
     if (damage.lte(0)) return;
-    this.Health.Value = Decimal.max(Decimal.ZERO, this.Health.Value.minus(damage));
+
+    this.Health.Value = Decimal.max(Decimal.ZERO, this.Health.Value.sub(damage.mul(Decimal.sub(1, this.DamageReduction.Get()))));
   }
 }
 

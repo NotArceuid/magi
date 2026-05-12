@@ -21,7 +21,7 @@ export class Combat {
 
   constructor(player: Player) {
     this.Abilities = $state(
-      [undefined!, AbilityRegistry[AbilityEnum.Parry](player), undefined!, undefined!]
+      [undefined!, AbilityRegistry[AbilityEnum.Block](player), undefined!, undefined!]
     );
     this.SwitchAbility = [AbilityRegistry[AbilityEnum.SwitchPurity](player), undefined, undefined, undefined, undefined]
     this.AbilityMap = [[AbilityRegistry[AbilityEnum.FirePurity](player), undefined!, undefined!]];

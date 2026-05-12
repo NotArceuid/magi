@@ -15,7 +15,7 @@
 	let current_enemy = $derived(Game.Adventure.CurrentEnemy);
 	let show_lore = $state(false);
 
-	let mobile_view = $state("combat"); // 'combat' | 'lore' | 'logs'
+	let mobile_view = $state("combat");
 	let show_mobile_menu = $state(false);
 	let hovered_ability = $state<AbilityBase>();
 
@@ -230,8 +230,9 @@
 		>
 			<div class="flex flex-col flex-1 min-w-0 min-h-0">
 				<div class="flex items-center gap-2 p-2 shrink-0 flex-wrap">
+					<!-- svelte-ignore a11y_consider_explicit_label -->
 					<button
-						class="w-14 h-14 2xl:w-20 2xl:h-20 rounded-full shrink-0 border relative overflow-hidden"
+						class="w-14 h-14 2xl:w-20 2xl:h-20 rounded-full shrink-0 border relative overflow-hidden flex justify-center items-center"
 						onclick={() => Game.Combat.Abilities[0].Fire()}
 						onmouseover={() => {
 							hovered_ability = Game.Combat.Abilities[0];
@@ -249,10 +250,7 @@
 							hovered_ability = undefined;
 						}}
 					>
-						<img
-							src={Game.Combat.Abilities[0].Icon}
-							alt={$_(Game.Combat.Abilities[0].Name)}
-						/>
+						{$_(Game.Combat.Abilities[0].Name ?? "")}
 						<div
 							class="absolute bottom-0 left-0 w-full {element_color_map[
 								Game.Combat.Elements
@@ -266,8 +264,11 @@
 						{#each Game.Combat.Abilities as ability, idx}
 							{#if idx !== 0}
 								<button
-									class="h-10 w-10 2xl:h-16 2xl:w-16 border relative overflow-hidden"
-									onclick={ability?.Fire}
+									class="h-10 w-10 2xl:h-16 2xl:w-16 border relative overflow-hidden flex justify-center items-center {idx ===
+										1 && current_enemy?.CanParry
+										? 'ring-1 ring-yellow-500 shadow-2xl'
+										: ''}"
+									onclick={() => ability?.Fire()}
 									onmouseover={() => {
 										hovered_ability = ability;
 									}}
@@ -284,12 +285,13 @@
 										hovered_ability = undefined;
 									}}
 								>
-									<img src={ability?.Icon ?? ""} alt={ability?.Name ?? ""} />
+									{$_(ability?.Name ?? "")}
 									{#if (ability?.CooldownLeft ?? 0) > 0}
 										<div
-											class="absolute bottom-0 left-0 w-full {element_color_map[
-												Game.Combat.Elements
-											]} pointer-events-none"
+											class="absolute bottom-0 left-0 w-full pointer-events-none
+                      {idx === 1
+												? 'bg-blue-600/40'
+												: element_color_map[Game.Combat.Elements]}"
 											style="height: {((ability?.CooldownLeft ?? 0) /
 												(ability?.Cooldown ?? 1)) *
 												100}%"

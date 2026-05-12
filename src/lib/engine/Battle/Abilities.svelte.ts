@@ -1,11 +1,9 @@
 import type { Player } from "../Player.svelte";
-import type { ReactiveText } from "../utils/ReactiveText.svelte";
 import type { EnemyBase } from "./Enemies.svelte";
 
 export interface IAbility {
   Name: string;
   Description: string;
-  Icon: string;
 
   Fire(enemy: EnemyBase): void;
   Cooldown: number;
@@ -17,9 +15,7 @@ export abstract class AbilityBase implements IAbility {
   public SkillInfo: [string, any] | undefined;
 
   public abstract InactiveDescription: string;
-  public abstract Icon: string;
   public abstract Fire(): void;
-  public abstract EffectText(): ReactiveText;
 
   public abstract Cooldown: number;
   public IsUnlocked: boolean = $state(false);

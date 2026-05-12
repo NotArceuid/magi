@@ -58,12 +58,12 @@ skills:
     description: How tf did you managed to access this??
   block: 
     name: Block 
-    description: Block your next attack, reducing the effectiveness of the enemy attack by {amount}%. Block at the right time to parry the enemy's attack.
-  parry: 
-    name: Parry
-    description: | 
-      Fire a shot from your gun at the right moment. 
-      Dealing damage equivalent to what you would normally did with the big button on the left.
+    description: |
+      Block the enemy's attack, reducing incoming damage by 40%. Time the block right to parry.
+
+      On parry: Reduce incoming damage by 60% and fire once ignoring any cooldowns.
+
+      Dear oh dear.. what was it, the hunt? No matter. 
 
   switch_purity: 
     name: Attune Purity
