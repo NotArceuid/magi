@@ -54,6 +54,9 @@
 				</div>
 
 				<div class="flex flex-row h-full min-h-0">
+					<div class="hidden lg:block p-3 border-r">
+						<StatsBar />
+					</div>
 					<div class="p-3 w-full overflow-hidden flex flex-col min-h-0">
 						{#if $page.route.id === "/" || $page.route.id === "/battle"}
 							<div class="flex flex-row space-x-4 text-center text-sm shrink-0">
@@ -83,9 +86,6 @@
 					>
 						Stats
 					</button>
-					<div class="hidden lg:block p-3 border-l">
-						<StatsBar />
-					</div>
 				</div>
 				<div class="absolute bottom-5 right-5">
 					{#each notificationList as notification}

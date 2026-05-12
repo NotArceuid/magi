@@ -1,26 +1,26 @@
 import { ItemBase, ItemType } from "$lib/engine/Inventory/InventoryRepo.svelte";
 import { Game } from "$lib/engine/stores.svelte";
 
-export enum SourceEnum { inventory, equipment, refine }
+export enum SourceEnum { inventory, equipment, crafting }
 type Source =
   | { type: SourceEnum.inventory; index: number }
   | { type: SourceEnum.equipment; slot: ItemType }
-  | { type: SourceEnum.refine; slot: number };
+  | { type: SourceEnum.crafting; slot: number };
 
 export const dragStore = $state<{
   drag_item: { item: ItemBase, source: Source } | null;
   hover_item: ItemBase | null;
 
-  refineSlot1: ItemBase | null;
-  refineSlot2: ItemBase | null;
-  refineResult: ItemBase | null;
+  craftingSlot1: ItemBase | null;
+  craftingSlot2: ItemBase | null;
+  craftingResult: ItemBase | null;
 }>({
   drag_item: null,
   hover_item: null,
 
-  refineSlot1: null,
-  refineSlot2: null,
-  refineResult: null
+  craftingSlot1: null,
+  craftingSlot2: null,
+  craftingResult: null
 });
 
 export function canEquip(item: any, slot: ItemType): boolean {
@@ -67,14 +67,14 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
           Game.Inventory.Set(self.index, drag_item.item);
         }
 
-      } else if (drag_item.source.type === SourceEnum.refine) {
-        const { slot: refineSlot } = drag_item.source;
+      } else if (drag_item.source.type === SourceEnum.crafting) {
+        const { slot: craftingSlot } = drag_item.source;
         if (targetItem) {
           Game.Inventory.Set(self.index, drag_item.item);
-          setRefineSlot(refineSlot, targetItem);
+          setcraftingSlot(craftingSlot, targetItem);
         } else {
           Game.Inventory.Set(self.index, drag_item.item);
-          setRefineSlot(refineSlot, null);
+          setcraftingSlot(craftingSlot, null);
         }
       }
       break;
@@ -88,10 +88,10 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
         Game.Inventory.RemoveItem(drag_item.source.index);
         Game.Inventory.EquipItem(targetSlot, drag_item.item);
 
-      } else if (drag_item.source.type === SourceEnum.refine) {
+      } else if (drag_item.source.type === SourceEnum.crafting) {
         if (!canEquip(drag_item.item, targetSlot)) break;
         Game.Inventory.EquipItem(targetSlot, drag_item.item);
-        setRefineSlot(drag_item.source.slot, null);
+        setcraftingSlot(drag_item.source.slot, null);
 
       } else if (drag_item.source.type === SourceEnum.equipment) {
         const sourceSlot = drag_item.source.slot;
@@ -116,14 +116,14 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
       break;
     }
 
-    case SourceEnum.refine: {
-      const targetRefineSlot = self.slot;
-      const currentInRefine = getRefineSlot(targetRefineSlot);
+    case SourceEnum.crafting: {
+      const targetcraftingSlot = self.slot;
+      const currentIncrafting = getcraftingSlot(targetcraftingSlot);
 
       if (drag_item.source.type === SourceEnum.inventory) {
-        setRefineSlot(targetRefineSlot, drag_item.item);
-        if (currentInRefine) {
-          Game.Inventory.Set(drag_item.source.index, currentInRefine);
+        setcraftingSlot(targetcraftingSlot, drag_item.item);
+        if (currentIncrafting) {
+          Game.Inventory.Set(drag_item.source.index, currentIncrafting);
         } else {
           Game.Inventory.RemoveItem(drag_item.source.index);
         }
@@ -131,18 +131,18 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
       } else if (drag_item.source.type === SourceEnum.equipment) {
         const equipSlot = drag_item.source.slot;
         Game.Inventory.UnequipItem(equipSlot);
-        setRefineSlot(targetRefineSlot, drag_item.item);
-        if (currentInRefine && canEquip(currentInRefine, equipSlot)) {
-          Game.Inventory.Equipment[equipSlot] = currentInRefine;
-          currentInRefine.OnEquip();
-        } else if (currentInRefine) {
-          Game.Inventory.GiveItem(currentInRefine.ItemEnum);
+        setcraftingSlot(targetcraftingSlot, drag_item.item);
+        if (currentIncrafting && canEquip(currentIncrafting, equipSlot)) {
+          Game.Inventory.Equipment[equipSlot] = currentIncrafting;
+          currentIncrafting.OnEquip();
+        } else if (currentIncrafting) {
+          Game.Inventory.GiveItem(currentIncrafting.ItemEnum);
         }
 
-      } else if (drag_item.source.type === SourceEnum.refine) {
-        if (drag_item.source.slot === targetRefineSlot) break;
-        setRefineSlot(targetRefineSlot, drag_item.item);
-        setRefineSlot(drag_item.source.slot, currentInRefine);
+      } else if (drag_item.source.type === SourceEnum.crafting) {
+        if (drag_item.source.slot === targetcraftingSlot) break;
+        setcraftingSlot(targetcraftingSlot, drag_item.item);
+        setcraftingSlot(drag_item.source.slot, currentIncrafting);
       }
       break;
     }
@@ -152,20 +152,17 @@ export function on_drop(drag_item: { item: ItemBase, source: Source } | null, se
 }
 
 // using non zero indexing because im evil hehe
-function getRefineSlot(slot: number): ItemBase | null {
-  return slot === 1 ? dragStore.refineSlot1 : dragStore.refineSlot2;
+function getcraftingSlot(slot: number): ItemBase | null {
+  return slot === 1 ? dragStore.craftingSlot1 : dragStore.craftingSlot2;
 }
-function setRefineSlot(slot: number, item: ItemBase | null) {
-  if (slot === 1) dragStore.refineSlot1 = item;
-  else dragStore.refineSlot2 = item;
+
+function setcraftingSlot(slot: number, item: ItemBase | null) {
+  if (slot === 1) dragStore.craftingSlot1 = item;
+  else dragStore.craftingSlot2 = item;
 }
 export function drag_over(e: DragEvent) {
   e.preventDefault();
 }
-
-let ghostEl: HTMLElement | null = null;
-let touchOffsetX = 0;
-let touchOffsetY = 0;
 
 export function touch_start(
   item: ItemBase | null,
@@ -173,47 +170,16 @@ export function touch_start(
   e: TouchEvent,
 ) {
   if (!item) return;
+
   dragStore.drag_item = { item, source };
   dragStore.hover_item = item;
 
-  const touch = e.touches[0];
-  const target = e.currentTarget as HTMLElement;
-  const rect = target.getBoundingClientRect();
-  touchOffsetX = touch.clientX - rect.left;
-  touchOffsetY = touch.clientY - rect.top;
-
-  ghostEl = target.cloneNode(true) as HTMLElement;
-  Object.assign(ghostEl.style, {
-    position: "fixed",
-    pointerEvents: "none",
-    zIndex: "9999",
-    opacity: "0.75",
-    width: `${rect.width}px`,
-    height: `${rect.height}px`,
-    left: `${touch.clientX - touchOffsetX}px`,
-    top: `${touch.clientY - touchOffsetY}px`,
-  });
-
-  document.body.appendChild(ghostEl);
-  document.addEventListener("touchmove", _touch_move, { passive: false });
   document.addEventListener("touchend", _touch_end, { once: true });
 
   e.preventDefault();
 }
 
-function _touch_move(e: TouchEvent) {
-  if (!ghostEl) return;
-  const touch = e.touches[0];
-  ghostEl.style.left = `${touch.clientX - touchOffsetX}px`;
-  ghostEl.style.top = `${touch.clientY - touchOffsetY}px`;
-  e.preventDefault();
-}
-
 function _touch_end(e: TouchEvent) {
-  ghostEl?.remove();
-  ghostEl = null;
-  document.removeEventListener("touchmove", _touch_move);
-
   if (!dragStore.drag_item) return;
 
   dragStore.hover_item = null;
@@ -225,7 +191,7 @@ function _touch_end(e: TouchEvent) {
   ) as HTMLElement | null;
 
   const dropTarget = el?.closest<HTMLElement>(
-    "[data-inventory],[data-slot],[data-refine]",
+    "[data-inventory],[data-slot],[data-crafting]",
   );
 
   if (!dropTarget) {
@@ -233,15 +199,12 @@ function _touch_end(e: TouchEvent) {
     return;
   }
 
-  const { inventory, slot, refine } = dropTarget.dataset;
+  const { inventory, slot, crafting } = dropTarget.dataset;
   let targetSource: Source | null = null;
 
-  if (inventory !== undefined)
-    targetSource = { type: SourceEnum.inventory, index: +inventory };
-  else if (slot !== undefined)
-    targetSource = { type: SourceEnum.equipment, slot: +slot as ItemType };
-  else if (refine !== undefined)
-    targetSource = { type: SourceEnum.refine, slot: +refine };
+  if (inventory !== undefined) targetSource = { type: SourceEnum.inventory, index: +inventory };
+  else if (slot !== undefined) targetSource = { type: SourceEnum.equipment, slot: +slot as ItemType };
+  else if (crafting !== undefined) targetSource = { type: SourceEnum.crafting, slot: +crafting };
 
   if (targetSource) on_drop(dragStore.drag_item, targetSource);
   else drag_end()
@@ -258,7 +221,6 @@ export function lockScrollWhileDragging(node: HTMLElement) {
 export function drag_end() {
   dragStore.drag_item = null;
 }
-
 
 export function on_hover(item: ItemBase | null) {
   dragStore.hover_item = item;

@@ -26,12 +26,11 @@ export enum ItemType {
 
 // TODO: Add colors when these elements are added
 enum Color {
-  Base = "text-white",
-  Red = "", // fire
-  Blue = "", // Water
-  Green = "", // Earth
-  Gray = "", // Air
-  Purple = "", // Space  
+  Purity = "text-white",
+  Crimson = "", // fire
+  Azure = "", // Water
+  Emerald = "", // Earth
+  Spectral = "", // Air
 }
 
 export abstract class ItemBase {
@@ -141,7 +140,7 @@ class BrokenPendant extends ItemBase {
       },
       AllocationTarget: 10,
       EquipmentEffect: EquipmentEffect.Damage,
-      Color: Color.Base,
+      Color: Color.Purity,
       LinkCap: 6
     }));
 
@@ -151,7 +150,7 @@ class BrokenPendant extends ItemBase {
       },
       AllocationTarget: 10,
       EquipmentEffect: EquipmentEffect.Defence,
-      Color: Color.Base,
+      Color: Color.Purity,
       LinkCap: 6
     }))
 

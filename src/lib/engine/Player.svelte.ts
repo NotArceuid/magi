@@ -2,7 +2,7 @@ import { Progress, type IProgress } from "$lib/components/common/IProgress.svelt
 import type { Engine } from "./Engine.svelte.ts";
 import type { Saves } from "./Saves.ts";
 import { Decimal } from "./utils/BreakInfinity/Decimal.svelte.ts";
-import { MultiplierBase, MultiplierType, type Multiplier } from "./utils/Multipliers.svelte.ts";
+import { MultiplierBase, MultiplierType } from "./utils/Multipliers.svelte.ts";
 
 export class Player {
   private _player = $state<IPlayer>({
@@ -19,7 +19,7 @@ export class Player {
     },
     Energy: {
       Max: new Decimal(1),
-      Min: new Decimal(0),
+      Min: new Decimal(1),
       Value: new Decimal(1),
     },
     RebirthCount: 0,
@@ -37,6 +37,13 @@ export class Player {
   public readonly AttackSpeedMultiplier = MultiplierBase.default();
   public readonly HealthMultiplier = MultiplierBase.default();
   public readonly EnergyCapMultiplier = new MultiplierBase(10000);
+  public readonly Resistance: MultiplierBase[] = [
+    MultiplierBase.default(),
+    MultiplierBase.default(),
+    MultiplierBase.default(),
+    MultiplierBase.default(),
+    MultiplierBase.default()
+  ]
 
   get Name() { return this._player.Name; }
   set Name(val) { this._player.Name = val; }
@@ -111,11 +118,6 @@ export class Player {
 
 
     this.Energy = new Progress(this._player.Energy, MultiplierBase.default(), this.EnergyCapMultiplier);
-    this._engine.Tick.add((param) => {
-      if (param.total_ticks % (60 - this.EnergySpeed.Get().toNumber()) === 0) {
-        this.Energy.Value = Decimal.min(this.Energy.Max, this.Energy.Value.plus(this.EnergyGain.Get()));
-      }
-    });
   }
 
   public HealPlayer() {

@@ -41,6 +41,47 @@ leveling:
         description: Lock your enemies, making them unable to move or counter attack. Jiu jitsu style.
   requirement: "{amount} {prev} Needed"
 
+skills: 
+  fire_crimson: 
+    name: Fire Crimson 
+    description: Fire a bullet imbued with the scorching heat of Crimson Source. The searing pain caused by the bullet will surely burn away all foe in your path.
+  fire_purity: 
+    name: Click me!
+    description: | 
+      Fire a bullet of pure source. For the light of source shines luminously as it descends to become one of the four rays. blah blah balh... 
+
+      Click this do damage ok?
+    inactive_description: How tf did you find this????????/
+    skill_info: Damage
+  attack: 
+    name: Attack 
+    description: How tf did you managed to access this??
+  block: 
+    name: Block 
+    description: Block your next attack, reducing the effectiveness of the enemy attack by {amount}%. Block at the right time to parry the enemy's attack.
+  parry: 
+    name: Parry
+    description: | 
+      Fire a shot from your gun at the right moment. 
+      Dealing damage equivalent to what you would normally did with the big button on the left.
+
+  switch_purity: 
+    name: Attune Purity
+    description: |
+      The white light glimers upon the mark inscribed on your left hand. Undifferentiated and neutral. It is the pure source of which all inhabitants of Lemia seeks.
+
+      Press this to switch (or if you are a lore GEEK 🤓), attune to Purity. Currently it doesn't do anything if you havent unlocked other rays though. 
+
+    inactive_description: stinky smelly nerds 
+    skill_info: 
+  none: |
+    You have NOT selected a skill, You see that BIG ROUND button up there??? click it. to start dealing damage
+
+    mkay :) have fun hehe
+  info: Useful Info
+  cooldown: Cooldown
+  no_skill: No stats :(
+
 items: 
     stats: 
       energy_speed: Energy Speed
@@ -76,339 +117,55 @@ items:
 
 combat:
   enemies:
-    - name: Young Man
-      lore: |
-        Under the florescent office lights in an empty boardroom, Everyone had left. Except for me.
-        My eyes twitched. I stretched my back against the office chair. Arms up high, while releasing the tension that have been building up since morning.
-
-        "Almost fell asleep didn't i?" 
-
-        "These meetings have been really killing me lately, I should get some lunch. Next one is in one hour. 
-        Should be enough to go for a little walk. " 
-
-        I closed my laptop and left the comfortable leather office chair. I stretched my legs then walked out of the boardroom.
-        The hallway was empty. Fluorescent lighs hummed overhead. I pressed the elevator button and waited. 
-
-        Ding. 
-
-        The doors opened. I stepped inside, pressed "G" and the elevator descended. 
-        The doors opened again. Lobby, Empty desks. A security guard nodding off near the entrance. 
-
-        "Going for lunch i see. Be careful out there {player}, There's been cases of people going missing lately." 
-        "Don't want you to end up like your crush." said the security while maintaining a cheerful attitude. 
-
-        "Sure man, I'll buy you a sandwich later. " i said while having the warm outside air hitting my face.
-
-        Walking down the familiar streets of Kuala Lumpur, the birds chirps while the winds gently sways the trees that lines the street. 
-        With each breeze of air, more leaves are carpeting the concrete pavement. Painting the otherwise gray sidewalk green and brown. 
-
-        *crack* *crack* with each step i take, the leaves crunches beneath my feet.  
-
-        "Just a right turn and a street to cross. "
-        "Almost there... " The street light was still green. I stopped to wait while hearing a series of cars zooming by while being subtly pulled towards the street with each passing car.
-
-        "This isn't the first time I've been here." I thought to myself.
-        "Since childhood, I've walked down this street. Each time discovering something new, something exciting, something worth living up to."
-
-        But now.. 
-        "I... can't remember when's the last time i genuinely want to explore..."
-        "I'm just tired"
-
-        The lights turned red, but i don't want to cross. Still stuck in thought. I hesistated.
-
-        And just when I was about to cross the road, a shadow swallowed out the sun. 
-        Before I could even look up, a young man wearing a strange outfit plummeted from the clear blue sky and crashed onto the stone pavement right in front of me. 
-
-        There wasn't any sound of impact nor was there any subtle breeze produced by it.
-
-        "You okay?" I calmly asked while nudging his shoulders.
-        No respond.
-
-        Scanning his body, i saw his left hand bore a strange sigil consisting of a triangle with a T connecting it's base. 
-        His right hands stretching towards me as if he was trying to give me something. 
-
-        I saw within his hand was a strange glowing silver pendant. With it's middle inset with a green gemstone. 
-        Slowly pulsing with radiant green light.
-
-        I hesistated for a moment before bending down to pry the pendant from his hand and the instant my fingers touched the cold metal. 
-
-        I felt as if i became... stronger
-
-    - name: Light Clone
-      lore: |
-        [Feature Unlock: Leveling]
-
-        "Is this what it feels like to be alive?"
-
-        Still half kneeled, I slipped the pendant into my front pocket. In case if the young man woke up.
-        Looking around, it seems as though no one reacted to the incident earlier. 
-        People still crossed the street where i'd been standing on, and the sounds of cars with their roaring engines started to fill the streets.
-
-        The lights had turned green. The flock of people funelling at the crossing started to grow.  
-        
-        In the corner of my eyes, the glossy finish of a newly polished black leather shoe reflected upon my retinas. Perfectly overlaping with my left hand.  
-
-        "What the f*ck? Why is his leg inside me?", i said while fully in shock.
-        "Must be the pendant. Need to get rid of it"
- 
-        But just before i was able to take the pendant out from my pocket. Within the crowd on the other side of the street of people eagerly waiting for an opportunity to cross the road,
-        Right in front of the convenience store, there stood a figure wearing a wide-brimmed hat, with two faint yellow dots as eyes staring at me.
-        About the same height as people around him. His clothing was like that of a man freshly out of a formal ceremony.
-        With a black three-piece suit along with a mark on his left hand similar in color to the man from earlier but with a more complex design. 
-        
-        His mark subtly radiating a soft incandescent yellow light.
-
-        I was stunned.
-
-        With the desperation to return back to normal life overwhelming me, i replied to him in a loud voice: "Who are you, and why am i here?" 
-
-        But just before i was able to get another reply from him. The man peeled itself from his body and created a copy of himself, its shape looking just like him. 
-        Only that it's made of soft incandescent yellow light. 
-    
-        It then started sprinting towards me.
-        
-        I didn't think. I just ran.
-
-        While running, A branch caught my foot. Luckily I managed to catch myself before hitting the concrete pavement.
-        However a metalic sound pinged against the hard concrete pavement. The pendant, it had fell out of my pocket and cracked. 
-
-        Thinking nothing at first, I picked it up and carelessly tried to slip it back into my pocket, fumbling a several times before eventually succeding.
-        But this delay caused the clone to close the distance between us and with the clone right behind me.
-
-        I tried to sidestep him. He matched me, I tried to run again. His hands reaching for my throat. 
-        I have no choice but to fight.
-    - name: Light Hound 
-      lore: |
-        The light clone fell. I kept running.
-        My head grew lighter and lungs getting colder with each step.
-        The more i ran, the more my blue business suit darkened with sweat, and clinging to my skin like a second layer.
-
-        Snap. I looked back.
-
-        The hat man stood at the junction where the young man's body once was. 
-        For a moment I saw yellow triangles rising from where the body had been. 
-
-        Then the with hatman's right hand being held high as if he had just snapped his fingers.
-        And his left hand was radiating a bright yellow light like that of his clones.  
-
-        The next instant, I heard a howl, like a dog.
-  
-        I looked back again. Besides the hat man, stood a large hound. Reaching half his height,
-        with bright red eyes and bright yellow light similar to the hat man. 
-        Its fur had a slight yellow glow to its tips with its middle being slightly darker though still radiating warm incandescent light.
-
-        A moment later the hound chased after me. 
-        I ran, while phasing through every human that i came in contact with.
-        Within my panicked state, I made a wrong turn. 
-
-        The smell of garbage was sharp to my nose, the AC heat pressed against my cold and sweat-soaked suit. 
-        Dead end alley, graffiti, garbage smell, the constant hum, and quiet dripping of condensate enough to let moss and ferns to claim the street.
-
-        "I'm done for..."
-        "No time for processing... Defend first."
-
-    - name: Light Beast 
-      lore: | 
-        [Feature Unlock: Inventory]
-
-        With the light hound now gone, I hid behind the sides of a dumpster, with two red brick wall surrounding me, providing me with a minor sense of security.
-        Trying to catch my breath while I still heard the hat man's footsteps.
-
-        "Why is he so insistent on trying to kill me??"
-        "Does he want to absorb me too?!?", I asked myself with panic within my eyes. 
-
-        The cold breeze slipped through the air entered through the open side of the alley. Making me feel vulnerable.
-        But just as I was about to ask another question.
-
-        I peeked around the dumpster and saw, on one of the AC units, a large light ape hanging from the metal racks used to secure the units. 
-        Its appearance was similar to that of the hat man's summons from earlier. 
-
-        It dropped down. Lunged at me. And pinned me to the ground. 
-        I closed my eyes, awaiting my last moment of existence. 
-
-        Then, from within my closed eyelids, I saw green light. 
-        Opening my eyes, and i saw the pendant, it pulsated an intense emerald color radiating from inside its cracked gemstone. 
-        Its silver housing crumbled with only the chain remain intact.
-
-        "What is this thing exactly?"
-        "And the beast... It's dazed?"
-
-        I quickly freed myself from the beast's grasp. And started attacking it after placing the pendant back into my pocket.
-        
-    - name: Hat man 
-      lore: |
-        The beast fell. Like the others. 
-
-        At the start of the alley, there he stood. The hat man himself. 
-        He slowly approached me. Phasing through every one like me.
-
-        The sounds of his footsteps grew louder and more intense, mingling with the pounding of my heart against my ribs. 
-        Each beat getting heavier. The cars zooming by on the street beyond made everypass seemed louder than the last.
-        
-        "What should I do now??"
-        "There's no way to climb out of here, no way to leave this place." 
-        "I'll just have to run around him."
-
-        My feet moved. First step. Second step. Third step, and with each step, I ran faster and faster.
-        I never ran this fast in my life. My heart pounded, not from exhaustion but from fear.
-
-        I felt a tap on my shoulder. Twice.  
-         
-        ...
-
-        *Whoosh*
-        He grabbed me. The world blurred. When it stopped, I was pinned against the wall at the end of the alley.
-
-        With him right in front of me, I saw his face, his eyes were teary.
-        "I had to. Goodbye" he said.
-
-        He solidified a spear made out of pure light and held his right arm up, about to stab me.
-
-        When suddenly, I heard a voice. 
-        "Move right.". 
-
-        I obeyed. But just before moving my upper body to the right, I saw in the space between man's head and his right arm.
-        A blonde man aiming what looks to be like a wooden musket-like rifle at him from the rooftop of the building directly opposite us.
-
-        The next second, A bullet hole appeared on the right man's arm. With the spear fading in intensity.
-        Then the next, another bullet hole on his left shoulders, barely scratching my left shoulders.
-
-        "He's weak now, go"
-
-    - name: Alleyway
-      lore: |
-        "It won't be the end,", he said while escaping by jumping over the wall to my back. 
-
-        The next moment I saw the blonde man jumping off from the building's rooftop. He seemed to not be hurt by the fall.
-        He then slowly walked towards me, while phasing through everyone on the street and stopping for the traffic light to turn red.
-
-        "It seems like we could only phase through living beings." I thought.
-
-        He crossed the street and appeared right in front of me. I managed to get a closer look at his appearance. Short blonde hair, rugged look, maybe mid twenties. 
-        He wore a three piece Victorian suit along with a leather trenchcoat, a gold chain hanging from his vest, 
-        A pocket watch maybe. His eyes were like azure gemstones, shining with trust and purity.
-
-        He seemed to have a frustrated look on his eyes. Was he trying to hunt down the hat man?
-
-        "Nice to meet you, shifter.", he said while having a subtle smile.
-
-        "Who are you?" I asked. 
-        "I'm Laszlo, a shifter like you. It isn't safe out here, you should return to Latera first.", he chuckled.
-
-        "Um... what?" I asked with a confused look in my eyes.
-
-        "Hmmm. A newcomer eh?" 
-        "No worries, I'll explain along the way. Follow me", he said turning towards the street.
-
-        I glanced back at the alley. The hat man was gone. I followed.
-
     - name: Condensed slime
       lore: |
-        [Item given: Pistol]
-
-        "Where are you taking me to exactly? " with me still not fully trusting Laszlo and being cautious.
-        "Astra. Refuge for hunters like me and possibly.. you :)" said Laszlo with a slighly happy look within his eyes.
-
-        Walking down the street of once Kuala Lumpur, I stumbed across my workplace again. Waving goodbye to the security guard.
-
-        "Is that where you once work?" asked Laszlo. 
-
-        "Yeah. I'll surely miss this place" said in a sarcastic tone. 
-
-        "We all hate work don't we, back then i used to waste my life away, now i'm throwing my life away... haha"
-        "Atleast it's way more thrilling hunting for entities than sitting in a cubicle all day."
-
-        I looked at Laszlo while his raw laughter brightens up the mood, distracting me from what i had experienced.
-
-        "So.. Laszlo, what is this place?"
-
-        As Laszlo heard my question, his laughter slowly transitioning into a casual tone. With his face turning into a neutral look.
-
-        "Oh. yeah right, i haven't explained... my bad."
-        "This place is called the Bhumi, a plane above and below the physical plane. Of which earth and the universe as you used to know it resides. "
-        "It's generally not recommended to come here unless you're hunting for source or something"
-
-        "Source?" i asked with a slightly confused look on my face. 
-
-        "Source is the lifeblood of entities in Latera. Without it, they disappear back into the etheric sea."
-
-        With the cars continue to zoom by and people walking on the street. Living their daily life, perfectly unaware of this dimension of existance 
-        that they'll never experience. Laszlo looked at me with a serious look within his eyes.
-        
-        "And us, shifters, have the innate ability to derive source from the surrounding."
-        "Be careful out there, there are rituals used to transfer this ability from shifter to entities. "
-
-        "This process almost certainly results in the shifter's losing his power or succumbing to madness. "
-        "Such an event is enough to produce destruction from leveling an entire city to destroying an entire continent. "
-
-        "Listen, we shifters are few and far between. Especially after the Mythos incident. Don't die. Here.. take this my spare gun, use it to protect yourself."
-
-        Laszlo hands you the pistol, it's wooden stock and metalic sides felt oddly warm to the touch. As if it had been used recently. 
-
-        "See that slime over there?" said Laszlo as he points his fingers at the blue colored moving sludge. In between the bush and the bench.
-        "Try it out on him"
-
     - name: Tunnel sludge
       lore: |
-        You aligned the optics of your pistol at the slime, its iron sights perfectly overlaps with the slime's semi-transparent body.
-        "Are you sure i don't need any bullets? " 
-        "Just shoot, they're powered by source. " 
-
-        As your index and middle fingers slowly pressed against the trigger of your pistol. 
-        You felt on your left hand a slight tingle and a white light glowed faintly. 
-
-        Boom
-
-        The gun fired and the slime was instantly destroyed. 
-
-        "Neat right?"
-        "There are better guns out there that do even better stuffs. Such as multishot or god forbids being able to shoot through a hole in the etheric sea."
-
-        Laszlo said to me as if he had witness these things before. 
-
-        "What's wrong with shooting a hole through the etheric sea?"
-        I asked with curiosity in my eyes. 
-
-        "Shooting the etheric sea means allowing the ether to spill over into our world."
-        "Which is not only a nightmare to clean up, also being in contact with ether causes ones to quickly leak their source, shifters and entities alike. "
-
-        "The white light and the tingling on my left hand...  what's that?"
-        "It's the usage of source. What you've witnessed is source in it's unrefracted form. Purity"
-        "There are 5 forms source can be refracted into Crimson, Emerald, Gold, Azure and Purity. "
-        "Each of the forms can vary in intensity and condensation, there are 6 levels of condensation starting from 6 to 0. With each tier unlocking new abilities for the user."
-        "And each refracted source and condensation level will require a different mark. "
-
-        You clasp your hands together, and placed your hands in front of your head. Stopping Laszlo mid sentence.
-
-        "Laszlo... please, i can't keep up"
-
-        "Alright... i still have a little more. Be patient alright? "
-
-        "fine.."
-
-        "So... where were we. Right, the wielder of source is called a mediator. If the names isn't obvious by now... a mediator is someone that mediates the flow of source within the world."
-        "Oh yeah.. each source also have different level of intensity, but these are too subtle for us so we treat it as binary - light and dark. " 
-        "We also usually abbreviate condensation as C of the number of condensation level."
-        "For instance, I'm a C5 dark purity mediator."
-
-        "..." 
-
-        "i'm done. "
-
-        Laszlo laughs a little while looking at my overwhelmed state. 
-
-        "There ahead is where we need to go but it seems as though the road is blocked. You should try shooting it with your gun."
-
-        Said Laszlo as he points his finger in front. While maintaining an encouraging look as if he's trying to improve my skills.
-
     - name: Mutated Rat
       lore: |
-    - name: Feral Hound
+    - name: Bad Bat
       lore: |
-    - name: Rock golem
+    - name: Feral Doggo
       lore: |
-            Unlock adventure: [Kuala Lumpur]
-            KL arc end yayyy
+        Feature Unlocked: [Inventory]
+        Item Unlocked: [Laszlo's Pistol]
+        Item Unlocked: [Cracked Pendant]
+    - name: Sludge Golem
+      lore: |
+    - name: Purple humanoid
+      lore: |
+    - name: Sludge Abomination
+      lore: | 
+        Area Unlocked: [Farm]
+
+    - name: Animated Scarecrow
+      lore: |
+    - name: Pissed off farmer
+      lore: |
+    - name: Deformed chicken
+      lore: |
+        Feature Unlocked: [Crimson]
+    - name: Drunken Cow
+      lore: |
+    - name: Dancing Cow
+      lore: |
+    - name: Cow Beast
+      lore: |
+    - name: Twin Cows
+      lore: |
+        Area Unlocked: [Catacombs]
+
+    - name: Catacombs Protector
+      lore: |
+    - name: Skeleton Puppet
+      lore: |
+    - name: Weeping spirit 
+      lore: |
+    - name: Sludge Knight 
+      lore: |
+    - name: Guardian of the threshold
+      lore: |
+        Feature Unlocked: [Rebirth]
 
     - name: Latera 
       lore: |

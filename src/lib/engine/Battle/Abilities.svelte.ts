@@ -1,34 +1,50 @@
-import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
+import type { Player } from "../Player.svelte";
+import type { ReactiveText } from "../utils/ReactiveText.svelte";
+import type { EnemyBase } from "./Enemies.svelte";
 
 export interface IAbility {
-  Tick(): boolean;
-  DealDamage(): Decimal;
+  Name: string;
+  Description: string;
+  Icon: string;
+
+  Fire(enemy: EnemyBase): void;
+  Cooldown: number;
 }
 
-export abstract class AbilityBase {
-  public abstract Damage: Decimal;
-  public abstract AtkSpeed: Decimal;
-  public CurrentTick: number = 1;
+export abstract class AbilityBase implements IAbility {
+  public abstract Name: string;
+  public abstract Description: string;
+  public SkillInfo: [string, any] | undefined;
 
-  public get BaseTick(): number {
-    const speed = this.AtkSpeed.toNumber();
-    return speed >= 60 ? 1 : Math.max(1, Math.ceil(60 / speed));
+  public abstract InactiveDescription: string;
+  public abstract Icon: string;
+  public abstract Fire(): void;
+  public abstract EffectText(): ReactiveText;
+
+  public abstract Cooldown: number;
+  public IsUnlocked: boolean = $state(false);
+  public Enemy: EnemyBase | undefined = $state()
+
+  protected _cooldownUntil: number = $state(0);
+  protected frozenTime: number = $state(0);
+  protected _player: Player;
+  constructor(player: Player) {
+    this._player = player;
+    setInterval(() => { this._now = Date.now(); }, 100);
   }
 
-  private get DamageMultiplier(): Decimal {
-    return this.AtkSpeed.gt(60) ? this.AtkSpeed.div(60) : Decimal.ONE;
+  protected _now: number = $state(Date.now());
+  public readonly CooldownLeft: number = $derived.by(() => {
+    if (this.frozenTime > 0) return this.frozenTime;
+    return Math.max(0, (this._cooldownUntil - this._now) / 1000);
+  });
+
+  public Freeze(): void {
+    this.frozenTime = this.CooldownLeft;
   }
 
-  public Tick(): boolean {
-    if (this.CurrentTick <= 1) {
-      this.CurrentTick = this.BaseTick;
-      return true;
-    }
-    this.CurrentTick--;
-    return false;
-  }
-
-  public DealDamage(baseDamage: Decimal): Decimal {
-    return baseDamage.mul(this.Damage).mul(this.DamageMultiplier);
+  public Unfreeze(): void {
+    this._cooldownUntil = Date.now() + (this.frozenTime * 1000);
+    this.frozenTime = 0;
   }
 }

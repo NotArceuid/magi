@@ -18,6 +18,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Icon: "enemies/youngman.png",
     Health: new Decimal(25),
     AtkSpeedDivider: new Decimal(7),
+    Resistance: [],
     Damage: new Decimal(0),
     AtkSpeed: new Decimal(0),
     Regen: new Decimal(0),
@@ -29,6 +30,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Icon: "enemies/lightclone.png",
     Health: new Decimal(2.5e4),
     Damage: new Decimal(1e4),
+    Resistance: [],
     AtkSpeedDivider: new Decimal(8),
     AtkSpeed: new Decimal(1),
     Regen: new Decimal(0),
@@ -39,6 +41,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Description: "combat.enemies.2.lore",
     Icon: "enemies/lighthound.png",
     Health: new Decimal(1000),
+    Resistance: [],
     Damage: new Decimal(10),
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(10),
@@ -51,6 +54,8 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Icon: "enemies/lightbeast.png",
     Health: new Decimal(1000),
     Damage: new Decimal(100),
+
+    Resistance: [],
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(100),
     Regen: new Decimal(0),
@@ -63,6 +68,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Health: new Decimal(1000),
     Damage: new Decimal(100),
     AtkSpeed: new Decimal(10),
+    Resistance: [],
     AtkSpeedDivider: new Decimal(100),
     Regen: new Decimal(0),
     OnDeath: () => { },
@@ -75,6 +81,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Damage: new Decimal(100),
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(100),
+    Resistance: [],
     Regen: new Decimal(0),
     OnDeath: () => { },
   },
@@ -87,6 +94,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     AtkSpeed: new Decimal(10),
     AtkSpeedDivider: new Decimal(100),
     Regen: new Decimal(0),
+    Resistance: [],
     OnDeath: () => { },
   },
   [Enemy.TunnelSludge]: {
@@ -96,6 +104,7 @@ export const BattleRegistry: Record<Enemy, IEnemyConfig> = {
     Health: new Decimal(1000),
     Damage: new Decimal(100),
     AtkSpeed: new Decimal(10),
+    Resistance: [],
     AtkSpeedDivider: new Decimal(100),
     Regen: new Decimal(0),
     OnDeath: () => { },
@@ -111,5 +120,6 @@ export interface IEnemyConfig {
   AtkSpeedDivider: Decimal;
   Regen: Decimal;
   Icon: string;
+  Resistance: Decimal[];
   OnDeath?: () => void;
 }

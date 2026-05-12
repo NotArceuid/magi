@@ -7,15 +7,6 @@ export interface GameLoopOptions {
   MaxUpdates?: number;
 }
 
-interface DevHacks {
-  SpeedHack: number;
-  GodMode: boolean;
-  InstantKill: boolean;
-  FreeUpgrades: boolean;
-  SkipLevelUnlock: boolean;
-  InfiniteResources: boolean;
-}
-
 type EngineState = 'STOPPED' | 'RUNNING' | 'PAUSED';
 interface TickParams {
   delta: number;

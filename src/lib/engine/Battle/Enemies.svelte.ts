@@ -11,23 +11,24 @@ export function BuildEnemy(type: Enemy): EnemyBase {
 export abstract class EnemyBase {
   public abstract Health: IProgress;
   public abstract Damage: Decimal;
-  public abstract AtkSpeed: Decimal;
+
   public abstract Name: string;
-  public abstract Regen: Decimal;
   public abstract Description: string;
-  public abstract AtkSpeedDivider: Decimal;
   public abstract Icon: string;
 
-  public Tick(elapsed: number, divider: Decimal = Decimal.ONE): boolean {
-    let tick = Math.floor(divider.div(this.AttackSpeedMultiplier.Get()).toNumber());
-    return elapsed % tick == 0;
-  }
+  public abstract Regen: Decimal;
+  public abstract Resistances: Decimal[];
+  public CanAttack: boolean = false;
+  public CanParry: boolean = $state(false);
 
   public DamageMultiplier: MultiplierBase = MultiplierBase.default();
   public AttackSpeedMultiplier: MultiplierBase = MultiplierBase.default();
 
+  protected _timer: any = null;
+  protected _timeLeft: number = 0;
   public TakeDamage(damage: Decimal): void {
     if (damage.lte(0)) return;
+
     this.Health.Value = Decimal.max(Decimal.ZERO, this.Health.Value.minus(damage));
   }
 
@@ -41,8 +42,8 @@ class BuiltEnemy extends EnemyBase {
   public Health: IProgress;
   public Damage: Decimal;
   public Regen: Decimal;
-  public AtkSpeed: Decimal;
-  public AtkSpeedDivider: Decimal;
+
+  public Resistances: Decimal[];
   public Icon: string;
   private _onDeath: (() => void) | undefined;
 
@@ -55,12 +56,13 @@ class BuiltEnemy extends EnemyBase {
       Max: config.Health,
       Value: config.Health,
     });
+
     this.Icon = config.Icon;
-    this.AtkSpeedDivider = config.AtkSpeedDivider;
     this.Damage = config.Damage;
-    this.AtkSpeed = config.AtkSpeed;
     this._onDeath = config.OnDeath;
     this.Regen = config.Regen;
+
+    this.Resistances = config.Resistance;
   }
 
   public DealDamage(): Decimal {

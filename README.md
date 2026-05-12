@@ -1,4 +1,4 @@
-# Kitaran
+# Somethingsomething idle
 
 Dont play this, everything suck right now
 
@@ -10,12 +10,12 @@ lack of good incrementals
 
 ## Features:
 - Programmer art 
-- Some shitty lore that looks like it's written by a 5 year old to read while you're waiting for the bars to fill up
 - Manual combat that actually have some depth at endgame
 - Some MTX to pay for my college fees (it's not much)
 - A damn cat
 - Handcoded game written at 200wpm using nvim on archbtw
-- also wip
+- tablet screen size is FUCKED
+- mobile is also a little FUCKED but not as FUCKED as tablet
 
 ## What this game will NOT have: 
 - Extraconvolutedskilltreeslikepathofexile

@@ -302,37 +302,37 @@
 								<!-- Slot 1 -->
 								<!-- svelte-ignore a11y_no_static_element_interactions -->
 								<div
-									data-refine="1"
+									data-crafting="1"
 									class="w-18 h-18 border flex items-center justify-center transition-shadow
-                  {dragStore.refineSlot1 ? 'cursor-grab' : ''}
+                  {dragStore.craftingSlot1 ? 'cursor-grab' : ''}
                   {dragStore.drag_item ? drag_indicator : ''}"
 									ondragstart={(e) =>
 										drag_start(
-											dragStore.refineSlot1,
-											{ type: SourceEnum.refine, slot: 1 },
+											dragStore.craftingSlot1,
+											{ type: SourceEnum.crafting, slot: 1 },
 											e,
 										)}
 									ondragend={drag_end}
 									ondragover={drag_over}
 									ondrop={(_) =>
 										on_drop(dragStore.drag_item, {
-											type: SourceEnum.refine,
+											type: SourceEnum.crafting,
 											slot: 1,
 										})}
-									onfocus={() => on_hover(dragStore.refineSlot1)}
-									onmouseover={() => on_hover(dragStore.refineSlot1)}
+									onfocus={() => on_hover(dragStore.craftingSlot1)}
+									onmouseover={() => on_hover(dragStore.craftingSlot1)}
 									onmouseleave={() => stop_hover()}
 									ontouchstart={(e) =>
 										touch_start(
-											dragStore.refineSlot1,
-											{ type: SourceEnum.refine, slot: 1 },
+											dragStore.craftingSlot1,
+											{ type: SourceEnum.crafting, slot: 1 },
 											e,
 										)}
 								>
-									{#if dragStore.refineSlot1}
+									{#if dragStore.craftingSlot1}
 										<img
-											src={dragStore.refineSlot1.Icon_path}
-											alt={$_(dragStore.refineSlot1.Name)}
+											src={dragStore.craftingSlot1.Icon_path}
+											alt={$_(dragStore.craftingSlot1.Name)}
 										/>
 									{/if}
 								</div>
@@ -343,36 +343,36 @@
 								<!-- svelte-ignore a11y_no_static_element_interactions -->
 								<div
 									class="w-18 h-18 border flex items-center justify-center transition-shadow
-                  {dragStore.refineSlot2 ? 'cursor-grab' : ''}
+                  {dragStore.craftingSlot2 ? 'cursor-grab' : ''}
                   {dragStore.drag_item ? drag_indicator : ''}"
-									data-refine="2"
+									data-crafting="2"
 									ondragstart={(e) =>
 										drag_start(
-											dragStore.refineSlot2,
-											{ type: SourceEnum.refine, slot: 2 },
+											dragStore.craftingSlot2,
+											{ type: SourceEnum.crafting, slot: 2 },
 											e,
 										)}
 									ondragend={drag_end}
 									ondragover={drag_over}
-									onfocus={() => on_hover(dragStore.refineSlot2)}
-									onmouseover={() => on_hover(dragStore.refineSlot2)}
+									onfocus={() => on_hover(dragStore.craftingSlot2)}
+									onmouseover={() => on_hover(dragStore.craftingSlot2)}
 									onmouseleave={() => stop_hover()}
 									ondrop={(_) =>
 										on_drop(dragStore.drag_item, {
-											type: SourceEnum.refine,
+											type: SourceEnum.crafting,
 											slot: 2,
 										})}
 									ontouchstart={(e) =>
 										touch_start(
-											dragStore.refineSlot1,
-											{ type: SourceEnum.refine, slot: 2 },
+											dragStore.craftingSlot1,
+											{ type: SourceEnum.crafting, slot: 2 },
 											e,
 										)}
 								>
-									{#if dragStore.refineSlot2}
+									{#if dragStore.craftingSlot2}
 										<img
-											src={dragStore.refineSlot2.Icon_path}
-											alt={$_(dragStore.refineSlot2.Name)}
+											src={dragStore.craftingSlot2.Icon_path}
+											alt={$_(dragStore.craftingSlot2.Name)}
 										/>
 									{/if}
 								</div>
@@ -381,62 +381,62 @@
 							<!-- svelte-ignore a11y_no_static_element_interactions -->
 							<div
 								class="w-18 h-18 border flex items-center justify-center
-                {dragStore.refineResult ? 'cursor-grab' : ''}
+                {dragStore.craftingResult ? 'cursor-grab' : ''}
                 "
 								ondragstart={(e) =>
 									drag_start(
-										dragStore.refineResult,
-										{ type: SourceEnum.refine, slot: 3 },
+										dragStore.craftingResult,
+										{ type: SourceEnum.crafting, slot: 3 },
 										e,
 									)}
 								ondragend={drag_end}
-								onfocus={() => on_hover(dragStore.refineResult)}
-								onmouseover={() => on_hover(dragStore.refineResult)}
+								onfocus={() => on_hover(dragStore.craftingResult)}
+								onmouseover={() => on_hover(dragStore.craftingResult)}
 								onmouseleave={() => stop_hover()}
 							>
-								{#if dragStore.refineResult}
+								{#if dragStore.craftingResult}
 									<img
-										src={dragStore.refineResult.Icon_path}
-										alt={$_(dragStore.refineResult.Name)}
+										src={dragStore.craftingResult.Icon_path}
+										alt={$_(dragStore.craftingResult.Name)}
 									/>
 								{/if}
 							</div>
 
-							<button class="border w-6/12 mt-2">Refine</button>
+							<button class="border w-6/12 mt-2">crafting</button>
 						</div>
 
 						<!-- Mobile Layout -->
 						<div class="flex md:hidden flex-row items-center gap-2">
 							<!-- svelte-ignore a11y_no_static_element_interactions -->
 							<div
-								data-refine="1"
+								data-crafting="1"
 								class="w-14 h-14 border flex items-center justify-center transition-shadow {dragStore.drag_item
 									? drag_indicator
 									: ''}"
 								ondragstart={(e) =>
 									drag_start(
-										dragStore.refineSlot1,
-										{ type: SourceEnum.refine, slot: 1 },
+										dragStore.craftingSlot1,
+										{ type: SourceEnum.crafting, slot: 1 },
 										e,
 									)}
 								ondragover={drag_over}
 								ondrop={(_) =>
 									on_drop(dragStore.drag_item, {
-										type: SourceEnum.refine,
+										type: SourceEnum.crafting,
 										slot: 1,
 									})}
 								ondragend={drag_end}
 								ontouchstart={(e) =>
 									touch_start(
-										dragStore.refineSlot1,
-										{ type: SourceEnum.refine, slot: 1 },
+										dragStore.craftingSlot1,
+										{ type: SourceEnum.crafting, slot: 1 },
 										e,
 									)}
 							>
-								{#if dragStore.refineSlot1}
+								{#if dragStore.craftingSlot1}
 									<img
-										src={dragStore.refineSlot1.Icon_path}
-										alt={$_(dragStore.refineSlot1.Name)}
+										src={dragStore.craftingSlot1.Icon_path}
+										alt={$_(dragStore.craftingSlot1.Name)}
 									/>
 								{/if}
 							</div>
@@ -449,29 +449,29 @@
 									: ''}"
 								ondragstart={(e) =>
 									drag_start(
-										dragStore.refineSlot2,
-										{ type: SourceEnum.refine, slot: 2 },
+										dragStore.craftingSlot2,
+										{ type: SourceEnum.crafting, slot: 2 },
 										e,
 									)}
-								data-refine="2"
+								data-crafting="2"
 								ondragover={drag_over}
 								ondragend={drag_end}
 								ondrop={(_) =>
 									on_drop(dragStore.drag_item, {
-										type: SourceEnum.refine,
+										type: SourceEnum.crafting,
 										slot: 2,
 									})}
 								ontouchstart={(e) =>
 									touch_start(
-										dragStore.refineSlot2,
-										{ type: SourceEnum.refine, slot: 2 },
+										dragStore.craftingSlot2,
+										{ type: SourceEnum.crafting, slot: 2 },
 										e,
 									)}
 							>
-								{#if dragStore.refineSlot2}
+								{#if dragStore.craftingSlot2}
 									<img
-										src={dragStore.refineSlot2.Icon_path}
-										alt={$_(dragStore.refineSlot2.Name)}
+										src={dragStore.craftingSlot2.Icon_path}
+										alt={$_(dragStore.craftingSlot2.Name)}
 									/>
 								{/if}
 							</div>
@@ -483,27 +483,27 @@
 								class="w-14 h-14 border flex items-center justify-center border-green-400"
 								ondragstart={(e) =>
 									drag_start(
-										dragStore.refineResult,
-										{ type: SourceEnum.refine, slot: 3 },
+										dragStore.craftingResult,
+										{ type: SourceEnum.crafting, slot: 3 },
 										e,
 									)}
 								ondragend={drag_end}
 								ontouchstart={(e) =>
 									touch_start(
-										dragStore.refineResult,
-										{ type: SourceEnum.refine, slot: 3 },
+										dragStore.craftingResult,
+										{ type: SourceEnum.crafting, slot: 3 },
 										e,
 									)}
 							>
-								{#if dragStore.refineResult}
+								{#if dragStore.craftingResult}
 									<img
-										src={dragStore.refineResult.Icon_path}
-										alt={$_(dragStore.refineResult.Name)}
+										src={dragStore.craftingResult.Icon_path}
+										alt={$_(dragStore.craftingResult.Name)}
 									/>
 								{/if}
 							</div>
 
-							<button class="border ml-auto">Refine</button>
+							<button class="border ml-auto">crafting</button>
 						</div>
 					</div>
 				</div>

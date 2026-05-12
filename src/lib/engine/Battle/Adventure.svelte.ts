@@ -3,14 +3,17 @@ import type { Engine } from "../Engine.svelte";
 import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
 import { NileouCity } from "./AreasRegistry.svelte";
+import type { Combat } from "./Combat.svelte";
 import type { EnemyBase } from "./Enemies.svelte";
 
 export class Adventure {
-  public Fighting: boolean = $state(false);
-  public InBattle: boolean = $state(false);
   public Areas: IAdventureArea[] = [new NileouCity()]
+
   public AreaIndex: number = $state(0);
   public WaveIndex: number = $state(0);
+  public HighestArea: number = $state(0);
+  public HighestWave: number = $state(0);
+
   public BattleInfo: string[] = $state([]);
 
   public get CurrentArea(): IAdventureArea | undefined {
@@ -26,12 +29,13 @@ export class Adventure {
   }
 
   private _player: Player;
+  private _combat: Combat;
   private readonly SAVEKEY: string = "Battle";
-  constructor(engine: Engine, player: Player, saves: Saves) {
+  constructor(engine: Engine, combat: Combat, player: Player, saves: Saves) {
     this._player = player;
+    this._combat = combat;
 
-    engine.Tick.add((e) => { this.DamagePlayer(e.total_ticks) });
-    engine.Tick.add((e) => { this.DamageEnemy(e.total_ticks) });
+    this._combat.SwitchEnemies(this.CurrentEnemy);
 
     saves.SaveCallback<IAdventureSaves>(this.SAVEKEY, () => {
       return {
@@ -50,15 +54,12 @@ export class Adventure {
     })
   }
 
-  private DamagePlayer(ticks: number) {
-    if (!this.Fighting)
+  private DamagePlayer() {
+    if (!this._combat.Fighting)
       return;
 
     let enemy = this.CurrentEnemy;
-    if (!enemy)
-      return;
-
-    if (!enemy.Tick(ticks, this._player.AtkSpeedDivider.Get()))
+    if (!enemy || !enemy.CanAttack)
       return;
 
     this._player.TakeDamage(enemy.DealDamage());
@@ -67,18 +68,9 @@ export class Adventure {
     }
   }
 
-  private PlayerOnDeath() {
-    this.StopCombat();
-    this.SwitchWave(0);
-    this.SwitchArea(0);
-  }
-
-  private DamageEnemy(ticks: number): void {
+  public DamageEnemy(): void {
     let enemy = this.CurrentEnemy;
-    if (!enemy || !this.Fighting)
-      return;
-
-    if (!this._player.Tick(ticks, enemy.AtkSpeedDivider))
+    if (!enemy || !this._combat.Fighting)
       return;
 
     enemy.TakeDamage(this._player.DealDamage());
@@ -89,30 +81,28 @@ export class Adventure {
     }
   }
 
-  public HighestArea: number = $state(0);
-  public HighestWave: number = $state(0);
-
-  public EnterCombat(): void {
-    this.InBattle = true;
+  private PlayerOnDeath() {
+    this.StopCombat();
+    this.SwitchWave(0);
+    this.SwitchArea(0);
   }
 
   public StartCombat(): void {
-    this.Fighting = true;
+    this._combat.Fighting = true;
   }
 
   public StopCombat(): void {
-    this.Fighting = false;
-  }
-
-  public ExitCombat(): void {
-    this.Fighting = false;
-    this.InBattle = false;
+    this._combat.Fighting = false;
   }
 
   public SwitchArea(index: number): void {
     if (index < 0 || index >= this.Areas.length) return;
+
     this.AreaIndex = index;
     this.WaveIndex = 0;
+
+    this._combat.SwitchEnemies(this.CurrentEnemy);
+
     if (index > this.HighestArea) {
       this.HighestArea = index;
       this.HighestWave = 0;
@@ -125,6 +115,8 @@ export class Adventure {
 
     if (index < 0 || index >= this.CurrentArea.Waves.length) return;
     this.WaveIndex = index;
+    this._combat.SwitchEnemies(this.CurrentEnemy);
+
     if (this.AreaIndex === this.HighestArea && index > this.HighestWave) {
       this.HighestWave = index;
     }
