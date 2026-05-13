@@ -24,7 +24,7 @@
 		<div class="relative grow">
 			<ProgressBar
 				containerClass={"border min-h-6"}
-				min={data.Progress.Min}
+				min={data.Min}
 				max={data.Progress.Max}
 				value={not_unlocked ? Decimal.ZERO : data.Progress.Value}
 				text={new ReactiveText(not_unlocked ? (text ?? "") : "")}

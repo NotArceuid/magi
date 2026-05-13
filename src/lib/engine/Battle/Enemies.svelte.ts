@@ -1,4 +1,4 @@
-import type { IProgress } from "$lib/components/common/IProgress.svelte";
+import { Progress } from "$lib/components/common/IProgress.svelte";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 import { MultiplierBase } from "../utils/Multipliers.svelte.ts";
 import { BattleRegistry, type Enemy, type IEnemyConfig } from "./EnemyRegistry.svelte";
@@ -9,7 +9,7 @@ export function BuildEnemy(type: Enemy): EnemyBase {
 }
 
 export abstract class EnemyBase {
-  public abstract Health: IProgress;
+  public abstract Health: Progress;
   public abstract Damage: Decimal;
 
   public abstract Name: string;
@@ -26,8 +26,9 @@ export abstract class EnemyBase {
 
   public TakeDamage(damage: Decimal): void {
     if (damage.lte(0)) return;
-
-    this.Health.Value = Decimal.max(Decimal.ZERO, this.Health.Value.minus(damage));
+    this.Health.Set(
+      Decimal.min(this.Health.Max.Get(), this.Health.Taken.plus(damage))
+    );
   }
 
   public abstract DealDamage(): Decimal;
@@ -37,7 +38,7 @@ export abstract class EnemyBase {
 class BuiltEnemy extends EnemyBase {
   public Name: string;
   public Description: string;
-  public Health: IProgress;
+  public Health: Progress;
   public Damage: Decimal;
   public Regen: Decimal;
 
@@ -49,12 +50,7 @@ class BuiltEnemy extends EnemyBase {
     super();
     this.Name = config.Name;
     this.Description = config.Description;
-    this.Health = $state({
-      Min: Decimal.ZERO,
-      Max: config.Health,
-      Value: config.Health,
-    });
-
+    this.Health = new Progress(new MultiplierBase(config.Health));
     this.Icon = config.Icon;
     this.Damage = config.Damage;
     this._onDeath = config.OnDeath;

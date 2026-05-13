@@ -1,39 +1,13 @@
-import { Progress, type IProgress } from "$lib/components/common/IProgress.svelte.ts";
+import { Progress } from "$lib/components/common/IProgress.svelte.ts";
 import type { Engine } from "./Engine.svelte.ts";
 import type { Saves } from "./Saves.ts";
 import { Decimal } from "./utils/BreakInfinity/Decimal.svelte.ts";
 import { MultiplierBase, MultiplierType } from "./utils/Multipliers.svelte.ts";
 
 export class Player {
-  private _player = $state<IPlayer>({
-    Name: "Arcc",
-    Health: {
-      Max: new Decimal(100),
-      Min: new Decimal(0),
-      Value: new Decimal(100),
-    },
-    Mana: {
-      Max: new Decimal(100),
-      Min: new Decimal(0),
-      Value: new Decimal(100),
-    },
-    Energy: {
-      Max: new Decimal(1),
-      Min: new Decimal(1),
-      Value: new Decimal(1),
-    },
-    RebirthCount: 0,
-    RebirthFactor: Decimal.ZERO,
-    Playtime: 0,
-    SaveTime: 0,
-    Money: new Decimal(0),
-    AllocationAmount: Decimal.ONE,
-    cultivationamount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  });
-
   public readonly DamageMultiplier = MultiplierBase.default();
   public readonly AttackSpeedMultiplier = MultiplierBase.default();
-  public readonly HealthMultiplier = MultiplierBase.default();
+  public readonly HealthMultiplier = new MultiplierBase(100);
   public readonly HealthRegen = MultiplierBase.default();
   public readonly EnergyCapMultiplier = new MultiplierBase(10000);
   public readonly DamageReduction = MultiplierBase.default();
@@ -47,27 +21,17 @@ export class Player {
 
   // only if there's a { get; set; }
   // god i miss c# so much
-  get Name() { return this._player.Name; }
-  set Name(val) { this._player.Name = val; }
-  get Money() { return this._player.Money; }
-  set Money(value) { this._player.Money = value; }
 
-  public readonly Health = new Progress(this._player.Health, MultiplierBase.default(), this.HealthMultiplier);
+  public Name: string = $state("Arcc");
+  public Icon: string = $state("/mc.png");
+
+  public Money: Decimal = Decimal.ZERO;
+  public Energy: Progress = new Progress(new MultiplierBase(100));
+  public readonly Health = new Progress(this.HealthMultiplier);
   public readonly Damage = $derived(this.DamageMultiplier.Get());
-  public readonly Mana: IProgress = this._player.Mana;
-
-  public readonly Energy: IProgress;
-  public EnergyGain: MultiplierBase = new MultiplierBase(1);
-  public EnergySpeed: MultiplierBase = new MultiplierBase(0);
-
-  get AllocationAmount(): Decimal { return this._player.AllocationAmount; }
-  set AllocationAmount(val) { this._player.AllocationAmount = val }
-  public get Icon() { return "/mc.png"; }
-  get RebirthCount() { return this._player.RebirthCount; }
-  set RebirthCount(val) { this._player.RebirthCount = val; }
-  get RebirthFactor() { return this._player.RebirthFactor; }
-  set RebirthFactor(val) { this._player.RebirthFactor = val; }
-  get CultivationAmount() { return this._player.cultivationamount; }
+  public AllocationAmount: Decimal = $state(Decimal.ONE);
+  public Playtime: number = $state(0);
+  public RebirthCount: number = $state(0);
 
   private readonly SAVEKEY = "player";
   private _engine: Engine;
@@ -75,60 +39,40 @@ export class Player {
     this._engine = engine;
 
     this._engine.Tick.add(() => this.HealPlayer());
+
     save.SaveCallback<IPlayerSaves>(this.SAVEKEY, () => {
       return {
         //@ts-ignore
         version: PKG_VERSION,
-        playtime: this._player.Playtime,
+        playtime: this.Playtime,
         savetime: new Date().getTime(),
         name: this.Name,
-        money: this.Money,
-        mana: this.Mana,
-        energy: this.Energy,
-        health: this.Health,
-        allocationAmount: this.AllocationAmount,
-        rebirthcount: this.RebirthCount,
-        rebirthfactor: this.RebirthFactor,
-        cultivationamount: this.CultivationAmount
       }
     });
 
     setInterval(() => {
-      this._player.Playtime += 1
+      this.Playtime += 1
     }, 1000);
 
+    // TODO: SAVES
     save.LoadCallback<IPlayerSaves>(this.SAVEKEY, (data: IPlayerSaves) => {
-      this._player.Money = data.money;
-      this._player.SaveTime = data.savetime;
-      this._player.Name = data.name
-      this._player.Playtime = data.playtime;
-      this._player.Health = data.health;
-      this._player.Mana = data.mana;
-      this._player.AllocationAmount = data.allocationAmount;
-      this._player.RebirthCount = data.rebirthcount;
-      this._player.RebirthFactor = data.rebirthfactor;
+
     });
 
     let _self = this;
     this.HealthRegen.Set("base", {
       priority: 0,
       value: function(): Decimal {
-        return _self.Health.Value.mul(0.01);
+        return _self.Health.Get().mul(0.01);
       },
       type: MultiplierType.Additive
     });
-
-
-    this.Energy = new Progress(this._player.Energy, MultiplierBase.default(), this.EnergyCapMultiplier);
   }
 
   public HealPlayer() {
-    this._player.Health.Value = Decimal.min(this.Health.Max, this._player.Health.Value.plus(this.HealthRegen.Get()));
-  }
-
-  public Tick(elapsed: number, divider: Decimal = Decimal.ONE): boolean {
-    let tick = Math.floor(divider.div(this.AttackSpeedMultiplier.Get()).toNumber());
-    return elapsed % tick == 0;
+    this.Health.Set(
+      Decimal.max(Decimal.ZERO, this.Health.Taken.minus(this.HealthRegen.Get()))
+    );
   }
 
   public DealDamage(): Decimal {
@@ -138,8 +82,10 @@ export class Player {
 
   public TakeDamage(damage: Decimal): void {
     if (damage.lte(0)) return;
-
-    this.Health.Value = Decimal.max(Decimal.ZERO, this.Health.Value.sub(damage.mul(Decimal.sub(1, this.DamageReduction.Get()))));
+    const actualDamage = damage.mul(Decimal.sub(1, this.DamageReduction.Get()));
+    this.Health.Set(
+      Decimal.min(this.Health.Max.Get(), this.Health.Taken.plus(actualDamage))
+    );
   }
 }
 
@@ -148,26 +94,4 @@ interface IPlayerSaves {
   playtime: number,
   savetime: number,
   name: string,
-  money: Decimal,
-  mana: IProgress;
-  health: IProgress;
-  energy: IProgress;
-  allocationAmount: Decimal;
-  rebirthcount: number;
-  cultivationamount: number[];
-  rebirthfactor: Decimal;
-}
-
-interface IPlayer {
-  Name: string;
-  Playtime: number,
-  SaveTime: number,
-  Money: Decimal;
-  Health: IProgress;
-  Mana: IProgress;
-  AllocationAmount: Decimal;
-  Energy: IProgress;
-  RebirthCount: number,
-  RebirthFactor: Decimal,
-  cultivationamount: number[],
 }

@@ -63,7 +63,7 @@ export class Adventure {
       return;
 
     this._player.TakeDamage(enemy.DealDamage());
-    if (this._player.Health.Value.lte(0)) {
+    if (this._player.Health.Get().lte(0)) {
       this.PlayerOnDeath();
     }
   }
@@ -74,7 +74,7 @@ export class Adventure {
       return;
 
     enemy.TakeDamage(this._player.DealDamage());
-    if (enemy.Health.Value.lte(0)) {
+    if (enemy.Health.Get().lte(0)) {
       enemy.OnDeath();
       this.StopCombat();
       this.NextWave();
@@ -161,7 +161,7 @@ export class Adventure {
     let can = false;
     for (let i = 0; i < this.AreaIndex; i++) {
       let current_wave = this.Areas[this.AreaIndex].Waves[i];
-      can = current_wave.Health.Value.lte(0);
+      can = current_wave.Health.Get().lte(0);
 
       if (!can)
         return false;
@@ -171,7 +171,7 @@ export class Adventure {
   }
 
   public get CanAdvanceWave(): boolean {
-    return this.Areas[this.AreaIndex].Waves[this.WaveIndex].Health.Value.lte(0) || dev;
+    return this.Areas[this.AreaIndex].Waves[this.WaveIndex].Health.Get().lte(0) || dev;
   }
 }
 

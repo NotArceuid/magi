@@ -24,7 +24,7 @@ export class Inventory {
     [EquipmentEffect.Defence]: new MultiplierBase(1),
     [EquipmentEffect.Regen]: new MultiplierBase(1),
     [EquipmentEffect.EnergyCap]: new MultiplierBase(1),
-    [EquipmentEffect.EnergySpeed]: new MultiplierBase(1),
+    [EquipmentEffect.EnergyPower]: new MultiplierBase(1),
     [EquipmentEffect.SourceCap]: new MultiplierBase(1),
     [EquipmentEffect.SourceSpeed]: new MultiplierBase(1)
   })
@@ -124,7 +124,6 @@ export enum EquipmentEffect {
   Regen = "items.stats.regen",
 
   EnergyCap = "items.stats.energy_cap",
-  EnergySpeed = "items.stats.energy_speed",
   EnergyPower = "items.stats.energy_speed",
 
   SourceCap = "items.stats.source_cap",

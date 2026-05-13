@@ -63,13 +63,13 @@
 						</span>
 					</div>
 					<ProgressBar
-						min={Game.Player.Health.Min}
-						max={Game.Player.Health.Max}
-						value={Game.Player.Health.Value}
+						min={Decimal.ZERO}
+						max={Game.Player.Health.Max.Get()}
+						value={Game.Player.Health.Get()}
 						text={new ReactiveText(
-							Game.Player.Health.Value.format(),
+							Game.Player.Health.Get().format(),
 							"/",
-							Game.Player.Health.Max.format(),
+							Game.Player.Health.Max.Get().format(),
 						)}
 						containerClass="w-full h-10 bg-gray-200"
 						fillClass="h-full bg-blue-600/60 rounded-2xl"
@@ -139,12 +139,12 @@
 
 					<ProgressBar
 						min={Decimal.ZERO}
-						max={current_enemy?.Health.Max ?? Decimal.ZERO}
-						value={current_enemy?.Health.Value ?? Decimal.ZERO}
+						max={current_enemy?.Health.Max.Get() ?? Decimal.ZERO}
+						value={current_enemy?.Health.Get() ?? Decimal.ZERO}
 						text={new ReactiveText(
-							current_enemy?.Health.Value.format() ?? "NaN",
+							current_enemy?.Health.Get().format() ?? "NaN",
 							"/",
-							current_enemy?.Health.Max.format() ?? "NaN",
+							current_enemy?.Health.Max.Get().format() ?? "NaN",
 						)}
 						containerClass="w-full h-10 bg-gray-200 rounded-2xl"
 						fillClass="h-full bg-blue-600/60 rounded-2xl transition-all ease-out"

@@ -3,30 +3,26 @@ import type { MultiplierBase } from "$lib/engine/utils/Multipliers.svelte.ts";
 import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
 
 export interface IProgress {
-  Value: Decimal;
-  Max: Decimal;
-  Min: Decimal;
+  Max: MultiplierBase;
+  Taken: Decimal;
 }
 
 export class Progress implements IProgress {
-  get Value(): Decimal { return this.raw.Value.multiply(this.value_multiplier?.Get() ?? Decimal.ONE) }
-  set Value(value) { this.raw.Value = value; }
-  get Max(): Decimal { return this.raw.Max.multiply(this.max_multiplier?.Get() ?? Decimal.ONE) }
-  get Min(): Decimal { return this.raw.Min.multiply(this.min_multiplier?.Get() ?? Decimal.ONE) }
+  constructor(Max: MultiplierBase) {
+    this.Max = Max;
+  }
 
-  private raw: IProgress;
-  private value_multiplier?: MultiplierBase;
-  private max_multiplier?: MultiplierBase;
-  private min_multiplier?: MultiplierBase;
+  Max: MultiplierBase;
+  Taken: Decimal = $state(Decimal.ZERO);
+  public Get(): Decimal {
+    return this.Max.Get().minus(this.Taken);
+  }
 
-  constructor(raw: IProgress, value_multiplier?: MultiplierBase, max_multiplier?: MultiplierBase, min_multiplier?: MultiplierBase) {
-    this.raw = $state(raw);
-    this.value_multiplier = $state(value_multiplier);
-    this.max_multiplier = $state(max_multiplier);
-    this.min_multiplier = $state(min_multiplier);
+  public Set(value: Decimal): void {
+    this.Taken = value;
   }
 
   format(): ReactiveText {
-    return new ReactiveText(this.Value.format() + "/" + this.Max.format());
+    return new ReactiveText(this.Get().format() + "/" + this.Max.Get().format());
   }
 }

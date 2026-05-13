@@ -1,4 +1,4 @@
-import type { IProgress } from "$lib/components/common/IProgress.svelte";
+import type { IProgress, Progress } from "$lib/components/common/IProgress.svelte";
 import { Player } from "../Player.svelte";
 import { Saves } from "../Saves";
 import { Game } from "../stores.svelte";
@@ -24,10 +24,9 @@ export abstract class AllocatableProgress {
   public Unlocked: boolean = $state(false);
 
   // Shits break when max isn't at 100, change SpeedFactor, Not Max Progress!!!!!!!!!!!!!
-  public Progress: IProgress = $state({
+  public Progress = $state({
     // DO NOT CHANGE THIS, CHANGE ALLOCATION TARGET!!!! okay???
     Max: new Decimal(100),
-    Min: Decimal.ZERO,
     Value: Decimal.ZERO,
   });
 
@@ -47,60 +46,37 @@ export abstract class AllocatableProgress {
     })
   }
 
-  public Deallocate(progress: IProgress) {
+  public Deallocate(progress: Progress) {
     const allocatedAmount = this._player.AllocationAmount;
-
     if (this.AllocatedAmount.lte(allocatedAmount)) {
-      const newValue = Decimal.min(
-        progress.Max,
-        progress.Value.plus(this.AllocatedAmount)
-      );
-      progress.Value = newValue;
+      progress.Set(Decimal.max(Decimal.ZERO, progress.Taken.minus(this.AllocatedAmount)));
       this.AllocatedAmount = Decimal.ZERO;
       return;
     }
-
-    const newValue = Decimal.min(
-      progress.Max,
-      progress.Value.plus(allocatedAmount)
-    );
-    progress.Value = newValue;
+    progress.Set(Decimal.max(Decimal.ZERO, progress.Taken.minus(allocatedAmount)));
     this.AllocatedAmount = this.AllocatedAmount.minus(allocatedAmount);
   }
 
-  public Allocate(progress: IProgress) {
-    if (progress.Value.lte(Decimal.ZERO)) return;
-
+  public Allocate(progress: Progress) {
+    if (progress.Get().lte(Decimal.ZERO)) return;
     const amount = this._player.AllocationAmount;
-    if (progress.Value.lte(amount)) {
-      this.AllocatedAmount = this.AllocatedAmount.plus(progress.Value);
-      progress.Value = Decimal.ZERO;
+    if (progress.Get().lte(amount)) {
+      this.AllocatedAmount = this.AllocatedAmount.plus(progress.Get());
+      progress.Set(progress.Max.Get()); // Taken = Max → Get() = 0
       return;
     }
-
-    const newValue = Decimal.max(
-      progress.Min,
-      progress.Value.minus(amount)
-    );
-    progress.Value = newValue;
+    progress.Set(progress.Taken.plus(amount));
     this.AllocatedAmount = this.AllocatedAmount.plus(amount);
   }
 
-  public AllocateMax(progress: IProgress) {
-    if (progress.Value.lte(Decimal.ZERO)) return;
-
+  public AllocateMax(progress: Progress) {
+    if (progress.Get().lte(Decimal.ZERO)) return;
     const available = Decimal.min(
-      progress.Value,
+      progress.Get(),
       this.AllocationTarget.minus(this.AllocatedAmount)
     );
-
     if (available.lte(Decimal.ZERO)) return;
-
-    const newValue = Decimal.max(
-      progress.Min,
-      progress.Value.minus(available)
-    );
-    progress.Value = newValue;
+    progress.Set(progress.Taken.plus(available));
     this.AllocatedAmount = this.AllocatedAmount.plus(available);
   }
 
@@ -133,6 +109,8 @@ export abstract class AllocatableProgress {
       .max(Decimal.ONE);
   }
 
+  public Min: Decimal = Decimal.ZERO;
+
   public get StaticPart() {
     return Math.ceil(
       this.AllocatedAmount
@@ -147,7 +125,7 @@ export abstract class AllocatableProgress {
     if (!this.Unlocked || this.AllocatedAmount.eq(0) || !this.Requirement())
       return;
 
-    this.Progress.Min = new Decimal(this.AllocatedAmount.div(this.OvercapStep).toNumber() / Game.Engine.TickSpeed * 100);
+    this.Min = new Decimal(this.AllocatedAmount.div(this.OvercapStep).toNumber() / Game.Engine.TickSpeed * 100);
 
     if (tick % Math.max(1, Game.Engine.TickSpeed - this.StaticPart) === 0 && this.StaticPart !== 1) {
       this.OnComplete(new Decimal(this.GainMult));
@@ -190,7 +168,8 @@ export class Punch extends AllocatableProgress {
   public GainMult: Decimal = Decimal.ONE;
   public AllocationTarget: Decimal = new Decimal(1000);
   public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[0] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[0]) : Decimal.ONE;
+    return Decimal.ONE;
+    //    return Game.Player.CultivationAmount[0] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[0]) : Decimal.ONE;
   }
 
   constructor(player: Player, save: Saves) {
@@ -217,7 +196,7 @@ export class Kick extends AllocatableProgress {
   public AllocationTarget: Decimal = new Decimal(3500);
   public ShowRequirement: () => boolean;
   public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[1] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[1]) : Decimal.ONE;
+    return Decimal.ONE;
   }
 
   constructor(player: Player, save: Saves, punch: Punch) {
@@ -246,7 +225,7 @@ export class Strike extends AllocatableProgress {
   public AllocationTarget: Decimal = new Decimal(6500);
   public ShowRequirement: () => boolean;
   public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[2] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[2]) : Decimal.ONE;
+    return Decimal.ONE;
   }
 
   constructor(player: Player, save: Saves, kick: Kick) {
@@ -265,95 +244,6 @@ export class Strike extends AllocatableProgress {
   };
 }
 
-export class Elbow extends AllocatableProgress {
-  public Description: string = "leveling.offense.upgrades.3.description";
-  public Requirement: () => boolean = () => true;
-  public PowerMult: Decimal = Decimal.ONE;
-  public SpeedMult: Decimal = new Decimal(2000);
-  public SpeedCap: Decimal = new Decimal(75);
-  public GainMult: Decimal = Decimal.ONE;
-  public AllocationTarget: Decimal = new Decimal(9500);
-  public ShowRequirement: () => boolean;
-  public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[3] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[3]) : Decimal.ONE;
-  }
-
-  constructor(player: Player, save: Saves, strike: Strike) {
-    let name = "leveling.offense.upgrades.3.name";
-    super(player, save, name);
-    this.Name = name;
-
-
-    this.Unlocked = true;
-    this.ShowRequirement = () => {
-      return strike.Count.gte(15000);
-    }
-  }
-
-  public OnComplete = (completions: Decimal): void => {
-    this.Count = this.Count.plus(completions);
-  };
-}
-
-export class Sweep extends AllocatableProgress {
-  public Description: string = "leveling.offense.upgrades.4.description";
-  public Requirement: () => boolean = () => true;
-  public PowerMult: Decimal = Decimal.ONE;
-  public SpeedMult: Decimal = new Decimal(2500);
-  public SpeedCap: Decimal = new Decimal(100);
-  public GainMult: Decimal = Decimal.ONE;
-  public AllocationTarget: Decimal = new Decimal(13000);
-  public ShowRequirement: () => boolean;
-  public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[4] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[4]) : Decimal.ONE;
-  }
-
-  constructor(player: Player, save: Saves, elbow: Elbow) {
-    let name = "leveling.offense.upgrades.4.name";
-    super(player, save, name);
-    this.Name = name;
-
-
-    this.Unlocked = true;
-    this.ShowRequirement = () => {
-      return elbow.Count.gte(20000);
-    }
-  }
-
-  public OnComplete = (completions: Decimal): void => {
-    this.Count = this.Count.plus(completions);
-  };
-}
-
-export class Parry extends AllocatableProgress {
-  public Description: string = "leveling.offense.upgrades.4.description";
-  public Requirement: () => boolean = () => true;
-  public PowerMult: Decimal = Decimal.ONE;
-  public SpeedMult: Decimal = new Decimal(5000);
-  public SpeedCap: Decimal = new Decimal(100);
-  public GainMult: Decimal = Decimal.ONE;
-  public AllocationTarget: Decimal = new Decimal(16500);
-  public ShowRequirement: () => boolean;
-  public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[5] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[5]) : Decimal.ONE;
-  }
-
-  constructor(player: Player, saves: Saves, sweep: Sweep) {
-    let name = "leveling.offense.upgrades.5.name";
-    super(player, saves, name);
-    this.Name = name;
-
-    this.Unlocked = true;
-    this.ShowRequirement = () => {
-      return sweep.Count.gte(25000);
-    }
-  }
-
-  public OnComplete = (completions: Decimal): void => {
-    this.Count = this.Count.plus(completions);
-  };
-}
-
 export class Dodge extends AllocatableProgress {
   public Description: string = "leveling.defence.upgrades.0.description";
   public Requirement: () => boolean = () => true;
@@ -363,7 +253,9 @@ export class Dodge extends AllocatableProgress {
   public GainMult: Decimal = Decimal.ONE;
   public AllocationTarget: Decimal = new Decimal(1000);
   public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[0] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[6]) : Decimal.ONE;
+
+    return Decimal.ONE;
+    //    return Game.Player.CultivationAmount[0] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[6]) : Decimal.ONE;
   }
 
   constructor(player: Player, save: Saves) {
@@ -391,7 +283,8 @@ export class Flexibility extends AllocatableProgress {
   public AllocationTarget: Decimal = new Decimal(3500);
   public ShowRequirement: () => boolean;
   public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[1] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[1]) : Decimal.ONE;
+    return Decimal.ONE;
+    //    return Game.Player.CultivationAmount[1] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[1]) : Decimal.ONE;
   }
 
   constructor(player: Player, save: Saves, dodge: Dodge) {
@@ -420,7 +313,8 @@ export class Block extends AllocatableProgress {
   public AllocationTarget: Decimal = new Decimal(6500);
   public ShowRequirement: () => boolean;
   public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[2] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[2]) : Decimal.ONE;
+    return Decimal.ONE;
+    //    return Game.Player.CultivationAmount[2] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[2]) : Decimal.ONE;
   }
 
   constructor(player: Player, save: Saves, flexibility: Flexibility) {
@@ -439,115 +333,17 @@ export class Block extends AllocatableProgress {
   };
 }
 
-export class Conditioning extends AllocatableProgress {
-  public Description: string = "leveling.defence.upgrades.3.description";
-  public Requirement: () => boolean = () => true;
-  public PowerMult: Decimal = Decimal.ONE;
-  public SpeedMult: Decimal = new Decimal(2000);
-  public SpeedCap: Decimal = new Decimal(75);
-  public GainMult: Decimal = Decimal.ONE;
-  public AllocationTarget: Decimal = new Decimal(9500);
-  public ShowRequirement: () => boolean;
-  public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[3] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[3]) : Decimal.ONE;
-  }
-
-  constructor(player: Player, save: Saves, block: Block) {
-    let name = "leveling.defence.upgrades.3.name";
-    super(player, save, name);
-    this.Name = name;
-
-
-    this.Unlocked = true;
-    this.ShowRequirement = () => {
-      return block.Count.gte(15000);
-    }
-  }
-
-  public OnComplete = (completions: Decimal): void => {
-    this.Count = this.Count.plus(completions);
-  };
-}
-
-export class Footwork extends AllocatableProgress {
-  public Description: string = "leveling.defence.upgrades.4.description";
-  public Requirement: () => boolean = () => true;
-  public PowerMult: Decimal = Decimal.ONE;
-  public SpeedMult: Decimal = new Decimal(2500);
-  public SpeedCap: Decimal = new Decimal(100);
-  public GainMult: Decimal = Decimal.ONE;
-  public AllocationTarget: Decimal = new Decimal(13000);
-  public ShowRequirement: () => boolean;
-  public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[4] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[4]) : Decimal.ONE;
-  }
-
-  constructor(player: Player, save: Saves, conditioning: Conditioning) {
-    let name = "leveling.defence.upgrades.4.name";
-    super(player, save, name);
-    this.Name = name;
-
-
-    this.Unlocked = true;
-    this.ShowRequirement = () => {
-      return conditioning.Count.gte(20000);
-    }
-  }
-
-  public OnComplete = (completions: Decimal): void => {
-    this.Count = this.Count.plus(completions);
-  };
-}
-
-export class Lock extends AllocatableProgress {
-  public Description: string = "leveling.defence.upgrades.4.description";
-  public Requirement: () => boolean = () => true;
-  public PowerMult: Decimal = Decimal.ONE;
-  public SpeedMult: Decimal = new Decimal(5000);
-  public SpeedCap: Decimal = new Decimal(100);
-  public GainMult: Decimal = Decimal.ONE;
-  public AllocationTarget: Decimal = new Decimal(16500);
-  public ShowRequirement: () => boolean;
-  public get RebirthFactor(): Decimal {
-    return Game.Player.CultivationAmount[5] !== 0 ? Decimal.pow(.9, Game.Player.CultivationAmount[5]) : Decimal.ONE;
-  }
-
-  constructor(player: Player, saves: Saves, footwork: Footwork) {
-    let name = "leveling.defence.upgrades.5.name";
-    super(player, saves, name);
-    this.Name = name;
-
-    this.Unlocked = true;
-    this.ShowRequirement = () => {
-      return footwork.Count.gte(1);
-    }
-  }
-
-  public OnComplete = (completions: Decimal): void => {
-    this.Count = this.Count.plus(completions);
-  };
-}
-
-
-
 export enum OffenseEnum {
-  Punch,
-  Kick,
-  Strike,
-  Elbow,
-  Sweep,
-  Parry,
+  Strength1,
+  Strength2,
+  Strength3,
 }
 
 export enum DefenceEnum {
-  Dodge,
-  Flexibility,
-  Block,
-  Conditioning,
-  Footwork,
-  Lock,
+  Def1,
+  Def2,
+  Def3,
 }
-
 
 export enum MagicEnum {
 

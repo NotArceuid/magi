@@ -5,7 +5,7 @@ import type { Saves } from "../Saves.ts";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
 import { InvokeableEvent } from "../utils/Events.ts";
 import { MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.svelte.ts";
-import { DefenceEnum, OffenseEnum, type MagicEnum, type AllocatableProgress, Punch, Kick, Strike, Elbow, Sweep, Parry, Dodge, Flexibility, Block, Conditioning, Footwork, Lock } from "./LevelingRepo.svelte.ts";
+import { DefenceEnum, OffenseEnum, type MagicEnum, type AllocatableProgress, Punch, Kick, Strike, Dodge, Flexibility, Block } from "./LevelingRepo.svelte.ts";
 
 export class Levelilng {
   private _player: Player;
@@ -26,17 +26,11 @@ export class Levelilng {
     let punch = new Punch(this._player, saves);
     let kick = new Kick(this._player, saves, punch);
     let strike = new Strike(this._player, saves, kick);
-    let elbow = new Elbow(this._player, saves, strike);
-    let sweep = new Sweep(this._player, saves, elbow);
-    let parry = new Parry(this._player, saves, sweep);
 
     this._offenseRepo = new Map<OffenseEnum, AllocatableProgress>([
-      [OffenseEnum.Punch, punch],
-      [OffenseEnum.Kick, kick],
-      [OffenseEnum.Strike, strike],
-      [OffenseEnum.Elbow, elbow],
-      [OffenseEnum.Sweep, sweep],
-      [OffenseEnum.Parry, parry],
+      [OffenseEnum.Strength1, punch],
+      [OffenseEnum.Strength2, kick],
+      [OffenseEnum.Strength3, strike],
     ]);
 
     this._player.DamageMultiplier.Set("leveling", {
@@ -45,9 +39,6 @@ export class Levelilng {
         return punch.Count
           .plus(kick.Count.mul(2.5))
           .plus(strike.Count.mul(5))
-          .plus(elbow.Count.mul(7.5))
-          .plus(sweep.Count.mul(10))
-          .plus(parry.Count.mul(12.5))
       },
       type: MultiplierType.Additive
     })
@@ -55,17 +46,11 @@ export class Levelilng {
     let dodge = new Dodge(this._player, saves);
     let flexibility = new Flexibility(this._player, saves, dodge);
     let block = new Block(this._player, saves, flexibility);
-    let conditioning = new Conditioning(this._player, saves, block);
-    let footwork = new Footwork(this._player, saves, conditioning);
-    let lock = new Lock(this._player, saves, footwork);
 
     this._defenceRepo = new Map<DefenceEnum, AllocatableProgress>([
-      [DefenceEnum.Dodge, dodge],
-      [DefenceEnum.Flexibility, flexibility],
-      [DefenceEnum.Block, block],
-      [DefenceEnum.Conditioning, conditioning],
-      [DefenceEnum.Footwork, footwork],
-      [DefenceEnum.Lock, lock],
+      [DefenceEnum.Def1, dodge],
+      [DefenceEnum.Def2, flexibility],
+      [DefenceEnum.Def3, block],
     ]);
 
     this._player.HealthMultiplier.Set("leveling", {
@@ -74,9 +59,6 @@ export class Levelilng {
         return dodge.Count
           .plus(flexibility.Count.mul(2.5))
           .plus(block.Count.mul(5))
-          .plus(conditioning.Count.mul(7.5))
-          .plus(footwork.Count.mul(10))
-          .plus(lock.Count.mul(12.5))
       },
       type: MultiplierType.Additive
     })

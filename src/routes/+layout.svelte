@@ -54,7 +54,7 @@
 				</div>
 
 				<div class="flex flex-row h-full min-h-0">
-					<div class="hidden lg:block p-3 border-r">
+					<div class="hidden lg:block p-4 border-r">
 						<StatsBar />
 					</div>
 					<div class="p-3 w-full overflow-hidden flex flex-col min-h-0">
@@ -66,6 +66,8 @@
 						<div class="flex-1 min-h-0">
 							{@render children?.()}
 						</div>
+
+						<Footer />
 					</div>
 					{#if show_stats}
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -102,6 +104,4 @@
 			</div>
 		</main>
 	</div>
-
-	<Footer />
 {/if}

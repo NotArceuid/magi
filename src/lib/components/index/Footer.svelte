@@ -1,4 +1,4 @@
-<div class="bottom-5 left-5 p-2">
+<div class="bottom-5 left-5 pt-2">
 	<div class="pt-auto flex flex-col gap-2">
 		<div class="flex items-center gap-6">
 			<a href="https://github.com/notarceuid" class="flex items-center gap-2">

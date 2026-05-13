@@ -68,11 +68,11 @@
 			<div class="flex flex-row border-b">
 				<span class="text-lg font-semibold mb-1">Equipment</span>
 				<!-- TODO: Add a achievemnt congradulating the player for being so dumb that he actually dragged to the span here hehe-->
-				<span class="text-xs font-semibold mb-1 ml-auto mt-auto hidden sm:block"
+				<span class="text-sm font-semibold mb-1 ml-auto mt-auto hidden sm:block"
 					>Drag here!!</span
 				>
 				<button
-					class="md:hidden ml-auto text-sm"
+					class="md:hidden ml-auto"
 					onclick={() => (showStats = !showStats)}
 				>
 					{showStats ? "Hide Stats" : "Show Stats"}
@@ -87,7 +87,7 @@
 							? 'cursor-grab'
 							: ''}"
 					>
-						<span class="text-xs md:text-md text-center">{slot.label}</span>
+						<span class="text-sm md:text-md text-center">{slot.label}</span>
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<div
 							data-slot={slot.key}
@@ -144,7 +144,7 @@
 					{$_(dragStore.hover_item?.Name ?? "No item lol")}
 				</h3>
 				<div class="flex flex-col gap-2">
-					<div class="text-xs mb-2">
+					<div class="text-sm mb-2">
 						{$_(
 							dragStore.hover_item?.Description ??
 								"Hover over an item to view its stats",
@@ -152,7 +152,7 @@
 					</div>
 					<div class="flex flex-col gap-1">
 						{#each mainStats as stat}
-							<div class="flex justify-between text-xs">
+							<div class="flex justify-between text-sm">
 								<span>{$_(stat[0])}</span>
 								<span>{stat[1]?.View.Text ?? ""}</span>
 							</div>
@@ -161,7 +161,7 @@
 							<div class="border-t"></div>
 						{/if}
 						{#each substats as stat}
-							<div class="flex justify-between text-xs">
+							<div class="flex justify-between text-sm">
 								<span>{$_(stat[0])}</span>
 								<span>{stat[1]?.View.Text ?? ""}</span>
 							</div>
@@ -171,10 +171,10 @@
 			</div>
 
 			<div class="p-4 border-t border-gray-700 overflow-y-auto h-4/12 shrink-0">
-				<h1 class="text-base font-semibold mb-2">Total Stats</h1>
+				<h1 class="text-base font-semibold mb-2 border-b">Total Stats</h1>
 				<div class="flex flex-col gap-1">
 					{#each Object.entries(Game.Inventory.EquipmentMultiplier) as effect}
-						<div class="flex flex-row text-xs">
+						<div class="flex flex-row text-sm">
 							<h1>{$_(effect[0])}</h1>
 							<h1 class="ml-auto">{effect[1].Get().format()}x</h1>
 						</div>
@@ -194,7 +194,7 @@
 					{$_(dragStore.hover_item?.Name ?? "No item lol")}
 				</h3>
 				<div class="flex flex-col gap-2">
-					<div class="text-xs mb-2">
+					<div class="text-sm mb-2">
 						{$_(
 							dragStore.hover_item?.Description ??
 								"Hover over an item to view its stats",
@@ -202,7 +202,7 @@
 					</div>
 					<div class="flex flex-col gap-1">
 						{#each mainStats as stat}
-							<div class="flex justify-between text-xs">
+							<div class="flex justify-between text-sm">
 								<span>{$_(stat[0])}</span>
 								<span>{stat[1]?.View.Text ?? ""}</span>
 							</div>
@@ -211,7 +211,7 @@
 							<div class="border-t"></div>
 						{/if}
 						{#each substats as stat}
-							<div class="flex justify-between text-xs">
+							<div class="flex justify-between text-sm">
 								<span>{$_(stat[0])}</span>
 								<span>{stat[1]?.View.Text ?? ""}</span>
 							</div>
@@ -222,7 +222,7 @@
 			<div class="p-4 border-l border-r">
 				<h1>Total Stats</h1>
 				{#each Object.entries(Game.Inventory.EquipmentMultiplier) as effect}
-					<div class="flex flex-row text-xs">
+					<div class="flex flex-row text-sm">
 						<h1>{$_(effect[0])}</h1>
 						<h1 class="ml-auto">{effect[1].Get().format()}x</h1>
 					</div>
