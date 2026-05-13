@@ -1,7 +1,6 @@
 import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
-import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
-import { MultiplierBase, MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.svelte.ts";
+import { MultiplierBase, MultiplierPrioritySchemeEnum } from "../utils/Multipliers.svelte.ts";
 import { ItemBase, ItemsEnum, ItemsRepository, ItemType } from "./InventoryRepo.svelte";
 
 export class Inventory {
@@ -26,7 +25,8 @@ export class Inventory {
     [EquipmentEffect.EnergyCap]: new MultiplierBase(1),
     [EquipmentEffect.EnergyPower]: new MultiplierBase(1),
     [EquipmentEffect.SourceCap]: new MultiplierBase(1),
-    [EquipmentEffect.SourceSpeed]: new MultiplierBase(1)
+    [EquipmentEffect.SourceSpeed]: new MultiplierBase(1),
+    [EquipmentEffect.SourcePower]: new MultiplierBase(1)
   })
 
   public UnequipItem(slot: ItemType): ItemBase | undefined {
@@ -35,6 +35,7 @@ export class Inventory {
       item.OnRemove();
       this.Equipment[slot] = undefined;
     }
+
     return item;
   }
 
@@ -52,13 +53,8 @@ export class Inventory {
       this.Inventory = new Array(this.MAX_SLOTS).fill(null);
     }
 
-    player.DamageMultiplier.Set("inventory", {
-      priority: MultiplierPrioritySchemeEnum.Inventory,
-      value: function(): Decimal {
-        return Decimal.ONE;
-      },
-      type: MultiplierType.Additive
-    })
+    this._player.DamageMultiplier.Link("inventory", this.EquipmentMultiplier["items.stats.damage"], MultiplierPrioritySchemeEnum.Inventory);
+    this._player.HealthMultiplier.Link("inventory", this.EquipmentMultiplier["items.stats.defence"], MultiplierPrioritySchemeEnum.Inventory);
 
     save.SaveCallback<(ItemBase | null)[]>(this.SAVEKEY, () => {
       return this.Inventory;
@@ -128,6 +124,6 @@ export enum EquipmentEffect {
 
   SourceCap = "items.stats.source_cap",
   SourceSpeed = "items.stats.source_speed",
-  SourcePower = "items.stats.source_speed",
+  SourcePower = "items.stats.source_power",
 }
 

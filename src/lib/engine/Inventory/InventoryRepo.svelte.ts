@@ -41,7 +41,7 @@ export abstract class ItemBase {
   public abstract Description: string;
   protected _inventory: Inventory;
   public Effects: SvelteMap<EquipmentEffect, Substats> = new SvelteMap();
-  public readonly LevelCap = 100;
+  public readonly LevelCap = 1;
   public ItemType: ItemType = ItemType.Other;
 
   constructor(inventory: Inventory) {
@@ -55,7 +55,7 @@ export abstract class ItemBase {
         value: () => {
           return value.Effect(this._inventory, value);
         },
-        type: MultiplierType.Additive
+        type: MultiplierType.Multiplicative
       });
     })
   }

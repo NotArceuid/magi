@@ -33,7 +33,6 @@ export class MultiplierBase {
     this.sortMultipliersByPriority();
   }
 
-  // Might be very slow because it calculates on fetch everytime :P
   public Get(): Decimal {
     let result = new Decimal(this.BaseValue);
     this.MultiplierList.forEach((multiplier) => {
@@ -60,6 +59,14 @@ export class MultiplierBase {
     this.MultiplierList.delete(source);
   }
 
+  public Link(source: string, other: MultiplierBase, priority: number, type: MultiplierType = MultiplierType.Multiplicative): void {
+    this.Set(source, {
+      priority,
+      value: () => other.Get(),
+      type
+    });
+  }
+
   private sortMultipliersByPriority(): void {
     const sortedEntries = Array.from(this.MultiplierList.entries()).sort(
       ([, a], [, b]) => a.priority - b.priority,
@@ -74,7 +81,7 @@ export class MultiplierBase {
 }
 
 export enum MultiplierPrioritySchemeEnum {
-  Inventory = 0,
-  Leveling = 1,
+  Leveling = 0,
+  Inventory = 1,
   Ability = 2,
 }
