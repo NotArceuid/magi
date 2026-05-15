@@ -2,22 +2,18 @@ import type { Player } from "../Player.svelte";
 import { Decimal } from "../../utils/BreakInfinity/Decimal.svelte";
 import { MultiplierPrioritySchemeEnum, MultiplierType } from "../../utils/Multipliers.svelte";
 import { AbilityBase } from "./Abilities.svelte";
-import { Combat } from "./Combat.svelte";
+import { Combat, CombatTextSrcEnum } from "./Combat.svelte";
 
 export enum AbilityEnum {
   FireCrimson, FirePurity, Block, SwitchPurity
 }
 
 class FireCrimson extends AbilityBase {
-  public SkillInfo: [string, any] | undefined = ["skills.fire_purity.skill_info", null];
-
   public get Damage() {
     return Decimal.ONE;
   }
 
   public Name: string = "skills.fire_crimson.name";
-  public Description: string = "skills.fire_crimson.description";
-  public InactiveDescription: string = "skills.fire_crimson.inactive_description";
 
   public Execute(): void {
     this.Enemy?.TakeDamage(this.Damage);
@@ -27,19 +23,16 @@ class FireCrimson extends AbilityBase {
   public Cooldown: number = 2.0;
   constructor(player: Player, combat: Combat) {
     super(player, combat);
-    this.SkillInfo?.push(["skills.cooldown"], `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `)
+
+    this.additional_props = [["skills.fire_purity.skill_info", () => ""],
+    ["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]
+    ];
   }
 }
 
 class FirePurity extends AbilityBase {
   public Cooldown: number = 2.0;
-  public SkillInfo: Array<[string, () => string]> | undefined = [
-    ["skills.fire_purity.skill_info", () => this.Damage.format()],
-    ["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]]
-
   public Name: string = "skills.fire_purity.name";
-  public Description: string = "skills.fire_purity.description";
-  public InactiveDescription: string = "skills.fire_purity.inactive_description"
 
   public get Damage() {
     return Decimal.ONE;
@@ -47,23 +40,25 @@ class FirePurity extends AbilityBase {
 
   public Execute(): void {
     this.Enemy?.TakeDamage(this.Damage);
+    this._combat.Log(CombatTextSrcEnum.Player, "skills.fire_purity.log", { damage: this.Damage.format() });
+
     this.StartCombat();
   }
 
   constructor(player: Player, combat: Combat) {
     super(player, combat);
     this.IsUnlocked = true;
+    this.additional_props = [
+      ["skills.fire_purity.skill_info", () => this.Damage.format()],
+      ["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]]
   }
 }
 
 class Block extends AbilityBase {
   public Cooldown: number = 2.0;
-  public SkillInfo: Array<[string, () => string]> | undefined = [
-    ["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]]
+  public SkillInfo: Array<[string, () => string]> | undefined;
 
-  public InactiveDescription: string = "skills.inactive_description";
   public Name: string = "skills.block.name";
-  public Description: string = "skills.block.description";
 
   public Execute(): void {
     this.StartCombat();
@@ -74,10 +69,12 @@ class Block extends AbilityBase {
     this._player.DamageReduction.Set("ability", {
       priority: MultiplierPrioritySchemeEnum.Ability,
       value: function(): Decimal {
-        return new Decimal(0.6);
+        return new Decimal(-0.6);
       },
       type: MultiplierType.Compounding
     });
+
+    this._combat.Log(CombatTextSrcEnum.Player, "skills.block.block");
 
     setTimeout(() => {
       this._player.DamageReduction.Remove("ability");
@@ -89,10 +86,12 @@ class Block extends AbilityBase {
     this._player.DamageReduction.Set("ability", {
       priority: MultiplierPrioritySchemeEnum.Ability,
       value: function(): Decimal {
-        return new Decimal(0.4);
+        return new Decimal(-0.8);
       },
       type: MultiplierType.Compounding
     });
+
+    this._combat.Log(CombatTextSrcEnum.Player, "skills.block.parry");
 
     setTimeout(() => {
       this._player.DamageReduction.Remove("ability");
@@ -104,17 +103,16 @@ class Block extends AbilityBase {
   constructor(player: Player, combat: Combat) {
     super(player, combat);
     this.IsUnlocked = true;
+
+    this.additional_props = [["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]];
   }
 }
 
 class SwitchPurity extends AbilityBase {
   public Name: string = "skills.switch_purity.name";
-  public Description: string = "skills.switch_purity.description";
-  public InactiveDescription: string = "skills.switch_purity.inactive_description";
 
   public Cooldown: number = 10.0;
-  public SkillInfo: Array<[string, () => string]> | undefined = [
-    ["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]]
+  public SkillInfo: Array<[string, () => string]> | undefined;
 
   public Execute(): void {
     this._combat.SwitchElement(0);
@@ -123,6 +121,7 @@ class SwitchPurity extends AbilityBase {
   constructor(player: Player, combat: Combat) {
     super(player, combat);
     this.IsUnlocked = true;
+    this.SkillInfo = [["skills.cooldown", () => `${this.CooldownLeft.toFixed(2).toString()}/${this.Cooldown.toFixed(2)} `]]
   }
 }
 

@@ -15,7 +15,7 @@ const engine = new Engine({}, console_command);
 const player = new Player(engine, saves);
 const combat = new Combat(engine, player);
 
-export const Game: IGame = {
+export const Game: IGame = $state({
   Engine: engine,
   Saves: saves,
   Player: player,
@@ -25,8 +25,8 @@ export const Game: IGame = {
   Leveling: new Levelilng(engine, player, saves, console_command),
   Combat: combat,
   Adventure: new Adventure(engine, combat, saves),
-  HoveredText: ["", {}],
-};
+  HoveredText: { text: "skills.none", props: {} },
+});
 
 interface IGame {
   Engine: Engine,
@@ -38,7 +38,13 @@ interface IGame {
   Adventure: Adventure,
   Combat: Combat,
   Leveling: Levelilng,
-  HoveredText: [string, object]
+  HoveredText: IHoverable,
+}
+
+export interface IHoverable {
+  text: string;
+  props: object;
+  active_props?: Array<[string, () => string]>,
 }
 
 // INFO: FOR FUTURE ME OR ANY UNFORTUNATE MAINTAINERS IN THE FUTURE: 

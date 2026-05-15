@@ -3,6 +3,7 @@ import type { Engine } from "./Engine.svelte.ts";
 import type { Saves } from "./Saves.ts";
 import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
 import { MultiplierBase, MultiplierType } from "../utils/Multipliers.svelte.ts";
+import { log } from "console";
 
 export class Player {
   public readonly DamageMultiplier = MultiplierBase.default();
@@ -32,6 +33,7 @@ export class Player {
   public AllocationAmount: Decimal = $state(Decimal.ONE);
   public Playtime: number = $state(0);
   public RebirthCount: number = $state(0);
+  public Dead: boolean = $state(false);
 
   private readonly SAVEKEY = "player";
   private _engine: Engine;
@@ -61,9 +63,9 @@ export class Player {
     this.HealthRegen.Set("base", {
       priority: 0,
       value: function(): Decimal {
-        return _self.Health.Get().mul(0.01);
+        return _self.Health.Max.Get().mul(0.001);
       },
-      type: MultiplierType.Additive
+      type: MultiplierType.Multiplicative
     });
   }
 
@@ -84,16 +86,18 @@ export class Player {
 
   public DealDamage(): Decimal {
     let damage = this.DamageMultiplier.Get();
-
     return damage;
   }
 
-  public TakeDamage(damage: Decimal): void {
-    if (damage.lte(0)) return;
-    const actualDamage = damage.mul(Decimal.sub(1, this.DamageReduction.Get()));
+  public TakeDamage(damage: Decimal): Decimal {
+    if (damage.lte(0)) return Decimal.ZERO;
+
+    const actualDamage = damage.mul(this.DamageReduction.Get());
     this.Health.Set(
       Decimal.min(this.Health.Max.Get(), this.Health.Taken.plus(actualDamage))
     );
+
+    return actualDamage;
   }
 }
 

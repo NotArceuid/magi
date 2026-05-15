@@ -2,7 +2,7 @@ import type { Player } from "../Player.svelte";
 import type { AbilityBase } from "./Abilities.svelte";
 import type { EnemyBase } from "./Enemies.svelte";
 import { AbilityRegistry, AbilityEnum } from "./AbilityRegistry.svelte";
-import type { Decimal } from "../../utils/BreakInfinity/Decimal.svelte";
+import { Decimal } from "../../utils/BreakInfinity/Decimal.svelte";
 import type { Engine } from "../Engine.svelte";
 
 export class Combat {
@@ -27,6 +27,7 @@ export class Combat {
   private AbilityMap: [fire: AbilityBase, skill_1: AbilityBase, skill_2: AbilityBase][];
 
   protected _player: Player;
+  protected _enemy: EnemyBase | undefined;
   constructor(engine: Engine, player: Player) {
     this._player = player;
 
@@ -39,6 +40,12 @@ export class Combat {
     this.AbilityMap = [[AbilityRegistry[AbilityEnum.FirePurity](player, this), undefined!, undefined!]];
 
     this.SwitchElement(0);
+    // TODO: something something make this work when i add saves
+    this.FirstJoin();
+  }
+
+  private FirstJoin() {
+    this.Log(CombatTextSrcEnum.System, "combat.first_join");
   }
 
   public HealPlayer(amount: Decimal) {
@@ -46,6 +53,7 @@ export class Combat {
   }
 
   public SwitchEnemies(enemy: EnemyBase | undefined) {
+    this._enemy = enemy;
     this.AbilityMap.forEach((ability) => {
       ability[0].Enemy = enemy;
       if (ability[1]) ability[1].Enemy = enemy;
@@ -61,6 +69,9 @@ export class Combat {
     const currentEnemy = this.Abilities[0]?.Enemy;
 
     this.SwitchAbility[element]?.Fire();
+    // fix here, in switchability,fire got startcombat alr in there
+    this.StopCombat();
+
     this.Elements = element;
 
     this.Abilities[0] = this.AbilityMap[element][0];
@@ -75,16 +86,31 @@ export class Combat {
     if (this.CombatText.length > 67) this.CombatText.shift(); // unecessary and oddly specific number choice 
   }
 
-  public DamagePlayer(damage: Decimal) {
-    this._player.TakeDamage(damage);
+  // Returns: dealt damage
+  public DamagePlayer(damage: Decimal): Decimal {
+    let dmg = this._player.TakeDamage(damage);
+    if (this._player.Health.Get().lte(0)) {
+      this.PlayerDied();
+      return Decimal.MINUS_ONE;
+    }
+
+    return dmg
   }
 
   public PlayerDied() {
-
+    this._player.Dead = true;
+    this.Log(CombatTextSrcEnum.Player, "combat.death");
+    this.StopCombat();
   }
 
   public StartCombat() {
     this.Fighting = true;
+
+    if (this._player.Dead) {
+      this._player.Dead = false;
+      this.HealPlayer(this._player.Health.Max.Get());
+      this._enemy?.Health.Set(Decimal.ZERO);
+    }
 
     this.AbilityMap.forEach((ability) => {
       ability[0]?.Unfreeze();
@@ -96,7 +122,9 @@ export class Combat {
       ability?.Unfreeze();
     })
 
-    this.Abilities[1].Unfreeze();
+    this.Abilities.forEach((ability) => {
+      ability?.Unfreeze()
+    })
   }
 
   public StopCombat() {
@@ -112,7 +140,9 @@ export class Combat {
       ability?.Freeze();
     })
 
-    this.Abilities[1].Freeze();
+    this.Abilities.forEach((ability) => {
+      ability?.Freeze()
+    })
   }
 }
 

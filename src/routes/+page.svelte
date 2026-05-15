@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Game } from "$lib/stores.svelte";
+	import { Game, type IHoverable } from "$lib/stores.svelte";
 	import ProgressBar from "$lib/components/common/ProgressBar.svelte";
 	import { onMount, tick } from "svelte";
 	import { _ } from "svelte-i18n";
@@ -33,11 +33,24 @@
 	let log: HTMLDivElement = $state()!;
 	let bottom: HTMLDivElement = $state()!;
 
-	let combat_desc = $derived(
-		Game.Combat.Fighting
-			? "combat.fighting.yes.desc"
-			: "combat.fighting.no.desc",
-	);
+	let combat_desc = $derived.by<IHoverable>(() => {
+		return {
+			text: Game.Combat.Fighting
+				? "combat.fighting.yes.desc"
+				: "combat.fighting.no.desc",
+			props: {},
+		};
+	});
+
+	let none_hoverable: IHoverable = {
+		text: "skills.none",
+		props: {},
+	};
+
+	$effect(() => {
+		if (hovered_ability) Game.HoveredText = hovered_ability;
+		else Game.HoveredText = none_hoverable;
+	});
 
 	onMount(() => {
 		Game.Engine.start();
@@ -46,15 +59,6 @@
 	$effect(() => {
 		Game.Combat.CombatText.length;
 		tick().then(() => bottom?.scrollIntoView());
-	});
-
-	$effect(() => {
-		if (hovered_ability) {
-			Game.HoveredText[0] = hovered_ability.Description;
-		} else {
-			Game.HoveredText[0] = "";
-			Game.HoveredText[1] = {};
-		}
 	});
 </script>
 
@@ -231,7 +235,7 @@
 					<span class="border-b shrink-0">Logs</span>
 					<div
 						bind:this={log}
-						class="overflow-y-auto flex-1 min-h-0 p-3 flex flex-col"
+						class="overflow-y-auto flex-1 min-h-0 p-3 flex flex-col whitespace-pre-line"
 					>
 						{#each Game.Combat.CombatText as text}
 							<div>
@@ -333,19 +337,19 @@
 									: Game.Combat.StartCombat();
 							}}
 							onmouseover={() => {
-								Game.HoveredText[0] = combat_desc;
+								Game.HoveredText = combat_desc;
 							}}
 							onmouseleave={() => {
-								Game.HoveredText[0] = "";
+								Game.HoveredText = none_hoverable;
 							}}
 							onfocus={() => {
-								Game.HoveredText[0] = combat_desc;
+								Game.HoveredText = combat_desc;
 							}}
 							ontouchstart={() => {
-								Game.HoveredText[0] = combat_desc;
+								Game.HoveredText = combat_desc;
 							}}
 							ontouchend={() => {
-								Game.HoveredText[0] = "";
+								Game.HoveredText = none_hoverable;
 							}}
 						>
 							{$_(
@@ -359,30 +363,21 @@
 				<div
 					class="flex-1 border min-h-0 p-4 whitespace-pre-line overflow-y-scroll"
 				>
-					{#if hovered_ability?.IsUnlocked}
-						{$_(Game.HoveredText[0], Game.HoveredText[1])}
+					{$_(Game.HoveredText.text, Game.HoveredText.props)}
 
-						<br />
+					<br />
 
-						<div class="flex flex-col">
-							{#if hovered_ability.SkillInfo}
-								<span class="border-b w-full font-bold"
-									>{$_("skills.info")}</span
-								>
-								{#each hovered_ability.SkillInfo as skill}
-									<div class="flex justify-between">
-										<span>{$_(skill[0])}</span>
-										<span>{skill[1]()}</span>
-									</div>
-								{/each}
-							{/if}
-						</div>
-					{:else}
-						{$_(Game.HoveredText[0], Game.HoveredText[1])}
-						<!--
-						{$_(hovered_ability?.InactiveDescription ?? "skills.none")}
--->
-					{/if}
+					<div class="flex flex-col">
+						{#if Game.HoveredText.active_props}
+							<span class="border-b w-full font-bold">{$_("skills.info")}</span>
+							{#each Game.HoveredText.active_props as skill}
+								<div class="flex justify-between">
+									<span>{$_(skill[0])}</span>
+									<span>{skill[1]()}</span>
+								</div>
+							{/each}
+						{/if}
+					</div>
 				</div>
 			</div>
 

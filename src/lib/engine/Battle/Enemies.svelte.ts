@@ -1,7 +1,7 @@
 import { Progress } from "$lib/components/common/IProgress.svelte";
 import { Decimal } from "../../utils/BreakInfinity/Decimal.svelte.ts";
 import { MultiplierBase } from "../../utils/Multipliers.svelte.ts";
-import type { Combat } from "./Combat.svelte.ts";
+import { CombatTextSrcEnum, type Combat } from "./Combat.svelte.ts";
 import { EnemyRegistry, EnemyEnum, type IEnemyConfig, type IEnemyAttack } from "./EnemyRegistry.svelte";
 
 export function BuildEnemy(combat: Combat, type: EnemyEnum): EnemyBase {
@@ -77,9 +77,18 @@ export abstract class EnemyBase {
     this.Health.Set(
       Decimal.min(this.Health.Max.Get(), this.Health.Taken.plus(damage))
     );
+
+    if (this.Health.Get().lte(0)) {
+      this.Died();
+    }
   }
 
   public abstract DealDamage(): Decimal;
+  protected Died(): void {
+    this.OnDeath();
+    this._combat.Log(CombatTextSrcEnum.System, "combat.enemies.condensed_slime.death")
+  }
+
   public abstract OnDeath(): void;
 }
 

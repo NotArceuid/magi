@@ -51,27 +51,28 @@ skills:
       Fire a bullet of pure source. For the light of source shines luminously as it descends to become one of the four rays. blah blah balh... 
 
       Click this do damage ok?
-    inactive_description: How tf did you find this????????/
     skill_info: Damage
+    log: | 
+      You fired a luminous ball of white source from your gun right towards the enemy. Dealing {damage} damage.
   attack: 
     name: Attack 
     description: How tf did you managed to access this??
   block: 
     name: Block 
     description: |
-      Block the enemy's attack, reducing incoming damage by 40%. Time the block right to parry.
+      Block the enemy's attack, reducing incoming damage by 60%. Time the block right to parry.
 
-      On parry: Reduce incoming damage by 60% and fire once ignoring any cooldowns.
+      On parry: Reduce incoming damage by 80% and fire once ignoring any cooldowns.
 
       Dear oh dear.. what was it, the hunt? No matter. 
+    parry: You parried the enemy's attack reducing incoming damage by 80%. Parry the playtypus would be proud of you!! 
+    block: You held your hands up while anticipating an attack from the enemy. What exactly did 1000 hours of sekiro taught you?? 
   switch_purity: 
     name: Attune Purity
     description: |
       The white light glimers upon the mark inscribed on your left hand. Undifferentiated and neutral. It is the pure source of which all inhabitants of Lemia seeks.
 
       Press this to switch (or if you are a lore GEEK 🤓), attune to Purity. Currently it doesn't do anything if you havent unlocked other rays though. 
-
-    inactive_description: stinky smelly nerds 
     skill_info: 
   none: |
     You have NOT selected a skill, You see that BIG ROUND button up there??? click it. to start dealing damage
@@ -119,8 +120,12 @@ combat:
     condensed_slime:
       name: Condensed Slime
       lore: ""
+      death: |
+        As you fired your next shot, boom. The outer membrane of the slime burst into sludge. Spilling purple sludge everywhere.  
+        That's one less thing to worry about.
       attack:
         - "Condensed Slime used [Touchy touch] dealing {damage} damage."
+
     tunnel_sludge:
       name: Tunnel Sludge
       lore: "Feature Unlocked: [Leveling]"
@@ -136,6 +141,7 @@ combat:
     sludge_abomination:
       name: Sludge Abomination
       lore: "Area Unlocked: [Loop]"
+
     catacombs_protector:
       name: Catacombs Protector
       lore: ""
@@ -180,15 +186,24 @@ combat:
   player: "[Player]"
   system: "[System]"
   death: "Womp womp, you died git gud skrub"
+  first_join: |
+    Welcome to this shit hole of a game called adventure game. 
+    To start, You see that BIG ROUND glowing button on the right? Yeah click it. 
+    Your first goal is to kill this bootifully hand drawn slime.
+    After killing it, a new feature will open up. :)
+
+    I hope you can actually read la... Unlike a certain playtester.. I'm looking at you Timmie
+
+
   fighting: 
     yes: 
-      label: "Start Fighting"
+      label: "Stop Fighting"
       desc: | 
         I needa chillout man, this guy keep attacking me :(
 
         Stop fighting, pausing the cooldowns of both the player and the enemies' abilities
     no: 
-      label: "Stop Fighting"
+      label: "Start Fighting"
       desc: | 
         Alright i'm ready now, let's do this!!11!!
 

@@ -31,7 +31,7 @@ export const EnemyRegistry: Record<EnemyEnum, IEnemyConfig> = {
     Description: "",
     Icon: "",
     Health: new Decimal(25),
-    Damage: new Decimal(5),
+    Damage: new Decimal(25),
     Regen: Decimal.ZERO,
     Resistance: [],
     OnDeath: () => { return; },
@@ -40,9 +40,9 @@ export const EnemyRegistry: Record<EnemyEnum, IEnemyConfig> = {
         weight: 1,
         cooldown: 1.5,
         execute: (combat, damage, enemy) => {
-          combat.DamagePlayer(damage);
-          combat.Log(CombatTextSrcEnum.Enemy, "combat.enemies.condensed_slime.attack.0", { values: { damage: damage.format() } });
-          console.log("uh")
+          let dmg = combat.DamagePlayer(damage);
+          if (dmg.neq(Decimal.MINUS_ONE))
+            combat.Log(CombatTextSrcEnum.Enemy, "combat.enemies.condensed_slime.attack.0", { values: { damage: dmg.format() } });
         }
       },
     ]
