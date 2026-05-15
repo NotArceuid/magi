@@ -1,6 +1,6 @@
-import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte"
-import type { MultiplierBase } from "$lib/engine/utils/Multipliers.svelte.ts";
-import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
+import { Decimal } from "$lib/utils/BreakInfinity/Decimal.svelte"
+import type { MultiplierBase } from "$lib/utils/Multipliers.svelte";
+import { ReactiveText } from "$lib/utils/ReactiveText.svelte";
 
 export interface IProgress {
   Max: MultiplierBase;
@@ -9,7 +9,7 @@ export interface IProgress {
 
 export class Progress implements IProgress {
   constructor(Max: MultiplierBase) {
-    this.Max = Max;
+    this.Max = $state(Max);
   }
 
   Max: MultiplierBase;

@@ -2,11 +2,11 @@
 	import { AllocatableProgress } from "$lib/engine/Levelling/LevelingRepo.svelte";
 	import { _ } from "svelte-i18n";
 	import ProgressBar from "../common/ProgressBar.svelte";
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 	import CollapsibleCard from "../common/CollapsibleCard.svelte";
 	import { slide } from "svelte/transition";
-	import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
-	import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
+	import { ReactiveText } from "$lib/utils/ReactiveText.svelte";
+	import { Decimal } from "$lib/utils/BreakInfinity/Decimal.svelte";
 	let {
 		data,
 		not_unlocked,

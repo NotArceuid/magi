@@ -1,4 +1,4 @@
-import { InvokeableEvent } from "$lib/engine/utils/Events";
+import { InvokeableEvent } from "$lib/utils/Events";
 
 export interface INotification {
   name: string;

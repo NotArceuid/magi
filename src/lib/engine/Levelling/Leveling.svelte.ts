@@ -2,9 +2,9 @@ import type { ConsoleCommandManager } from "../Command.ts";
 import type { Engine } from "../Engine.svelte.ts";
 import type { Player } from "../Player.svelte.ts";
 import type { Saves } from "../Saves.ts";
-import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
-import { InvokeableEvent } from "../utils/Events.ts";
-import { MultiplierPrioritySchemeEnum, MultiplierType } from "../utils/Multipliers.svelte.ts";
+import { Decimal } from "../../utils/BreakInfinity/Decimal.svelte.ts";
+import { InvokeableEvent } from "../../utils/Events.ts";
+import { MultiplierPrioritySchemeEnum, MultiplierType } from "../../utils/Multipliers.svelte.ts";
 import { DefenceEnum, OffenseEnum, type MagicEnum, type AllocatableProgress, Punch, Kick, Strike, Dodge, Flexibility, Block } from "./LevelingRepo.svelte.ts";
 
 export class Levelilng {

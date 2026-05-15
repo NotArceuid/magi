@@ -1,6 +1,6 @@
 import { NotificationPopUp, type INotification } from "$lib/components/Notification.svelte";
 import type { Saves } from "./Saves";
-import type { Decimal } from "./utils/BreakInfinity/Decimal.svelte";
+import type { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
 
 export interface IAchievement extends INotification {
   name: string,

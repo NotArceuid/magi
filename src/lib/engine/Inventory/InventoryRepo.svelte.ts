@@ -1,7 +1,7 @@
 import { SvelteMap } from "svelte/reactivity";
-import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
-import { MultiplierType, type Multiplier } from "../utils/Multipliers.svelte";
-import { ReactiveText } from "../utils/ReactiveText.svelte";
+import { Decimal } from "../../utils/BreakInfinity/Decimal.svelte";
+import { MultiplierType, type Multiplier } from "../../utils/Multipliers.svelte";
+import { ReactiveText } from "../../utils/ReactiveText.svelte";
 import { EquipmentEffect, Inventory } from "./Inventory.svelte";
 
 export enum ItemsEnum {

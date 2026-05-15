@@ -1,21 +1,21 @@
 import { Settings } from "$lib/components/settings/Settings.svelte.ts";
-import { Achievement } from "./Achievements.svelte";
-import { Adventure } from "./Battle/Adventure.svelte";
-import { Combat } from "./Battle/Combat.svelte";
-import { ConsoleCommandManager } from "./Command";
-import { Engine } from "./Engine.svelte";
-import { Inventory } from "./Inventory/Inventory.svelte";
-import { Levelilng } from "./Levelling/Leveling.svelte";
-import { Player } from "./Player.svelte";
-import { Saves } from "./Saves";
+import { Achievement } from "./engine/Achievements.svelte";
+import { Adventure } from "./engine/Battle/Adventure.svelte";
+import { Combat } from "./engine/Battle/Combat.svelte";
+import { ConsoleCommandManager } from "./engine/Command";
+import { Engine } from "./engine/Engine.svelte";
+import { Inventory } from "./engine/Inventory/Inventory.svelte";
+import { Levelilng } from "./engine/Levelling/Leveling.svelte";
+import { Player } from "./engine/Player.svelte";
+import { Saves } from "./engine/Saves";
 
 const console_command = new ConsoleCommandManager();
 const saves = new Saves();
 const engine = new Engine({}, console_command);
 const player = new Player(engine, saves);
-const combat = new Combat(player);
+const combat = new Combat(engine, player);
 
-export const Game: IGame = $state({
+export const Game: IGame = {
   Engine: engine,
   Saves: saves,
   Player: player,
@@ -24,8 +24,9 @@ export const Game: IGame = $state({
   Inventory: new Inventory(player, saves),
   Leveling: new Levelilng(engine, player, saves, console_command),
   Combat: combat,
-  Adventure: new Adventure(engine, combat, player, saves),
-});
+  Adventure: new Adventure(engine, combat, saves),
+  HoveredText: ["", {}],
+};
 
 interface IGame {
   Engine: Engine,
@@ -37,6 +38,7 @@ interface IGame {
   Adventure: Adventure,
   Combat: Combat,
   Leveling: Levelilng,
+  HoveredText: [string, object]
 }
 
 // INFO: FOR FUTURE ME OR ANY UNFORTUNATE MAINTAINERS IN THE FUTURE: 

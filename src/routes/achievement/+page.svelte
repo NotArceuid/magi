@@ -1,6 +1,6 @@
 <script>
 	import AchievementsCard from "$lib/components/achievements/AchievementsCard.svelte";
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 </script>
 
 <div>

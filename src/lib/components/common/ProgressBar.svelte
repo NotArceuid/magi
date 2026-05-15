@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
-	import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
+	import { Decimal } from "$lib/utils/BreakInfinity/Decimal.svelte";
+	import { ReactiveText } from "$lib/utils/ReactiveText.svelte";
 
 	interface Props {
 		min: Decimal;

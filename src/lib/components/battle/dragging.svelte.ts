@@ -1,5 +1,5 @@
 import { ItemBase, ItemType } from "$lib/engine/Inventory/InventoryRepo.svelte";
-import { Game } from "$lib/engine/stores.svelte";
+import { Game } from "$lib/stores.svelte";
 
 export enum SourceEnum { inventory, equipment, crafting }
 type Source =

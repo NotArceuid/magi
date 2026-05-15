@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { AchievementKey } from "$lib/engine/Achievements.svelte";
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 
 	let { idx }: { idx: number } = $props();
 	let achievement = $derived(Game.Achievement.Data[idx as AchievementKey]);

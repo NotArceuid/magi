@@ -1,189 +1,50 @@
-import { dev } from "$app/environment";
+// Adventure.svelte.ts
 import type { Engine } from "../Engine.svelte";
-import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
-import { NileouCity } from "./AreasRegistry.svelte";
+import { AdventureAreaBase, Sewers } from "./AreasRegistry.svelte";
 import type { Combat } from "./Combat.svelte";
 import type { EnemyBase } from "./Enemies.svelte";
 
 export class Adventure {
-  public Areas: IAdventureArea[] = [new NileouCity()]
-
+  public Areas: AdventureAreaBase[] | undefined;
   public AreaIndex: number = $state(0);
-  public WaveIndex: number = $state(0);
-  public HighestArea: number = $state(0);
-  public HighestWave: number = $state(0);
+  public HighestUnlockedArea: number = $state(0);
 
-  public BattleInfo: string[] = $state([]);
-
-  public get CurrentArea(): IAdventureArea | undefined {
-    return this.Areas[this.AreaIndex];
-  }
-
-  public get CurrentWaves(): EnemyBase[] | undefined {
-    return this.CurrentArea?.Waves;
-  }
-
-  public get CurrentEnemy(): EnemyBase | undefined {
-    return this.CurrentWaves?.[this.WaveIndex];
-  }
-
-  private _player: Player;
   private _combat: Combat;
-  private readonly SAVEKEY: string = "Battle";
-  constructor(engine: Engine, combat: Combat, player: Player, saves: Saves) {
-    this._player = player;
-    this._combat = combat;
+  private readonly SAVEKEY = "Battle";
 
+  public get CurrentArea(): AdventureAreaBase | undefined { return this.Areas?.[this.AreaIndex]; }
+  public get CurrentEnemy(): EnemyBase | undefined {
+    return this.CurrentArea?.Current ?? undefined;
+  }
+
+  constructor(engine: Engine, combat: Combat, saves: Saves) {
+    this._combat = combat;
     this._combat.SwitchEnemies(this.CurrentEnemy);
 
-    saves.SaveCallback<IAdventureSaves>(this.SAVEKEY, () => {
-      return {
-        HighestArea: this.HighestArea,
-        HighestWave: this.HighestWave,
-        Wave: this.WaveIndex,
-        Area: this.AreaIndex,
-      }
-    });
-
-    saves.LoadCallback<IAdventureSaves>(this.SAVEKEY, (data) => {
-      this.HighestWave = data.HighestWave;
-      this.HighestArea = data.HighestArea;
-      this.AreaIndex = data.Area;
-      this.WaveIndex = data.Wave;
-    })
-  }
-
-  private DamagePlayer() {
-    if (!this._combat.Fighting)
-      return;
-
-    let enemy = this.CurrentEnemy;
-    if (!enemy || !enemy.CanAttack)
-      return;
-
-    this._player.TakeDamage(enemy.DealDamage());
-    if (this._player.Health.Get().lte(0)) {
-      this.PlayerOnDeath();
-    }
-  }
-
-  public DamageEnemy(): void {
-    let enemy = this.CurrentEnemy;
-    if (!enemy || !this._combat.Fighting)
-      return;
-
-    enemy.TakeDamage(this._player.DealDamage());
-    if (enemy.Health.Get().lte(0)) {
-      enemy.OnDeath();
-      this.StopCombat();
-      this.NextWave();
-    }
-  }
-
-  private PlayerOnDeath() {
-    this.StopCombat();
-    this.SwitchWave(0);
+    this.Areas = [new Sewers(combat)];
     this.SwitchArea(0);
   }
 
-  public StartCombat(): void {
-    this._combat.Fighting = true;
-  }
-
-  public StopCombat(): void {
-    this._combat.Fighting = false;
-  }
-
   public SwitchArea(index: number): void {
-    if (index < 0 || index >= this.Areas.length) return;
+    if (!this.Areas)
+      return;
 
+    if (index < 0 || index >= this.Areas?.length || index > this.HighestUnlockedArea) return;
     this.AreaIndex = index;
-    this.WaveIndex = 0;
-
     this._combat.SwitchEnemies(this.CurrentEnemy);
-
-    if (index > this.HighestArea) {
-      this.HighestArea = index;
-      this.HighestWave = 0;
-    }
   }
 
-  public SwitchWave(index: number): void {
-    if (!this.CurrentArea)
-      return;
+  public NextArea(): void { this.SwitchArea(this.AreaIndex + 1); }
+  public PrevArea(): void { this.SwitchArea(this.AreaIndex - 1); }
 
-    if (index < 0 || index >= this.CurrentArea.Waves.length) return;
-    this.WaveIndex = index;
+  public EnemyKilled(): void {
+    this.CurrentArea?.KillCurrent();
     this._combat.SwitchEnemies(this.CurrentEnemy);
-
-    if (this.AreaIndex === this.HighestArea && index > this.HighestWave) {
-      this.HighestWave = index;
-    }
   }
-
-  public NextWave(): void {
-    if (!this.CurrentArea)
-      return;
-
-    const nextWave = this.WaveIndex + 1;
-    if (nextWave < this.CurrentArea.Waves.length) {
-      this.SwitchWave(nextWave);
-    } else {
-      this.SwitchArea(this.AreaIndex + 1);
-    }
-  }
-
-  public PrevWave(): void {
-    if (!this.CurrentArea)
-      return;
-
-    if (this.WaveIndex > 0) {
-      this.SwitchWave(this.WaveIndex - 1);
-    } else if (this.AreaIndex > 0) {
-      const prevAreaIndex = this.AreaIndex - 1;
-      this.AreaIndex = prevAreaIndex;
-      this.WaveIndex = this.CurrentArea.Waves.length - 1;
-    }
-  }
-
-  public NextArea(): void {
-    if (this.AreaIndex + 1 >= this.Areas.length) return;
-    this.SwitchArea(this.AreaIndex + 1);
-  }
-
-  public PrevArea(): void {
-    if (this.AreaIndex - 1 < 0) return;
-    this.SwitchArea(this.AreaIndex - 1);
-  }
-
-  public get CanAdvanceArea(): boolean {
-    let can = false;
-    for (let i = 0; i < this.AreaIndex; i++) {
-      let current_wave = this.Areas[this.AreaIndex].Waves[i];
-      can = current_wave.Health.Get().lte(0);
-
-      if (!can)
-        return false;
-    }
-
-    return true;
-  }
-
-  public get CanAdvanceWave(): boolean {
-    return this.Areas[this.AreaIndex].Waves[this.WaveIndex].Health.Get().lte(0) || dev;
-  }
-}
-
-export interface IAdventureArea {
-  Name: string;
-  Description: string;
-  Waves: EnemyBase[];
 }
 
 interface IAdventureSaves {
-  Area: number;
-  Wave: number;
-  HighestArea: number;
-  HighestWave: number;
+  AreaIndex: number;
+  HighestUnlockedArea: number;
 }

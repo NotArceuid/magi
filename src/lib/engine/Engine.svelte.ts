@@ -1,6 +1,6 @@
 import { dev } from "$app/environment";
 import type { ConsoleCommandManager } from "./Command";
-import { InvokeableEvent } from "./utils/Events";
+import { InvokeableEvent } from "../utils/Events";
 
 export interface GameLoopOptions {
   TickSpeed?: number;

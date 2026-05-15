@@ -64,7 +64,6 @@ skills:
       On parry: Reduce incoming damage by 60% and fire once ignoring any cooldowns.
 
       Dear oh dear.. what was it, the hunt? No matter. 
-
   switch_purity: 
     name: Attune Purity
     description: |
@@ -117,62 +116,90 @@ items:
 
 combat:
   enemies:
-    - name: Condensed slime
-      lore: |
-    - name: Tunnel sludge
-      lore: |
-        Feature Unlocked: [Leveling]
-    - name: Mutated Rat
-      lore: |
-    - name: Feral Doggo
-      lore: |
-        Feature Unlocked: [Inventory]
-        Item Unlocked: [Laszlo's Pistol]
-        Item Unlocked: [Cracked Pendant]
-    - name: Sludge Golem
-      lore: |
-    - name: Sludge Abomination
-      lore: | 
-        Area Unlocked: [Loop]
-        - fmi to myself: this scaling will be exponential
+    condensed_slime:
+      name: Condensed Slime
+      lore: ""
+      attack:
+        - "Condensed Slime used [Touchy touch] dealing {damage} damage."
+    tunnel_sludge:
+      name: Tunnel Sludge
+      lore: "Feature Unlocked: [Leveling]"
+    mutated_rat:
+      name: Mutated Rat
+      lore: ""
+    feral_doggo:
+      name: Feral Doggo
+      lore: "Feature Unlocked: [Inventory] | Item Unlocked: [Laszlo's Pistol] | Item Unlocked: [Cracked Pendant]"
+    sludge_golem:
+      name: Sludge Golem
+      lore: ""
+    sludge_abomination:
+      name: Sludge Abomination
+      lore: "Area Unlocked: [Loop]"
+    catacombs_protector:
+      name: Catacombs Protector
+      lore: ""
+    skeleton_puppet:
+      name: Skeleton Puppet
+      lore: ""
+    weeping_spirit:
+      name: Weeping Spirit
+      lore: ""
+    lost_spirit:
+      name: Lost Spirit
+      lore: ""
+    sludge_knight:
+      name: Sludge Knight
+      lore: ""
+    guardian_of_the_threshold:
+      name: Guardian of the Threshold
+      lore: "Feature Unlocked: [Rebirth] | Area Unlocked: [Farm]"
+    animated_scarecrow:
+      name: Animated Scarecrow
+      lore: ""
+    pissed_off_farmer:
+      name: Pissed Off Farmer
+      lore: ""
+    deformed_chicken:
+      name: Deformed Chicken
+      lore: "Feature Unlocked: [Crimson]"
+    drunken_cow:
+      name: Drunken Cow
+      lore: ""
+    dancing_cow:
+      name: Dancing Cow
+      lore: ""
+    cow_beast:
+      name: Cow Beast
+      lore: ""
+    twin_cows_titan:
+      name: Twin Cows - Titan
+      lore: "Area Unlocked: [Catacombs]"
 
-    - name: Catacombs Protector
-      lore: |
-    - name: Skeleton Puppet
-      lore: |
-    - name: Weeping spirit 
-      lore: |
-    - name: Lost Spirit
-      lore: |
-    - name: Sludge Knight 
-      lore: |
-    - name: Guardian of the threshold
-      lore: |
-        Feature Unlocked: [Rebirth]
-        Area Unlocked: [Farm]
+  enemy: "[Enemy]"
+  player: "[Player]"
+  system: "[System]"
+  death: "Womp womp, you died git gud skrub"
+  fighting: 
+    yes: 
+      label: "Start Fighting"
+      desc: | 
+        I needa chillout man, this guy keep attacking me :(
 
-    - name: Animated Scarecrow
-      lore: |
-    - name: Pissed off farmer
-      lore: |
-    - name: Deformed chicken
-      lore: |
-        Feature Unlocked: [Crimson]
-    - name: Drunken Cow
-      lore: |
-    - name: Dancing Cow
-      lore: |
-    - name: Cow Beast
-      lore: |
-    - name: Twin Cows - titan
-      lore: |
-        Area Unlocked: [Catacombs]
+        Stop fighting, pausing the cooldowns of both the player and the enemies' abilities
+    no: 
+      label: "Stop Fighting"
+      desc: | 
+        Alright i'm ready now, let's do this!!11!!
+
+        Start fighting. BTW there is no lore to this thing, its just for gameplay don't theorycraft/overanalyze this mechanic
+
+
 
 areas:
-  - name: Kuala Lumpur
+  - name: Sewers
     description: |
-      The capital city of Malaysia, Known for its arts and cultural scene. It is a hub where the diverse culture of Malaysia blend together and people of all walks of life live in harmony.
-      It is also your hometown.
+
   - name: Astra 
     description: |
       One of the major hunters association within the city of Latera. This is the place where you feel safe here.. a place you call home.

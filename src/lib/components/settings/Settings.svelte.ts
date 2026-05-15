@@ -1,5 +1,5 @@
 import type { Saves } from "$lib/engine/Saves";
-import { Notation } from "$lib/engine/utils/BreakInfinity/Formatter.svelte";
+import { Notation } from "$lib/utils/BreakInfinity/Formatter.svelte";
 
 export class Settings {
   constructor(saves: Saves) {

@@ -4,7 +4,7 @@
 		formatter,
 		formatTime,
 		Notation,
-	} from "$lib/engine/utils/BreakInfinity/Formatter.svelte";
+	} from "$lib/utils/BreakInfinity/Formatter.svelte";
 	import { ColorTheme, Settings } from "../settings/Settings.svelte.ts";
 
 	let { open = $bindable() } = $props();

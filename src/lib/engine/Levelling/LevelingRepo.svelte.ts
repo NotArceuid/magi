@@ -1,8 +1,8 @@
-import type { IProgress, Progress } from "$lib/components/common/IProgress.svelte";
+import type { Progress } from "$lib/components/common/IProgress.svelte";
 import { Player } from "../Player.svelte";
 import { Saves } from "../Saves";
-import { Game } from "../stores.svelte";
-import { Decimal } from "../utils/BreakInfinity/Decimal.svelte";
+import { Game } from "../../stores.svelte";
+import { Decimal } from "../../utils/BreakInfinity/Decimal.svelte";
 
 export abstract class AllocatableProgress {
   public Name: string;

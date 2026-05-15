@@ -9,7 +9,7 @@
 		type INotification,
 	} from "$lib/components/Notification.svelte";
 	import Footer from "$lib/components/index/Footer.svelte";
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 	import StatsBar from "$lib/components/StatsBar.svelte";
 	import { page } from "$app/stores";
 	let { children } = $props();

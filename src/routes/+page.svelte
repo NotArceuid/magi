@@ -1,15 +1,12 @@
 <script lang="ts">
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 	import ProgressBar from "$lib/components/common/ProgressBar.svelte";
-	import { onMount } from "svelte";
+	import { onMount, tick } from "svelte";
 	import { _ } from "svelte-i18n";
-	import { ReactiveText } from "$lib/engine/utils/ReactiveText.svelte";
-	import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
+	import { ReactiveText } from "$lib/utils/ReactiveText.svelte";
+	import { Decimal } from "$lib/utils/BreakInfinity/Decimal.svelte";
 	import type { AbilityBase } from "$lib/engine/Battle/Abilities.svelte";
-
-	onMount(() => {
-		Game.Engine.start();
-	});
+	import { CombatTextSrcEnum } from "$lib/engine/Battle/Combat.svelte";
 
 	let battle = $derived(Game.Adventure);
 	let current_enemy = $derived(Game.Adventure.CurrentEnemy);
@@ -26,7 +23,39 @@
 		if (view === "logs") show_lore = false;
 	}
 
-	let element_color_map = ["bg-gray-500/30", "bg-red-500/80"];
+	let element_ring_map = ["ring-gray-400/80", "ring-red-500"];
+	let log_source_color_map: Record<CombatTextSrcEnum, string> = {
+		[CombatTextSrcEnum.Enemy]: "text-red-500",
+		[CombatTextSrcEnum.Player]: "text-blue-500",
+		[CombatTextSrcEnum.System]: "text-gray-500",
+	};
+
+	let log: HTMLDivElement = $state()!;
+	let bottom: HTMLDivElement = $state()!;
+
+	let combat_desc = $derived(
+		Game.Combat.Fighting
+			? "combat.fighting.yes.desc"
+			: "combat.fighting.no.desc",
+	);
+
+	onMount(() => {
+		Game.Engine.start();
+	});
+
+	$effect(() => {
+		Game.Combat.CombatText.length;
+		tick().then(() => bottom?.scrollIntoView());
+	});
+
+	$effect(() => {
+		if (hovered_ability) {
+			Game.HoveredText[0] = hovered_ability.Description;
+		} else {
+			Game.HoveredText[0] = "";
+			Game.HoveredText[1] = {};
+		}
+	});
 </script>
 
 <div class="flex flex-col h-full">
@@ -86,26 +115,24 @@
 					<div class="flex flex-row items-center gap-2">
 						<button
 							class="border w-8 h-8 flex items-center justify-center text-base disabled:opacity-30"
-							disabled={battle.WaveIndex === 0}
-							onclick={() => battle.PrevWave()}>←</button
+							disabled={battle.AreaIndex === 0}
+							onclick={() => battle.PrevArea()}>←</button
 						>
-
 						<select
 							class="border text-sm sm:text-lg text-center px-1 py-1.5 w-54"
 							value={battle.AreaIndex}
 						>
 							{#each battle.Areas as area, idx}
-								<option value={idx} disabled={idx > battle.HighestArea}>
+								<option value={idx} disabled={idx > battle.HighestUnlockedArea}>
 									{$_(area.Name)}
-									{battle.WaveIndex + 1} / {battle.CurrentArea?.Waves.length}
+									{area.CurrentIdx + 1} / {area.EnemyList.length}
 								</option>
 							{/each}
 						</select>
-
 						<button
 							class="border w-8 h-8 flex items-center justify-center text-base disabled:opacity-30"
-							disabled={!battle.CanAdvanceWave}
-							onclick={() => battle.NextWave()}>→</button
+							disabled={!battle.CurrentArea?.Cleared}
+							onclick={() => battle.NextArea()}>→</button
 						>
 					</div>
 				</div>
@@ -196,25 +223,25 @@
 			</div>
 
 			{#if show_lore || mobile_view === "lore"}
-				<div class="p-3 pt-0 flex flex-col flex-1 min-h-0">
-					<span class="text-md font-semibold underline shrink-0">
-						Lore - {$_(current_enemy?.Name ?? "")}
-					</span>
-					<p
-						class="text-md leading-relaxed whitespace-pre-line overflow-y-auto flex-1 min-h-0"
-					>
-						{$_(battle.CurrentEnemy?.Description ?? "", {
-							values: { player: Game.Player.Name },
-						})}
-					</p>
+				<div class="overflow-y-auto flex-1 min-h-0 p-3">
+					{$_(current_enemy?.Description ?? "")}
 				</div>
 			{:else}
 				<div class="p-3 pt-0 flex flex-col flex-1 min-h-0">
 					<span class="border-b shrink-0">Logs</span>
-					<div class="overflow-y-auto flex-1 min-h-0 flex flex-col">
-						{#each Game.Adventure.BattleInfo as text}
-							<span>{text}</span>
+					<div
+						bind:this={log}
+						class="overflow-y-auto flex-1 min-h-0 p-3 flex flex-col"
+					>
+						{#each Game.Combat.CombatText as text}
+							<div>
+								<span class={log_source_color_map[text[0]]}
+									>{$_(text[0].toString())}</span
+								>
+								<span>{$_(text[1], text[2])}</span>
+							</div>
 						{/each}
+						<div bind:this={bottom}></div>
 					</div>
 				</div>
 			{/if}
@@ -232,7 +259,10 @@
 				<div class="flex items-center gap-2 p-2 shrink-0 flex-wrap">
 					<!-- svelte-ignore a11y_consider_explicit_label -->
 					<button
-						class="w-14 h-14 2xl:w-20 2xl:h-20 rounded-full shrink-0 border relative overflow-hidden flex justify-center items-center"
+						class="w-14 h-14 2xl:w-20 2xl:h-20 rounded-full shrink-0 border relative overflow-hidden flex justify-center items-center
+            {Game.Combat.Abilities[0].CooldownLeft === 0
+							? 'ring-4'
+							: ''} {element_ring_map[Game.Combat.Elements]}"
 						onclick={() => Game.Combat.Abilities[0].Fire()}
 						onmouseover={() => {
 							hovered_ability = Game.Combat.Abilities[0];
@@ -252,9 +282,7 @@
 					>
 						{$_(Game.Combat.Abilities[0].Name ?? "")}
 						<div
-							class="absolute bottom-0 left-0 w-full {element_color_map[
-								Game.Combat.Elements
-							]} pointer-events-none"
+							class="absolute bottom-0 left-0 w-full bg-gray-500/40 pointer-events-none"
 							style="height: {((Game.Combat.Abilities[0].CooldownLeft ?? 0) /
 								(Game.Combat.Abilities[0].Cooldown ?? 1)) *
 								100}%"
@@ -288,10 +316,7 @@
 									{$_(ability?.Name ?? "")}
 									{#if (ability?.CooldownLeft ?? 0) > 0}
 										<div
-											class="absolute bottom-0 left-0 w-full pointer-events-none
-                      {idx === 1
-												? 'bg-blue-600/40'
-												: element_color_map[Game.Combat.Elements]}"
+											class="absolute bottom-0 left-0 w-full bg-gray-500/40 pointer-events-none"
 											style="height: {((ability?.CooldownLeft ?? 0) /
 												(ability?.Cooldown ?? 1)) *
 												100}%"
@@ -300,13 +325,42 @@
 								</button>
 							{/if}
 						{/each}
+						<button
+							class="h-10 text-xs w-10 2xl:h-16 2xl:w-16 border relative overflow-hidden flex justify-center items-center"
+							onclick={() => {
+								Game.Combat.Fighting
+									? Game.Combat.StopCombat()
+									: Game.Combat.StartCombat();
+							}}
+							onmouseover={() => {
+								Game.HoveredText[0] = combat_desc;
+							}}
+							onmouseleave={() => {
+								Game.HoveredText[0] = "";
+							}}
+							onfocus={() => {
+								Game.HoveredText[0] = combat_desc;
+							}}
+							ontouchstart={() => {
+								Game.HoveredText[0] = combat_desc;
+							}}
+							ontouchend={() => {
+								Game.HoveredText[0] = "";
+							}}
+						>
+							{$_(
+								Game.Combat.Fighting
+									? "combat.fighting.yes.label"
+									: "combat.fighting.no.label",
+							)}
+						</button>
 					</div>
 				</div>
 				<div
 					class="flex-1 border min-h-0 p-4 whitespace-pre-line overflow-y-scroll"
 				>
 					{#if hovered_ability?.IsUnlocked}
-						{$_(hovered_ability.Description)}
+						{$_(Game.HoveredText[0], Game.HoveredText[1])}
 
 						<br />
 
@@ -315,25 +369,19 @@
 								<span class="border-b w-full font-bold"
 									>{$_("skills.info")}</span
 								>
-								{#each Object.entries(hovered_ability.SkillInfo[1] as Record<string, any>) as [key, value]}
+								{#each hovered_ability.SkillInfo as skill}
 									<div class="flex justify-between">
-										<span>{$_(hovered_ability.SkillInfo[0])}</span>
-										<span>{value}</span>
+										<span>{$_(skill[0])}</span>
+										<span>{skill[1]()}</span>
 									</div>
 								{/each}
-
-								<div class="flex justify-between">
-									<span>{$_("skills.cooldown")}</span>
-									<span>
-										{hovered_ability.CooldownLeft.toFixed(2).toString()} / {hovered_ability.Cooldown.toFixed(
-											2,
-										).toString()}</span
-									>
-								</div>
 							{/if}
 						</div>
 					{:else}
+						{$_(Game.HoveredText[0], Game.HoveredText[1])}
+						<!--
 						{$_(hovered_ability?.InactiveDescription ?? "skills.none")}
+-->
 					{/if}
 				</div>
 			</div>
@@ -342,10 +390,10 @@
 				{#each Game.Combat.SwitchAbility as ability, idx}
 					<!-- TODO: Add the other rays -->
 					<button
-						class="h-12 w-12 2xl:h-20 2xl:w-16 border flex items-center justify-center {Game
-							.Combat.Elements == idx
-							? element_color_map[Game.Combat.Elements]
-							: ''}"
+						class="h-10 w-10 2xl:h-16 2xl:w-16 border relative overflow-hidden flex justify-center items-center
+    ring-2 {idx === 1 && current_enemy?.CanParry
+							? 'ring-yellow-500 shadow-2xl'
+							: element_ring_map[Game.Combat.Elements]}"
 						onclick={() => Game.Combat.SwitchElement(idx)}
 						onmouseover={() => {
 							hovered_ability = ability;

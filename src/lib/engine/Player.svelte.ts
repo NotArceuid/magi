@@ -1,8 +1,8 @@
 import { Progress } from "$lib/components/common/IProgress.svelte.ts";
 import type { Engine } from "./Engine.svelte.ts";
 import type { Saves } from "./Saves.ts";
-import { Decimal } from "./utils/BreakInfinity/Decimal.svelte.ts";
-import { MultiplierBase, MultiplierType } from "./utils/Multipliers.svelte.ts";
+import { Decimal } from "../utils/BreakInfinity/Decimal.svelte.ts";
+import { MultiplierBase, MultiplierType } from "../utils/Multipliers.svelte.ts";
 
 export class Player {
   public readonly DamageMultiplier = MultiplierBase.default();
@@ -38,8 +38,6 @@ export class Player {
   constructor(engine: Engine, save: Saves) {
     this._engine = engine;
 
-    this._engine.Tick.add(() => this.HealPlayer());
-
     save.SaveCallback<IPlayerSaves>(this.SAVEKEY, () => {
       return {
         //@ts-ignore
@@ -69,7 +67,16 @@ export class Player {
     });
   }
 
-  public HealPlayer() {
+  // NEVER CALL THIS FUNCTION DIRECTLY, USE COMBAT.HEALPLAYER() instead thank you :)
+  public HealPlayer(amount?: Decimal) {
+    if (amount) {
+      this.Health.Set(
+        Decimal.max(Decimal.ZERO, this.Health.Taken.minus(amount))
+      );
+
+      return;
+    }
+
     this.Health.Set(
       Decimal.max(Decimal.ZERO, this.Health.Taken.minus(this.HealthRegen.Get()))
     );
@@ -77,6 +84,7 @@ export class Player {
 
   public DealDamage(): Decimal {
     let damage = this.DamageMultiplier.Get();
+
     return damage;
   }
 

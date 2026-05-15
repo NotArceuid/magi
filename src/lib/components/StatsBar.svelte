@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 	import { _ } from "svelte-i18n";
-	import { Decimal } from "$lib/engine/utils/BreakInfinity/Decimal.svelte";
+	import { Decimal } from "$lib/utils/BreakInfinity/Decimal.svelte";
 
 	let selectedAmt = $state(0);
 	let inputValue = $state("");

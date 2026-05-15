@@ -1,6 +1,6 @@
 import type { Player } from "../Player.svelte";
 import type { Saves } from "../Saves";
-import { MultiplierBase, MultiplierPrioritySchemeEnum } from "../utils/Multipliers.svelte.ts";
+import { MultiplierBase, MultiplierPrioritySchemeEnum } from "../../utils/Multipliers.svelte.ts";
 import { ItemBase, ItemsEnum, ItemsRepository, ItemType } from "./InventoryRepo.svelte";
 
 export class Inventory {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CollapsibleCard from "$lib/components/common/CollapsibleCard.svelte";
 	import LevelingPanel from "$lib/components/leveling/LevelingPanel.svelte";
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 	import { _ } from "svelte-i18n";
 	import { slide } from "svelte/transition";
 	let offense = Game.Leveling.OffenseRepo.entries().toArray();

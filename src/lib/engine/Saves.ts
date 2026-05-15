@@ -1,5 +1,5 @@
 import { dev } from "$app/environment";
-import { InvokeableEvent } from "./utils/Events";
+import { InvokeableEvent } from "../utils/Events";
 
 export class Saves {
   public compressionEnabled: boolean = dev ? false : true;

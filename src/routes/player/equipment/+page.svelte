@@ -14,7 +14,7 @@
 	} from "$lib/components/battle/dragging.svelte";
 	import { EquipmentEffect } from "$lib/engine/Inventory/Inventory.svelte";
 	import { ItemType } from "$lib/engine/Inventory/InventoryRepo.svelte";
-	import { Game } from "$lib/engine/stores.svelte";
+	import { Game } from "$lib/stores.svelte";
 	import { _ } from "svelte-i18n";
 
 	let equipment_label = [
